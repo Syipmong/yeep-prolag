@@ -58,20 +58,20 @@ jobs:
       shell: msys2 {0}
       run: |
         make clean
-        make
-
-    - name: Test build (Linux/macOS)
+        make    - name: Test build (Linux/macOS)
       if: matrix.os != 'windows-latest'
       run: |
-        # Test version command
+        # Test version command and file execution
         ./build/${{ matrix.binary }} --version
+        ./build/${{ matrix.binary }} test_ci.yeep
 
     - name: Test build (Windows)
       if: matrix.os == 'windows-latest'
       shell: msys2 {0}
       run: |
-        # Test version command
+        # Test version command and file execution
         ./build/${{ matrix.binary }} --version
+        ./build/${{ matrix.binary }} test_ci.yeep
 
     - name: Package release (Linux/macOS)
       if: matrix.os != 'windows-latest'
