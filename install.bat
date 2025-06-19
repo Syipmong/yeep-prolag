@@ -1,7 +1,12 @@
 @echo off
 setlocal
 
-echo Installing Yeep Programming Language...
+echo ================================================================
+echo Installing Yeep Programming Language v1.0.0
+echo ================================================================
+echo.
+echo ✅ This version includes fixes for Windows DLL dependencies
+echo ✅ Self-contained executable - no MSYS2 or MinGW required
 echo.
 
 REM Check if running as administrator
