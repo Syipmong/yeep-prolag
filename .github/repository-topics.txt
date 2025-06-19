@@ -1,5 +1,4 @@
 # Repository Topics (for GitHub)
-# Add these as topics in your GitHub repository settings:
 
 programming-language
 interpreter
