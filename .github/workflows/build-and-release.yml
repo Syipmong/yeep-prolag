@@ -20,7 +20,6 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-      
     - name: Setup MinGW
       uses: msys2/setup-msys2@v2
       with:
@@ -33,8 +32,9 @@ jobs:
           
     - name: Create build directory
       run: |
-        mkdir build
-        mkdir build\core
+        if (Test-Path build) { Remove-Item -Recurse -Force build }
+        New-Item -ItemType Directory -Path "build/core" -Force
+      shell: pwsh
         
     - name: Build Yeep (Windows)
       shell: msys2 {0}
