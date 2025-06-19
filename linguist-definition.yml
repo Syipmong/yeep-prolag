@@ -1,0 +1,16 @@
+# Yeep Language Definition for GitHub Linguist
+# This file contains the language definition that will be submitted to GitHub Linguist
+
+Yeep:
+  type: programming
+  color: "#00ff88"
+  extensions:
+  - ".yeep"
+  tm_scope: source.yeep
+  ace_mode: text
+  language_id: 1001
+  aliases:
+  - yeep
+  - yeep-lang
+  interpreters:
+  - yeep

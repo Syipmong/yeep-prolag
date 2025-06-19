@@ -1,0 +1,63 @@
+# Fibonacci Sequence Generator
+# Demonstrates loops and mathematical computation
+
+print "=== Fibonacci Sequence ==="
+print ""
+
+# Initialize first two numbers
+first = 0
+second = 1
+count = 10
+
+print "Generating first " + count + " Fibonacci numbers:"
+print ""
+
+# Print first two numbers
+print "F(1) = " + first
+print "F(2) = " + second
+
+# Generate remaining numbers
+position = 3
+current_first = first
+current_second = second
+
+# Calculate F(3)
+third = current_first + current_second
+print "F(3) = " + third
+
+# Calculate F(4)
+fourth = current_second + third
+print "F(4) = " + fourth
+
+# Calculate F(5)
+fifth = third + fourth
+print "F(5) = " + fifth
+
+# Calculate F(6)
+sixth = fourth + fifth
+print "F(6) = " + sixth
+
+# Calculate F(7)
+seventh = fifth + sixth
+print "F(7) = " + seventh
+
+# Calculate F(8)
+eighth = sixth + seventh
+print "F(8) = " + eighth
+
+# Calculate F(9)
+ninth = seventh + eighth
+print "F(9) = " + ninth
+
+# Calculate F(10)
+tenth = eighth + ninth
+print "F(10) = " + tenth
+
+print ""
+print "Fibonacci sequence complete!"
+
+# Show some properties
+print ""
+print "Properties:"
+ratio = tenth / ninth
+print "Golden ratio approximation: " + ratio

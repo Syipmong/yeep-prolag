@@ -1,0 +1,139 @@
+# Scientific Calculator
+# Demonstrates advanced mathematical operations
+
+print "=== Yeep Scientific Calculator ==="
+print ""
+
+# Basic arithmetic operations
+a = 15.5
+b = 4.2
+
+print "Basic Operations:"
+print "================"
+print "a = " + a
+print "b = " + b
+print ""
+
+sum = a + b
+difference = a - b
+product = a * b
+quotient = a / b
+remainder = a % b
+
+print "Addition: " + a + " + " + b + " = " + sum
+print "Subtraction: " + a + " - " + b + " = " + difference
+print "Multiplication: " + a + " * " + b + " = " + product
+print "Division: " + a + " / " + b + " = " + quotient
+print "Modulo: " + a + " % " + b + " = " + remainder
+print ""
+
+# Power calculations (manual implementation)
+print "Power Calculations:"
+print "=================="
+
+base = 2
+exponent = 8
+
+# Calculate 2^8 manually
+power = 1
+counter = 0
+
+# 2^1
+power = power * base
+counter = counter + 1
+print "2^" + counter + " = " + power
+
+# 2^2
+power = power * base
+counter = counter + 1
+print "2^" + counter + " = " + power
+
+# 2^3
+power = power * base
+counter = counter + 1
+print "2^" + counter + " = " + power
+
+# 2^4
+power = power * base
+counter = counter + 1
+print "2^" + counter + " = " + power
+
+# 2^5
+power = power * base
+counter = counter + 1
+print "2^" + counter + " = " + power
+
+# 2^6
+power = power * base
+counter = counter + 1
+print "2^" + counter + " = " + power
+
+# 2^7
+power = power * base
+counter = counter + 1
+print "2^" + counter + " = " + power
+
+# 2^8
+power = power * base
+counter = counter + 1
+print "2^" + counter + " = " + power
+
+print ""
+
+# Geometric calculations
+print "Geometric Calculations:"
+print "======================"
+
+# Circle
+radius = 5
+pi = 3.14159
+
+circumference = 2 * pi * radius
+area = pi * radius * radius
+
+print "Circle with radius " + radius + ":"
+print "  Circumference = " + circumference
+print "  Area = " + area
+print ""
+
+# Rectangle
+length = 12
+width = 8
+
+perimeter = 2 * (length + width)
+rect_area = length * width
+
+print "Rectangle " + length + " x " + width + ":"
+print "  Perimeter = " + perimeter
+print "  Area = " + rect_area
+print ""
+
+# Triangle (right triangle)
+side_a = 3
+side_b = 4
+hypotenuse = 5  # 3-4-5 triangle
+
+triangle_area = (side_a * side_b) / 2
+triangle_perimeter = side_a + side_b + hypotenuse
+
+print "Right Triangle (3-4-5):"
+print "  Area = " + triangle_area
+print "  Perimeter = " + triangle_perimeter
+print ""
+
+# Unit conversions
+print "Unit Conversions:"
+print "================"
+
+meters = 100
+feet = meters * 3.28084
+inches = feet * 12
+
+kilograms = 75
+pounds = kilograms * 2.20462
+
+print "Distance: " + meters + " meters = " + feet + " feet = " + inches + " inches"
+print "Weight: " + kilograms + " kg = " + pounds + " lbs"
+print ""
+
+print "Calculator operations complete!"

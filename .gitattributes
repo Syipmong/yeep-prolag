@@ -1,0 +1,18 @@
+# Language detection for Yeep programming language files
+*.yeep linguist-language=Yeep
+
+# Documentation files
+*.md linguist-documentation
+
+# Configuration files  
+*.yml linguist-data
+*.yaml linguist-data
+*.json linguist-data
+
+# Build and installation files
+install*.bat linguist-vendored
+build*.bat linguist-vendored
+Makefile linguist-vendored
+
+# Example files should be counted as Yeep
+examples/*.yeep linguist-language=Yeep

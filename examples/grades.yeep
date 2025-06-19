@@ -1,0 +1,114 @@
+# Data Processing Example
+# Demonstrates string manipulation and data formatting
+
+print "=== Student Grade Processor ==="
+print ""
+
+# Student data
+student1_name = "Alice Johnson"
+student1_math = 95
+student1_science = 87
+student1_english = 92
+
+student2_name = "Bob Smith"
+student2_math = 78
+student2_science = 91
+student2_english = 85
+
+student3_name = "Carol Davis"
+student3_math = 88
+student3_science = 94
+student3_english = 89
+
+# Calculate averages
+student1_total = student1_math + student1_science + student1_english
+student1_average = student1_total / 3
+
+student2_total = student2_math + student2_science + student2_english
+student2_average = student2_total / 3
+
+student3_total = student3_math + student3_science + student3_english
+student3_average = student3_total / 3
+
+# Display formatted results
+print "Student Grade Report"
+print "===================="
+print ""
+
+print "Student: " + student1_name
+print "  Math: " + student1_math + "%"
+print "  Science: " + student1_science + "%"
+print "  English: " + student1_english + "%"
+print "  Average: " + student1_average + "%"
+
+# Determine letter grade for student 1
+letter1 = "F"
+if student1_average >= 90 {
+    letter1 = "A"
+} else if student1_average >= 80 {
+    letter1 = "B"
+} else if student1_average >= 70 {
+    letter1 = "C"
+} else if student1_average >= 60 {
+    letter1 = "D"
+}
+print "  Letter Grade: " + letter1
+print ""
+
+print "Student: " + student2_name
+print "  Math: " + student2_math + "%"
+print "  Science: " + student2_science + "%"
+print "  English: " + student2_english + "%"
+print "  Average: " + student2_average + "%"
+
+# Determine letter grade for student 2
+letter2 = "F"
+if student2_average >= 90 {
+    letter2 = "A"
+} else if student2_average >= 80 {
+    letter2 = "B"
+} else if student2_average >= 70 {
+    letter2 = "C"
+} else if student2_average >= 60 {
+    letter2 = "D"
+}
+print "  Letter Grade: " + letter2
+print ""
+
+print "Student: " + student3_name
+print "  Math: " + student3_math + "%"
+print "  Science: " + student3_science + "%"
+print "  English: " + student3_english + "%"
+print "  Average: " + student3_average + "%"
+
+# Determine letter grade for student 3
+letter3 = "F"
+if student3_average >= 90 {
+    letter3 = "A"
+} else if student3_average >= 80 {
+    letter3 = "B"
+} else if student3_average >= 70 {
+    letter3 = "C"
+} else if student3_average >= 60 {
+    letter3 = "D"
+}
+print "  Letter Grade: " + letter3
+print ""
+
+# Class statistics
+class_total = student1_total + student2_total + student3_total
+class_average = class_total / 9
+highest_average = student1_average
+
+if student2_average > highest_average {
+    highest_average = student2_average
+}
+if student3_average > highest_average {
+    highest_average = student3_average
+}
+
+print "Class Statistics:"
+print "================"
+print "Class Average: " + class_average + "%"
+print "Highest Individual Average: " + highest_average + "%"
+print "Total Students: 3"

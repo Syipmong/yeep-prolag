@@ -377,9 +377,9 @@ This roadmap is a living document that evolves based on community feedback, tech
 - **Community Calls**: Join quarterly planning sessions
 - **Newsletter**: Subscribe for major announcements
 
-For the most current information and to contribute to planning, visit the [GitHub repository](https://github.com/itsthatblackhat/yeep-prolag) and join our community discussions.
+For the most current information and to contribute to planning, visit the [GitHub repository](https://github.com/syipmong/yeep-prolag) and join our community discussions.
 
 ---
 
-*Last updated: December 2024*
-*Next review: March 2025*
+*Last updated: June 2025*
+*Next review: July 2025*

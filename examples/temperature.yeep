@@ -1,0 +1,56 @@
+# Temperature Conversion Utility
+# Demonstrates practical calculations and user-friendly output
+
+print "=== Temperature Converter ==="
+print ""
+
+# Celsius temperatures to convert
+temps_celsius = [0, 10, 20, 25, 30, 37, 100]
+print "Converting common Celsius temperatures to Fahrenheit and Kelvin:"
+print ""
+
+# Convert each temperature
+temp1 = 0
+fahrenheit1 = temp1 * 9 / 5 + 32
+kelvin1 = temp1 + 273
+print temp1 + "°C = " + fahrenheit1 + "°F = " + kelvin1 + "K (Freezing point of water)"
+
+temp2 = 10
+fahrenheit2 = temp2 * 9 / 5 + 32
+kelvin2 = temp2 + 273
+print temp2 + "°C = " + fahrenheit2 + "°F = " + kelvin2 + "K (Cool day)"
+
+temp3 = 20
+fahrenheit3 = temp3 * 9 / 5 + 32
+kelvin3 = temp3 + 273
+print temp3 + "°C = " + fahrenheit3 + "°F = " + kelvin3 + "K (Room temperature)"
+
+temp4 = 25
+fahrenheit4 = temp4 * 9 / 5 + 32
+kelvin4 = temp4 + 273
+print temp4 + "°C = " + fahrenheit4 + "°F = " + kelvin4 + "K (Comfortable)"
+
+temp5 = 30
+fahrenheit5 = temp5 * 9 / 5 + 32
+kelvin5 = temp5 + 273
+print temp5 + "°C = " + fahrenheit5 + "°F = " + kelvin5 + "K (Hot day)"
+
+temp6 = 37
+fahrenheit6 = temp6 * 9 / 5 + 32
+kelvin6 = temp6 + 273
+print temp6 + "°C = " + fahrenheit6 + "°F = " + kelvin6 + "K (Body temperature)"
+
+temp7 = 100
+fahrenheit7 = temp7 * 9 / 5 + 32
+kelvin7 = temp7 + 273
+print temp7 + "°C = " + fahrenheit7 + "°F = " + kelvin7 + "K (Boiling point of water)"
+
+print ""
+print "Conversion complete!"
+
+# Show conversion formulas
+print ""
+print "Conversion Formulas:"
+print "Celsius to Fahrenheit: F = C × 9/5 + 32"
+print "Celsius to Kelvin: K = C + 273.15"
+print "Fahrenheit to Celsius: C = (F - 32) × 5/9"
