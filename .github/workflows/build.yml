@@ -123,10 +123,20 @@ jobs:
       contents: write
     
     steps:
-    - uses: actions/checkout@v4
-
+    - uses: actions/checkout@v4    
     - name: Download all artifacts
       uses: actions/download-artifact@v4
+
+    - name: Check if prerelease
+      id: prerelease
+      run: |
+        if [[ "${{ github.ref_name }}" =~ (alpha|beta|rc|pre|dev|nightly) ]]; then
+          echo "is_prerelease=true" >> $GITHUB_OUTPUT
+          echo "release_type=prerelease" >> $GITHUB_OUTPUT
+        else
+          echo "is_prerelease=false" >> $GITHUB_OUTPUT
+          echo "release_type=stable" >> $GITHUB_OUTPUT
+        fi
 
     - name: Create Release
       uses: softprops/action-gh-release@v1
@@ -136,6 +146,8 @@ jobs:
           yeep-*/yeep-*.zip
         body: |
           ## Yeep Programming Language ${{ github.ref_name }}
+          
+          ${{ steps.prerelease.outputs.is_prerelease == 'true' && '⚠️ **This is a prerelease version** - May contain bugs or incomplete features.' || '' }}
           
           ### Downloads
           - **Windows**: Download `yeep-windows-x64.zip`
@@ -158,4 +170,4 @@ jobs:
           
           For detailed documentation, see the [README](https://github.com/syipmong/yeep-prolag/blob/main/README.md).
         draft: false
-        prerelease: ${{ contains(github.ref_name, 'alpha') || contains(github.ref_name, 'beta') || contains(github.ref_name, 'rc') || contains(github.ref_name, 'pre') }}
+        prerelease: ${{ steps.prerelease.outputs.is_prerelease == 'true' }}
