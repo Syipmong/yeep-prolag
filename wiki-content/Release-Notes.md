@@ -238,4 +238,4 @@ Yeep follows semantic versioning (SemVer):
 
 ---
 
-*For the most up-to-date information, check the [GitHub repository](https://github.com/itsthatblackhat/yeep-prolag) and follow the project for announcements.*
+*For the most up-to-date information, check the [GitHub repository](https://github.com/syipmong/yeep-prolag) and follow the project for announcements.*
