@@ -1,24 +1,24 @@
 # Yeep Programming Language
 
-[![Build Status](https://github.com/syipmong/yeep-prolag/actions/workflows/build.yml/badge.svg)](https://github.com/syipmong/yeep-prolag/actions/workflows/build.yml)
-[![Latest Release](https://img.shields.io/github/v/release/syipmong/yeep-prolag?color=blue&logo=github)](https://github.com/syipmong/yeep-prolag/releases/latest)
-[![License](https://img.shields.io/github/license/syipmong/yeep-prolag?color=green)](https://github.com/syipmong/yeep-prolag/blob/main/LICENSE)
-[![Platform Support](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey?logo=windows&logoColor=white)](https://github.com/syipmong/yeep-prolag/releases/latest)
-[![Language](https://img.shields.io/badge/language-C-blue?logo=c)](https://github.com/syipmong/yeep-prolag)
-[![GitHub Stars](https://img.shields.io/github/stars/syipmong/yeep-prolag?style=social)](https://github.com/syipmong/yeep-prolag/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/syipmong/yeep-prolag?style=social)](https://github.com/syipmong/yeep-prolag/network/members)
+[![Build and Release](https://github.com/Syipmong/yeep-prolag/actions/workflows/build.yml/badge.svg)](https://github.com/Syipmong/yeep-prolag/actions/workflows/build.yml)
+[![Latest Release](https://img.shields.io/github/v/release/Syipmong/yeep-prolag?color=blue&logo=github)](https://github.com/Syipmong/yeep-prolag/releases/latest)
+[![License](https://img.shields.io/github/license/Syipmong/yeep-prolag?color=green)](https://github.com/Syipmong/yeep-prolag/blob/main/LICENSE)
+[![Platform Support](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey?logo=windows&logoColor=white)](https://github.com/Syipmong/yeep-prolag/releases/latest)
+[![Language](https://img.shields.io/badge/language-C-blue?logo=c)](https://github.com/Syipmong/yeep-prolag)
+[![GitHub Stars](https://img.shields.io/github/stars/Syipmong/yeep-prolag?style=social)](https://github.com/Syipmong/yeep-prolag/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/Syipmong/yeep-prolag?style=social)](https://github.com/Syipmong/yeep-prolag/network/members)
 
 A simple, interpreted programming language written in C with support for variables, functions, control flow, and logical operators.
 
 ## 📥 Download
 
-**Latest Release:** [Download Yeep v1.0.0](https://github.com/syipmong/yeep-prolag/releases/latest)
+**Latest Release:** [Download Yeep v1.0.0](https://github.com/Syipmong/yeep-prolag/releases/latest)
 
 | Platform | Download | 
 |----------|----------|
-| 🪟 **Windows** | [yeep-windows-x64.zip](https://github.com/syipmong/yeep-prolag/releases/latest/download/yeep-windows-x64.zip) |
-| 🐧 **Linux** | [yeep-linux-x64.tar.gz](https://github.com/syipmong/yeep-prolag/releases/latest/download/yeep-linux-x64.tar.gz) |
-| 🍎 **macOS** | [yeep-macos-x64.tar.gz](https://github.com/syipmong/yeep-prolag/releases/latest/download/yeep-macos-x64.tar.gz) |
+| 🪟 **Windows** | [yeep-windows-x64.zip](https://github.com/Syipmong/yeep-prolag/releases/latest/download/yeep-windows-x64.zip) |
+| 🐧 **Linux** | [yeep-linux-x64.tar.gz](https://github.com/Syipmong/yeep-prolag/releases/latest/download/yeep-linux-x64.tar.gz) |
+| 🍎 **macOS** | [yeep-macos-x64.tar.gz](https://github.com/Syipmong/yeep-prolag/releases/latest/download/yeep-macos-x64.tar.gz) |
 
 > **💡 Tip:** After downloading, follow the [installation instructions](#-easy-installation-recommended) below.
 
@@ -41,12 +41,12 @@ A simple, interpreted programming language written in C with support for variabl
 
 #### One-Line Install (Linux/macOS)
 ```bash
-curl -fsSL https://raw.githubusercontent.com/syipmong/yeep-prolag/main/install-quick.sh | bash
+curl -fsSL https://raw.githubusercontent.com/Syipmong/yeep-prolag/main/install-quick.sh | bash
 ```
 
 #### Download from GitHub Releases
 
-1. **Go to [Releases](https://github.com/YOUR_USERNAME/yeep-prolag/releases)**
+1. **Go to [Releases](https://github.com/Syipmong/yeep-prolag/releases)**
 2. **Download the latest version** for your platform:
    - **Windows**: `yeep-windows-x64.zip`
    - **Linux**: `yeep-linux-x64.tar.gz`
@@ -88,7 +88,7 @@ If you encounter issues during Windows installation:
 This means you downloaded the source code instead of the release.
 
 **Solution:**
-1. Go to [Releases](https://github.com/syipmong/yeep-prolag/releases/latest)
+1. Go to [Releases](https://github.com/Syipmong/yeep-prolag/releases/latest)
 2. Download `yeep-windows-x64.zip` (not the source code)
 3. Extract the ZIP file completely
 4. Look for `yeep.exe` in the extracted folder
@@ -116,7 +116,7 @@ This was a known issue in older versions, now fixed!
 #### Steps
 ```bash
 # Clone the repository
-git clone https://github.com/syipmong/yeep-prolag.git
+git clone https://github.com/Syipmong/yeep-prolag.git
 cd yeep-prolag
 
 # Build
@@ -211,12 +211,12 @@ while (x > 0) {
 
 ## 📊 Project Status
 
-[![GitHub Issues](https://img.shields.io/github/issues/syipmong/yeep-prolag?color=orange&logo=github)](https://github.com/syipmong/yeep-prolag/issues)
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/syipmong/yeep-prolag?color=blue&logo=github)](https://github.com/syipmong/yeep-prolag/pulls)
-[![Last Commit](https://img.shields.io/github/last-commit/syipmong/yeep-prolag?color=green&logo=git)](https://github.com/syipmong/yeep-prolag/commits/main)
-[![Repo Size](https://img.shields.io/github/repo-size/syipmong/yeep-prolag?color=lightblue&logo=github)](https://github.com/syipmong/yeep-prolag)
-[![Code Size](https://img.shields.io/github/languages/code-size/syipmong/yeep-prolag?color=purple&logo=c)](https://github.com/syipmong/yeep-prolag)
-[![Downloads](https://img.shields.io/github/downloads/syipmong/yeep-prolag/total?color=brightgreen&logo=download)](https://github.com/syipmong/yeep-prolag/releases)
+[![GitHub Issues](https://img.shields.io/github/issues/Syipmong/yeep-prolag?color=orange&logo=github)](https://github.com/Syipmong/yeep-prolag/issues)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/Syipmong/yeep-prolag?color=blue&logo=github)](https://github.com/Syipmong/yeep-prolag/pulls)
+[![Last Commit](https://img.shields.io/github/last-commit/Syipmong/yeep-prolag?color=green&logo=git)](https://github.com/Syipmong/yeep-prolag/commits/main)
+[![Repo Size](https://img.shields.io/github/repo-size/Syipmong/yeep-prolag?color=lightblue&logo=github)](https://github.com/Syipmong/yeep-prolag)
+[![Code Size](https://img.shields.io/github/languages/code-size/Syipmong/yeep-prolag?color=purple&logo=c)](https://github.com/Syipmong/yeep-prolag)
+[![Downloads](https://img.shields.io/github/downloads/Syipmong/yeep-prolag/total?color=brightgreen&logo=download)](https://github.com/Syipmong/yeep-prolag/releases)
 
 ## Project Structure
 
@@ -229,9 +229,9 @@ while (x > 0) {
 
 We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
-- 🐛 [Report bugs](https://github.com/syipmong/yeep-prolag/issues/new?template=bug_report.md)
-- 💡 [Request features](https://github.com/syipmong/yeep-prolag/issues/new?template=feature_request.md)
-- 🔧 [Submit pull requests](https://github.com/syipmong/yeep-prolag/pulls)
+- 🐛 [Report bugs](https://github.com/Syipmong/yeep-prolag/issues/new?template=bug_report.md)
+- 💡 [Request features](https://github.com/Syipmong/yeep-prolag/issues/new?template=feature_request.md)
+- 🔧 [Submit pull requests](https://github.com/Syipmong/yeep-prolag/pulls)
 
 ## 📄 License
 
@@ -253,4 +253,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **⭐ Star this repo if you find Yeep useful!**
 
-**📥 [Download the latest release](https://github.com/syipmong/yeep-prolag/releases/latest)** | **📖 [Read the docs](README.md)** | **🤝 [Contribute](CONTRIBUTING.md)**
+**📥 [Download the latest release](https://github.com/Syipmong/yeep-prolag/releases/latest)** | **📖 [Read the docs](README.md)** | **🤝 [Contribute](CONTRIBUTING.md)**
