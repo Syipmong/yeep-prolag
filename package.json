@@ -1,0 +1,44 @@
+{
+  "name": "yeep",
+  "version": "1.0.0",
+  "description": "A simple, interpreted programming language written in C",
+  "main": "build/yeep",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/syipmong/yeep-prolag.git"
+  },
+  "keywords": [
+    "programming-language",
+    "interpreter",
+    "scripting",
+    "c",
+    "repl"
+  ],
+  "author": "Yeep Contributors",
+  "license": "MIT",
+  "homepage": "https://github.com/syipmong/yeep-prolag",
+  "bugs": {
+    "url": "https://github.com/syipmong/yeep-prolag/issues"
+  },
+  "scripts": {
+    "build": "make",
+    "clean": "make clean",
+    "test": "make test",
+    "install": "make install"
+  },
+  "files": [
+    "src/",
+    "include/",
+    "examples/",
+    "build/",
+    "Makefile",
+    "build.bat",
+    "install.sh",
+    "install.bat",
+    "README.md",
+    "LANGUAGE_SPEC.md"
+  ],
+  "engines": {
+    "gcc": ">=4.9.0"
+  }
+}

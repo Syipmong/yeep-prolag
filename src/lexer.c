@@ -49,9 +49,8 @@ Token* tokenize(const char* source, int* token_count) {
             capacity *= 2;
             tokens = realloc(tokens, sizeof(Token) * capacity);
         }
-        
-        // Skip whitespace (except newlines)
-        if (source[i] == ' ' || source[i] == '\t' || source[i] == '\r') {
+          // Skip whitespace (except newlines)
+        if (source[i] == ' ' || source[i] == '\t' || source[i] == '\r' || source[i] == '\v' || source[i] == '\f') {
             if (source[i] == '\t') column += 4;
             else column++;
             i++;
@@ -95,31 +94,79 @@ Token* tokenize(const char* source, int* token_count) {
             free(number_str);
             continue;
         }
-        
-        // Strings
+          // Strings
         if (source[i] == '"') {
             int start = ++i; // Skip opening quote
             column++;
             
             while (source[i] != '\0' && source[i] != '"') {
-                if (source[i] == '\n') {
-                    line++;
-                    column = 1;
-                } else {
+                if (source[i] == '\\') {
+                    // Handle escape sequences
+                    i++; // Skip backslash
                     column++;
+                    if (source[i] != '\0') {
+                        // Skip the escaped character
+                        if (source[i] == '\n') {
+                            line++;
+                            column = 1;
+                        } else {
+                            column++;
+                        }
+                        i++;
+                    }
+                } else {
+                    if (source[i] == '\n') {
+                        line++;
+                        column = 1;
+                    } else {
+                        column++;
+                    }
+                    i++;
                 }
-                i++;
             }
             
             if (source[i] == '"') {
-                char* string_str = malloc(i - start + 1);
-                strncpy(string_str, source + start, i - start);
-                string_str[i - start] = '\0';
+                // Extract the string content and process escape sequences
+                int str_len = i - start;
+                char* raw_str = malloc(str_len + 1);
+                strncpy(raw_str, source + start, str_len);
+                raw_str[str_len] = '\0';
                 
-                tokens[count++] = create_token(TOKEN_STRING, string_str, line, column - (i - start + 1));
-                free(string_str);
+                // Process escape sequences
+                char* processed_str = malloc(str_len + 1);
+                int j = 0, k = 0;
+                while (j < str_len) {
+                    if (raw_str[j] == '\\' && j + 1 < str_len) {
+                        j++; // Skip backslash
+                        switch (raw_str[j]) {
+                            case 'n': processed_str[k++] = '\n'; break;
+                            case 't': processed_str[k++] = '\t'; break;
+                            case 'r': processed_str[k++] = '\r'; break;
+                            case '\\': processed_str[k++] = '\\'; break;
+                            case '"': processed_str[k++] = '"'; break;
+                            default: 
+                                // Unknown escape, keep both characters
+                                processed_str[k++] = '\\';
+                                processed_str[k++] = raw_str[j];
+                                break;
+                        }
+                        j++;
+                    } else {
+                        processed_str[k++] = raw_str[j++];
+                    }
+                }
+                processed_str[k] = '\0';
+                
+                tokens[count++] = create_token(TOKEN_STRING, processed_str, line, column - str_len - 1);
+                
+                free(raw_str);
+                free(processed_str);
                 i++; // Skip closing quote
                 column++;
+            } else {
+                printf("Unterminated string at line %d, column %d\n", line, column);
+                free(tokens);
+                return NULL;
             }
             continue;
         }
@@ -141,9 +188,8 @@ Token* tokenize(const char* source, int* token_count) {
             free(identifier_str);
             continue;
         }
-        
-        // Two-character operators
-        if (i + 1 < strlen(source)) {
+          // Two-character operators
+        if (i + 1 < (int)strlen(source)) {
             if (source[i] == '=' && source[i + 1] == '=') {
                 tokens[count++] = create_token(TOKEN_EQUAL, NULL, line, column);
                 i += 2; column += 2;
@@ -191,9 +237,14 @@ Token* tokenize(const char* source, int* token_count) {
             case '(': tokens[count++] = create_token(TOKEN_LEFT_PAREN, NULL, line, column); break;
             case ')': tokens[count++] = create_token(TOKEN_RIGHT_PAREN, NULL, line, column); break;
             case '{': tokens[count++] = create_token(TOKEN_LEFT_BRACE, NULL, line, column); break;
-            case '}': tokens[count++] = create_token(TOKEN_RIGHT_BRACE, NULL, line, column); break;
-            default:
-                printf("Unexpected character '%c' at line %d, column %d\n", source[i], line, column);
+            case '}': tokens[count++] = create_token(TOKEN_RIGHT_BRACE, NULL, line, column); break;            default:
+                // Only show error for non-whitespace characters that we don't recognize
+                if (source[i] > 32) { // ASCII 32 is space, anything below is control character
+                    printf("Unexpected character '%c' at line %d, column %d\n", source[i], line, column);
+                } else {
+                    // For control characters, show the ASCII code
+                    printf("Unexpected character (ASCII %d) at line %d, column %d\n", (int)source[i], line, column);
+                }
                 break;
         }
         i++;

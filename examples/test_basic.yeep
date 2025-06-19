@@ -1,0 +1,4 @@
+#!/usr/bin/env yeep
+print("Hello from Yeep!");
+let x = 42;
+print(x);

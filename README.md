@@ -6,25 +6,66 @@ A simple, interpreted programming language written in C.
 
 - Dynamic typing
 - Variables and expressions
-- Control flow (if/else, while loops)
+- Control flow (if/else, while loops)  
 - Functions
 - Built-in data types (numbers, strings, booleans)
 - Interactive shell (REPL)
+- Shebang support for executable scripts
 
-## Building
+## Quick Start
 
-```bash
-gcc -o yeep src/*.c -I include
+### Installation
+
+#### Windows
+1. Download or clone the repository
+2. Run the installer as administrator:
+```cmd
+install.bat
 ```
 
-## Running
+#### Linux/macOS
+1. Download or clone the repository
+2. Run the installer:
+```bash
+chmod +x install.sh
+./install.sh
+```
+
+Or for system-wide installation:
+```bash
+sudo ./install.sh
+```
+
+#### Manual Installation (All platforms)
+```bash
+# Build from source
+make clean && make
+
+# Install (Linux/macOS)
+sudo make install
+
+# Or copy manually to your PATH
+cp build/yeep /usr/local/bin/
+```
+
+### Usage
 
 ```bash
 # Interactive shell
-./yeep
+yeep
 
-# Run a file
-./yeep script.yeep
+# Run a script
+yeep script.yeep
+
+# Run with shebang (Linux/macOS)
+chmod +x script.yeep
+./script.yeep
+
+# Show help
+yeep --help
+
+# Show version
+yeep --version
 ```
 
 ## Language Syntax

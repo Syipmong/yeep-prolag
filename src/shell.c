@@ -50,11 +50,42 @@ static char* read_file_contents(const char* filename) {
     content[length] = '\0';
     
     fclose(file);
-    return content;
+    
+    // Handle shebang line - skip if it starts with #!
+    char* actual_content = content;
+    if (length >= 2 && content[0] == '#' && content[1] == '!') {
+        // Find the end of the first line
+        char* newline = strchr(content, '\n');
+        if (newline) {
+            actual_content = newline + 1;
+        }
+    }
+    
+    // If we skipped the shebang, we need to create a new string
+    if (actual_content != content) {
+        char* new_content = malloc(strlen(actual_content) + 1);
+        strcpy(new_content, actual_content);
+        free(content);
+        return new_content;
+    }
+      return content;
 }
 
 static void execute_code(const char* source, Environment* env) {
     if (strlen(source) == 0) {
+        return;
+    }
+    
+    // Check if the source contains only whitespace
+    bool only_whitespace = true;
+    for (int i = 0; source[i] != '\0'; i++) {
+        if (source[i] != ' ' && source[i] != '\t' && source[i] != '\n' && source[i] != '\r') {
+            only_whitespace = false;
+            break;
+        }
+    }
+    
+    if (only_whitespace) {
         return;
     }
     

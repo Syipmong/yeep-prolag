@@ -1,0 +1,5 @@
+print("Hello from Yeep!");
+print("No shebang test!");
+
+let x = 42;
+print(x);

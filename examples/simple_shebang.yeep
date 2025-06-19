@@ -1,0 +1,7 @@
+#!/usr/bin/env yeep
+
+print("Hello from Yeep!");
+print("Shebang support works!");
+
+let x = 42;
+print(x);
