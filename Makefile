@@ -1,11 +1,20 @@
-CC=gcc
-CFLAGS=-Wall -Wextra -std=c99 -I include
+# C++ Compiler and flags for modern Yeep
+CXX=g++
+CXXFLAGS=-Wall -Wextra -std=c++17 -I include
 TARGET=build/yeep
 SRCDIR=src
 INCDIR=include
 BUILDDIR=build
-SOURCES=$(wildcard $(SRCDIR)/*.c)
-OBJECTS=$(SOURCES:$(SRCDIR)/%.c=$(BUILDDIR)/%.o)
+
+# C++ source files
+SOURCES=$(wildcard $(SRCDIR)/*.cpp $(SRCDIR)/core/*.cpp $(SRCDIR)/ast/*.cpp $(SRCDIR)/utils/*.cpp)
+OBJECTS=$(SOURCES:$(SRCDIR)/%.cpp=$(BUILDDIR)/%.o)
+
+# Legacy C compiler for backward compatibility (if needed)
+CC=gcc
+CFLAGS=-Wall -Wextra -std=c99 -I include
+C_SOURCES=$(wildcard $(SRCDIR)/*.c)
+C_OBJECTS=$(C_SOURCES:$(SRCDIR)/%.c=$(BUILDDIR)/%.o)
 
 # Installation directories
 PREFIX?=/usr/local
@@ -16,15 +25,23 @@ LIBDIR=$(PREFIX)/lib/yeep
 
 all: $(TARGET)
 
-# Create build directory
+# Create build directory and subdirectories
 $(BUILDDIR):
 	mkdir -p $(BUILDDIR)
+	mkdir -p $(BUILDDIR)/core
+	mkdir -p $(BUILDDIR)/ast
+	mkdir -p $(BUILDDIR)/utils
 
-# Build the main executable
+# Build the main C++ executable
 $(TARGET): $(BUILDDIR) $(OBJECTS)
-	$(CC) $(OBJECTS) -o $(TARGET)
+	$(CXX) $(OBJECTS) -o $(TARGET)
 
-# Compile object files
+# Compile C++ object files
+$(BUILDDIR)/%.o: $(SRCDIR)/%.cpp
+	mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+# Legacy C support (if needed)
 $(BUILDDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
