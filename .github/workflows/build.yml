@@ -71,9 +71,7 @@ jobs:
     #   run: |
     #     # Test version command and file execution
     #     ./build/${{ matrix.binary }} --version
-    #     ./build/${{ matrix.binary }} test_ci.yeep
-
-    # - name: Test build (Windows)
+    #     ./build/${{ matrix.binary }} test_ci.yeep    # - name: Test build (Windows)
     #   if: matrix.os == 'windows-latest'
     #   shell: msys2 {0}
     #   run: |
@@ -97,7 +95,8 @@ jobs:
       shell: msys2 {0}
       run: |
         mkdir -p release
-        cp build/${{ matrix.binary }} release/
+        # Copy executable to root of release (not in build/ subfolder)
+        cp build/${{ matrix.binary }} release/yeep.exe
         cp install.bat release/
         cp README.md release/
         cp LICENSE release/
