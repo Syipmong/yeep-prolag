@@ -96,18 +96,37 @@ namespace yeep {
         std::cout << "  " << program_name << " -i                 Force interactive mode" << std::endl;
         std::cout << "  " << program_name << " --version          Show version" << std::endl;
     }
-    
-    int YeepEngine::executeSource(const std::string& source, bool interactive) {
+      int YeepEngine::executeSource(const std::string& source, bool interactive) {
         try {
+            // Debug: Show source being processed
+            if (!interactive) {
+                std::cout << "Processing source: '" << source << "'" << std::endl;
+            }
+            
             // Lexical analysis
             Lexer lexer(source);
             std::vector<Token> tokens = lexer.tokenize();
-            
-            // Syntax analysis
+              // Debug: Show token count
+            std::cout << "Generated " << tokens.size() << " tokens" << std::endl;
+            for (size_t i = 0; i < tokens.size(); ++i) {
+                std::cout << "Token " << i << ": " << static_cast<int>(tokens[i].getType()) 
+                          << " '" << tokens[i].getLexeme() << "'" << std::endl;
+            }
+              // Syntax analysis
             Parser parser(tokens);
-            auto statements = parser.parse();
+            std::vector<std::unique_ptr<Expression>> statements;
+            
+            try {
+                statements = parser.parse();
+            } catch (const std::exception& e) {
+                std::cout << "Parser exception: " << e.what() << std::endl;
+                return interactive ? 0 : 65;
+            }
+              // Debug: Show statement count
+            std::cout << "Parsed " << statements.size() << " statements" << std::endl;
             
             if (parser.hadError()) {
+                std::cout << "Parser had errors!" << std::endl;
                 return interactive ? 0 : 65; // Syntax error
             }
             
@@ -160,4 +179,34 @@ namespace yeep {
         std::cout << std::endl;
     }
     
+    void YeepEngine::simpleInterpret(const std::vector<Token>& tokens) {
+        for (size_t pos = 0; pos < tokens.size(); ) {
+            if (tokens[pos].getType() == TokenType::PRINT) {
+                executePrintStatement(tokens, pos);
+            } else if (tokens[pos].getType() == TokenType::EOF_TOKEN) {
+                break;
+            } else {
+                pos++; // Skip unknown tokens
+            }
+        }
+    }
+    
+    void YeepEngine::executePrintStatement(const std::vector<Token>& tokens, size_t& pos) {
+        // Expect: print ( "string" ) ;
+        if (pos + 4 < tokens.size() && 
+            tokens[pos].getType() == TokenType::PRINT &&
+            tokens[pos + 1].getType() == TokenType::LEFT_PAREN &&
+            tokens[pos + 2].getType() == TokenType::STRING &&
+            tokens[pos + 3].getType() == TokenType::RIGHT_PAREN &&
+            tokens[pos + 4].getType() == TokenType::SEMICOLON) {
+            
+            std::string value = tokens[pos + 2].getLexeme();
+            std::cout << value << std::endl;
+            pos += 5; // Move past the print statement
+        } else {
+            std::cerr << "Error: Invalid print statement syntax" << std::endl;
+            pos = tokens.size(); // Skip to end
+        }
+    }
+
 } // namespace yeep

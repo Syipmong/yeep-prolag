@@ -56,10 +56,12 @@ namespace yeep {
         // Utility methods
         void printVersion() const;
         void printHelp(const std::string& program_name) const;
-          private:
+      private:
         // Internal execution methods
         int executeSource(const std::string& source, bool interactive = false);
         void printInteractiveHelp() const;
+        void simpleInterpret(const std::vector<Token>& tokens);
+        void executePrintStatement(const std::vector<Token>& tokens, size_t& pos);
         
         // Components
         std::unique_ptr<Lexer> lexer_;

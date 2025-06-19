@@ -20,8 +20,7 @@ namespace yeep {
     
     Lexer::Lexer(const std::string& source)
         : source_(source), current_(0), line_(1), column_(1) {}
-    
-    std::vector<Token> Lexer::tokenize() {
+      std::vector<Token> Lexer::tokenize() {
         std::vector<Token> tokens;
         tokens.reserve(source_.length() / 4); // Rough estimate
         
@@ -32,6 +31,11 @@ namespace yeep {
             if (token.getType() == TokenType::EOF_TOKEN) {
                 break;
             }
+        }
+        
+        // Ensure we always have an EOF token
+        if (tokens.empty() || tokens.back().getType() != TokenType::EOF_TOKEN) {
+            tokens.push_back(Token(TokenType::EOF_TOKEN, "", line_, column_));
         }
         
         return tokens;
