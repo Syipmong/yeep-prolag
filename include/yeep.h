@@ -183,6 +183,7 @@ void free_environment(Environment* env);
 
 // Shell
 void run_shell(void);
+void run_piped_input(void);
 void run_file(const char* filename);
 
 // Utilities

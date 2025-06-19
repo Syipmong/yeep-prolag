@@ -60,10 +60,18 @@ jobs:
         make clean
         make
 
-    - name: Test build
+    - name: Test build (Linux/macOS)
+      if: matrix.os != 'windows-latest'
       run: |
-        # Test basic functionality
-        echo 'print("Hello from CI!");' | ./build/${{ matrix.binary }}
+        # Test version command
+        ./build/${{ matrix.binary }} --version
+
+    - name: Test build (Windows)
+      if: matrix.os == 'windows-latest'
+      shell: msys2 {0}
+      run: |
+        # Test version command
+        ./build/${{ matrix.binary }} --version
 
     - name: Package release (Linux/macOS)
       if: matrix.os != 'windows-latest'

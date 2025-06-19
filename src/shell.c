@@ -72,7 +72,7 @@ static char* read_file_contents(const char* filename) {
 }
 
 static void execute_code(const char* source, Environment* env) {
-    if (strlen(source) == 0) {
+    if (!source || strlen(source) == 0) {
         return;
     }
     
@@ -110,18 +110,17 @@ static void execute_code(const char* source, Environment* env) {
     }
     
     // Tokenize
-    int token_count;
+    int token_count = 0;
     Token* tokens = tokenize(source, &token_count);
     
-    if (!tokens) {
-        printf("Error: Failed to tokenize input\n");
+    if (!tokens || token_count == 0) {
+        if (tokens) free_tokens(tokens, token_count);
         return;
     }
     
     // Parse
     ASTNode* ast = parse(tokens, token_count);
     if (!ast) {
-        printf("Error: Failed to parse input\n");
         free_tokens(tokens, token_count);
         return;
     }
@@ -179,5 +178,24 @@ void run_file(const char* filename) {
     execute_code(source, global_env);
     
     free(source);
+    free_environment(global_env);
+}
+
+void run_piped_input(void) {
+    Environment* global_env = create_environment(NULL);
+    
+    // Read all input without prompting
+    char* line;
+    while ((line = read_line()) != NULL) {
+        // Skip empty lines
+        if (strlen(line) == 0) {
+            free(line);
+            continue;
+        }
+        
+        execute_code(line, global_env);
+        free(line);
+    }
+    
     free_environment(global_env);
 }

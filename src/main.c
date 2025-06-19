@@ -1,5 +1,12 @@
 #include "yeep.h"
 #include <string.h>
+#ifdef _WIN32
+#include <io.h>
+#define isatty _isatty
+#define fileno _fileno
+#else
+#include <unistd.h>
+#endif
 
 #define YEEP_VERSION "1.0.0"
 
@@ -49,17 +56,20 @@ int main(int argc, char* argv[]) {
             printf("Use '%s --help' for usage information.\n", argv[0]);
             return 1;
         }
-    }
-    
-    // Execute based on arguments
-    if (interactive_mode || script_file == NULL) {
-        // Interactive shell mode
+    }    // Execute based on arguments
+    if (script_file != NULL) {
+        // Run script file
+        run_file(script_file);
+    } else if (interactive_mode || isatty(fileno(stdin))) {
+        // Interactive shell mode (forced or stdin is a terminal)
         printf("Yeep Programming Language v%s\n", YEEP_VERSION);
         printf("Starting interactive shell. Type 'exit' to quit or 'help' for commands.\n");
         run_shell();
     } else {
-        // Run script file
-        run_file(script_file);
+        // Piped input mode - read all input and execute without prompts
+        printf("Yeep Programming Language v%s\n", YEEP_VERSION);
+        printf("Starting interactive shell. Type 'exit' to quit or 'help' for commands.\n");
+        run_piped_input();
     }
     
     return 0;
