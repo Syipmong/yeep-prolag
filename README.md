@@ -80,6 +80,33 @@ curl -fsSL https://raw.githubusercontent.com/syipmong/yeep-prolag/main/install-q
    yeep --version
    ```
 
+### ⚠️ Windows Installation Troubleshooting
+
+If you encounter issues during Windows installation:
+
+#### ❌ **"build.bat is not recognized" Error**
+This means you downloaded the source code instead of the release.
+
+**Solution:**
+1. Go to [Releases](https://github.com/syipmong/yeep-prolag/releases/latest)
+2. Download `yeep-windows-x64.zip` (not the source code)
+3. Extract the ZIP file completely
+4. Look for `yeep.exe` in the extracted folder
+5. Run `install.bat` as administrator
+
+#### ❌ **"msys-2.0.dll was not found" Error**
+This was a known issue in older versions, now fixed!
+
+**Solution:**
+- Download the latest release (v1.0.1 or newer)
+- The new version includes static linking (no DLL dependencies)
+
+#### ❌ **"Installation failed" Error**
+**Solution:**
+- Make sure you extracted **all files** from the ZIP
+- Run `install.bat` as **administrator**
+- Check that `yeep.exe` exists in the same folder as `install.bat`
+
 ### 🛠️ Build from Source
 
 #### Prerequisites

@@ -31,22 +31,38 @@ if not exist "%INSTALL_DIR%" (
     )
 )
 
-REM Build the project if needed
-if not exist "build\yeep.exe" (
-    echo Building Yeep...
-    call build.bat
-    if errorlevel 1 (
-        echo Build failed. Installation aborted.
-        pause
-        exit /b 1
-    )
+REM Check for pre-built executable (from release download)
+if exist "yeep.exe" (
+    echo Found pre-built executable: yeep.exe
+    set YEEP_EXE=yeep.exe
+) else if exist "build\yeep.exe" (
+    echo Found built executable: build\yeep.exe
+    set YEEP_EXE=build\yeep.exe
+) else (
+    echo No Yeep executable found!
+    echo.
+    echo This usually means one of the following:
+    echo 1. You downloaded the source code instead of the release
+    echo 2. The build process failed
+    echo 3. Files are missing from the release
+    echo.
+    echo Please:
+    echo - Download the release from: https://github.com/syipmong/yeep-prolag/releases/latest
+    echo - Make sure to download yeep-windows-x64.zip
+    echo - Extract all files before running install.bat
+    echo.
+    pause
+    exit /b 1
 )
+
+echo Using executable: %YEEP_EXE%
 
 REM Copy files
 echo Copying files to %INSTALL_DIR%...
-copy "build\yeep.exe" "%INSTALL_DIR%\" >nul
-copy "README.md" "%INSTALL_DIR%\" >nul
-copy "LANGUAGE_SPEC.md" "%INSTALL_DIR%\" >nul
+copy "%YEEP_EXE%" "%INSTALL_DIR%\yeep.exe" >nul
+if exist "README.md" copy "README.md" "%INSTALL_DIR%\" >nul
+if exist "LANGUAGE_SPEC.md" copy "LANGUAGE_SPEC.md" "%INSTALL_DIR%\" >nul
+if exist "LICENSE" copy "LICENSE" "%INSTALL_DIR%\" >nul
 
 REM Copy examples
 if not exist "%INSTALL_DIR%\examples" mkdir "%INSTALL_DIR%\examples"
