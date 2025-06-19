@@ -71,7 +71,7 @@ The following markdown files are ready to upload to the GitHub Wiki:
 
 1. **Clone the Wiki Repository**:
    ```bash
-   git clone https://github.com/itsthatblackhat/yeep-prolag.wiki.git
+   git clone https://github.com/Syipmong/yeep-prolag.wiki.git
    cd yeep-prolag.wiki
    ```
 

@@ -12,20 +12,20 @@ A simple, interpreted programming language written in C with support for variabl
 
 ## � Documentation
 
-**[📖 Comprehensive Wiki Documentation](https://github.com/itsthatblackhat/yeep-prolag/wiki)**
+**[📖 Comprehensive Wiki Documentation](https://github.com/Syipmong/yeep-prolag/wiki)**
 
 | Documentation | Description |
 |---------------|-------------|
-| [🏠 Home](https://github.com/itsthatblackhat/yeep-prolag/wiki/Home) | Project overview and quick start |
-| [⚡ Installation Guide](https://github.com/itsthatblackhat/yeep-prolag/wiki/Installation-Guide) | Complete installation instructions |
-| [🎓 Language Tutorial](https://github.com/itsthatblackhat/yeep-prolag/wiki/Language-Tutorial) | Step-by-step learning guide |
-| [📖 Language Reference](https://github.com/itsthatblackhat/yeep-prolag/wiki/Language-Reference) | Complete language specification |
-| [📚 Standard Library](https://github.com/itsthatblackhat/yeep-prolag/wiki/Standard-Library) | Built-in functions and features |
-| [🎨 Examples Gallery](https://github.com/itsthatblackhat/yeep-prolag/wiki/Examples-Gallery) | Code examples and use cases |
-| [🏆 Showcase](https://github.com/itsthatblackhat/yeep-prolag/wiki/Showcase) | Community projects and highlights |
-| [🔧 Troubleshooting](https://github.com/itsthatblackhat/yeep-prolag/wiki/Troubleshooting) | Common issues and solutions |
-| [❓ FAQ](https://github.com/itsthatblackhat/yeep-prolag/wiki/FAQ) | Frequently asked questions |
-| [🤝 Contributing Guide](https://github.com/itsthatblackhat/yeep-prolag/wiki/Contributing-Guide) | How to contribute to the project |
+| [🏠 Home](https://github.com/Syipmong/yeep-prolag/wiki/Home) | Project overview and quick start |
+| [⚡ Installation Guide](https://github.com/Syipmong/yeep-prolag/wiki/Installation-Guide) | Complete installation instructions |
+| [🎓 Language Tutorial](https://github.com/Syipmong/yeep-prolag/wiki/Language-Tutorial) | Step-by-step learning guide |
+| [📖 Language Reference](https://github.com/Syipmong/yeep-prolag/wiki/Language-Reference) | Complete language specification |
+| [📚 Standard Library](https://github.com/Syipmong/yeep-prolag/wiki/Standard-Library) | Built-in functions and features |
+| [🎨 Examples Gallery](https://github.com/Syipmong/yeep-prolag/wiki/Examples-Gallery) | Code examples and use cases |
+| [🏆 Showcase](https://github.com/Syipmong/yeep-prolag/wiki/Showcase) | Community projects and highlights |
+| [🔧 Troubleshooting](https://github.com/Syipmong/yeep-prolag/wiki/Troubleshooting) | Common issues and solutions |
+| [❓ FAQ](https://github.com/Syipmong/yeep-prolag/wiki/FAQ) | Frequently asked questions |
+| [🤝 Contributing Guide](https://github.com/Syipmong/yeep-prolag/wiki/Contributing-Guide) | How to contribute to the project |
 
 ## �📥 Download
 
