@@ -1,7 +1,7 @@
 {
   "name": "yeep",
-  "version": "1.0.0",
-  "description": "A simple, interpreted programming language written in C",
+  "version": "2.0.0",
+  "description": "Yeep Programming Language v2.0.0 - A simple, interpreted programming language written in modern C++",
   "main": "build/yeep",
   "repository": {
     "type": "git",
@@ -11,8 +11,11 @@
     "programming-language",
     "interpreter",
     "scripting",
-    "c",
-    "repl"
+    "cpp",
+    "repl",
+    "yeep",
+    "modern-cpp",
+    "cross-platform"
   ],
   "author": "Yipmong Said <syipmong@example.com>",
   "license": "MIT",
@@ -21,10 +24,11 @@
     "url": "https://github.com/syipmong/yeep-prolag/issues"
   },
   "scripts": {
-    "build": "make",
-    "clean": "make clean",
-    "test": "make test",
-    "install": "make install"
+    "build": "./build_official.sh",
+    "build:windows": ".\\build_official.bat",
+    "clean": "rm -rf build/",
+    "test": "echo 'print(\"Package test successful!\");' | ./build/yeep",
+    "install": "echo 'Use installation scripts: install-one-line.sh or install.ps1'"
   },
   "files": [
     "src/",

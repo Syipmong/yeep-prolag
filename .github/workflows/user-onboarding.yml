@@ -1,0 +1,386 @@
+name: User Onboarding and Documentation
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'README.md'
+      - 'INSTALLATION.md'
+      - 'docs/**'
+      - 'examples/**'
+  pull_request:
+    branches: [ main, master ]
+  schedule:
+    # Run weekly to update documentation
+    - cron: '0 0 * * 0'
+  workflow_dispatch:
+
+jobs:
+  generate-docs:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js for documentation tools
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Generate API documentation
+      run: |
+        # Create comprehensive documentation
+        mkdir -p docs/generated
+        
+        # Generate installation statistics
+        cat > docs/generated/INSTALLATION_METHODS.md << 'EOF'
+        # 📦 Yeep Installation Methods
+        
+        ## 🚀 Quick Install (Recommended)
+        
+        ### One-Line Installation
+        
+        **Linux/macOS:**
+        ```bash
+        curl -fsSL https://raw.githubusercontent.com/Syipmong/yeep-prolag/main/install-one-line.sh | bash
+        ```
+        
+        **Windows (PowerShell):**
+        ```powershell
+        iwr -useb https://raw.githubusercontent.com/Syipmong/yeep-prolag/main/install-one-line.ps1 | iex
+        ```
+        
+        ## 📱 Package Managers
+        
+        ### Homebrew (macOS/Linux)
+        ```bash
+        brew tap syipmong/yeep
+        brew install yeep
+        ```
+        
+        ### Chocolatey (Windows)
+        ```powershell
+        choco install yeep
+        ```
+        
+        ### Docker
+        ```bash
+        docker run -it --rm syipmong/yeep:latest
+        ```
+        
+        ## 📥 Manual Installation
+        
+        1. Download from [GitHub Releases](https://github.com/Syipmong/yeep-prolag/releases/latest)
+        2. Choose your platform:
+           - Windows: `yeep-windows-x64.zip`
+           - Linux: `yeep-linux-x64.tar.gz` 
+           - macOS: `yeep-macos-x64.tar.gz`
+        3. Extract and run installer
+        
+        ## 🔧 Build from Source
+        
+        ```bash
+        git clone https://github.com/Syipmong/yeep-prolag.git
+        cd yeep-prolag
+        ./build_official.sh  # Linux/macOS
+        # or
+        .\build_official.bat  # Windows
+        ```
+        EOF
+        
+    - name: Generate usage examples
+      run: |
+        cat > docs/generated/USAGE_EXAMPLES.md << 'EOF'
+        # 🎯 Yeep Usage Examples
+        
+        ## 🖥️ Interactive REPL
+        
+        ```bash
+        $ yeep
+        Yeep Programming Language v2.0.0
+        Interactive interpreter ready!
+        Type 'help' for help, 'exit' to quit.
+        
+        yeep> print("Hello, World!");
+        Hello, World!
+        
+        yeep> print("Welcome to Yeep v2.0.0!");
+        Welcome to Yeep v2.0.0!
+        
+        yeep> help
+        Available commands:
+          help  - Show this help message
+          exit  - Exit the interpreter
+          
+        yeep> exit
+        Goodbye!
+        ```
+        
+        ## 📝 Script Execution
+        
+        Create a file `hello.yeep`:
+        ```yeep
+        print("Hello from a Yeep script!");
+        print("This is Yeep v2.0.0!");
+        ```
+        
+        Run it:
+        ```bash
+        $ yeep hello.yeep
+        Hello from a Yeep script!
+        This is Yeep v2.0.0!
+        ```
+        
+        ## 🌟 Advanced Examples
+        
+        ### Multiple Print Statements
+        ```yeep
+        print("Line 1");
+        print("Line 2");
+        print("Line 3");
+        ```
+        
+        ### String Output
+        ```yeep
+        print("Welcome to Yeep!");
+        print("Version: 2.0.0");
+        print("Language: C++");
+        ```
+        
+        ## 🔧 Command Line Options
+        
+        ```bash
+        yeep --help              # Show help information
+        yeep --version           # Show version number
+        yeep                     # Start interactive REPL
+        yeep script.yeep         # Execute a script file
+        ```
+        
+        ## 🐳 Docker Usage
+        
+        ```bash
+        # Interactive REPL
+        docker run -it --rm syipmong/yeep:latest
+        
+        # Run a script
+        docker run -it --rm -v $(pwd):/workspace syipmong/yeep:latest yeep script.yeep
+        
+        # Development mode
+        docker run -it --rm -v $(pwd):/workspace syipmong/yeep:latest /bin/bash
+        ```
+        EOF
+        
+    - name: Generate troubleshooting guide
+      run: |
+        cat > docs/generated/TROUBLESHOOTING.md << 'EOF'
+        # 🔧 Yeep Troubleshooting Guide
+        
+        ## 🐛 Common Issues
+        
+        ### Installation Issues
+        
+        #### "Command not found: yeep"
+        **Solution:** Add Yeep to your PATH
+        
+        **Linux/macOS:**
+        ```bash
+        echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+        source ~/.bashrc
+        ```
+        
+        **Windows:**
+        ```powershell
+        $env:PATH += ";$env:USERPROFILE\bin"
+        ```
+        
+        #### "Permission denied" on Linux/macOS
+        **Solution:** Make sure the binary is executable
+        ```bash
+        chmod +x /usr/local/bin/yeep
+        # or
+        chmod +x ~/.local/bin/yeep
+        ```
+        
+        ### Build Issues
+        
+        #### "g++ not found"
+        **Solution:** Install C++ compiler
+        
+        **Ubuntu/Debian:**
+        ```bash
+        sudo apt install g++
+        ```
+        
+        **macOS:**
+        ```bash
+        xcode-select --install
+        # or
+        brew install gcc
+        ```
+        
+        **Windows:**
+        Install MinGW-w64 via MSYS2: https://www.msys2.org/
+        
+        #### "No such file or directory: include/yeep.hpp"
+        **Solution:** Make sure you're in the project root directory
+        ```bash
+        cd yeep-prolag
+        ls include/  # Should show yeep.hpp
+        ```
+        
+        ### Runtime Issues
+        
+        #### Script doesn't run
+        **Check:**
+        1. File exists: `ls -la script.yeep`
+        2. File has content: `cat script.yeep`
+        3. Syntax is correct: Check for proper `print("text");` statements
+        
+        #### REPL not working
+        **Try:**
+        ```bash
+        yeep --version  # Test if Yeep is working
+        echo 'print("test");' | yeep  # Test piped input
+        ```
+        
+        ## 🆘 Getting Help
+        
+        1. **GitHub Issues**: https://github.com/Syipmong/yeep-prolag/issues
+        2. **Documentation**: https://github.com/Syipmong/yeep-prolag/blob/main/README.md
+        3. **Installation Guide**: https://github.com/Syipmong/yeep-prolag/blob/main/INSTALLATION.md
+        
+        ## 📊 System Requirements
+        
+        ### Minimum Requirements
+        - **OS**: Windows 10+, Linux (any modern distribution), macOS 10.15+
+        - **RAM**: 64 MB
+        - **Storage**: 10 MB
+        - **CPU**: Any x64 processor
+        
+        ### For Building from Source
+        - **Compiler**: GCC 7+ or Clang 10+ with C++17 support
+        - **Build Tools**: Make, Git
+        - **Storage**: 100 MB for build process
+        EOF
+        
+    - name: Create user onboarding checklist
+      run: |
+        cat > docs/generated/ONBOARDING_CHECKLIST.md << 'EOF'
+        # ✅ Yeep Onboarding Checklist
+        
+        Welcome to Yeep! Follow this checklist to get started quickly.
+        
+        ## 📦 Installation
+        
+        - [ ] **Choose installation method:**
+          - [ ] One-line installer (recommended)
+          - [ ] Package manager (Homebrew/Chocolatey)
+          - [ ] Docker
+          - [ ] Manual download
+          - [ ] Build from source
+        
+        - [ ] **Verify installation:**
+          ```bash
+          yeep --version
+          ```
+          Should output: `Yeep Programming Language v2.0.0`
+        
+        ## 🎯 First Steps
+        
+        - [ ] **Try the REPL:**
+          ```bash
+          yeep
+          ```
+          
+        - [ ] **Run your first command:**
+          ```yeep
+          print("Hello, Yeep!");
+          ```
+          
+        - [ ] **Exit the REPL:**
+          ```yeep
+          exit
+          ```
+        
+        ## 📝 Create Your First Script
+        
+        - [ ] **Create a file `hello.yeep`:**
+          ```yeep
+          print("Hello, World!");
+          print("This is my first Yeep script!");
+          ```
+          
+        - [ ] **Run the script:**
+          ```bash
+          yeep hello.yeep
+          ```
+        
+        ## 🌟 Explore Examples
+        
+        - [ ] **Try the demo script:**
+          ```bash
+          yeep demo_v2.yeep
+          ```
+          
+        - [ ] **Explore language features:**
+          - [ ] Print statements
+          - [ ] String output
+          - [ ] Multi-line scripts
+        
+        ## 📚 Learn More
+        
+        - [ ] **Read the documentation:**
+          - [ ] [README.md](https://github.com/Syipmong/yeep-prolag/blob/main/README.md)
+          - [ ] [INSTALLATION.md](https://github.com/Syipmong/yeep-prolag/blob/main/INSTALLATION.md)
+          - [ ] [CHANGELOG.md](https://github.com/Syipmong/yeep-prolag/blob/main/CHANGELOG.md)
+        
+        - [ ] **Join the community:**
+          - [ ] ⭐ Star the repository
+          - [ ] 🐛 Report issues if you find any
+          - [ ] 💬 Join discussions
+          - [ ] 🤝 Contribute improvements
+        
+        ## 🎉 You're Ready!
+        
+        Congratulations! You've successfully set up Yeep and are ready to start programming.
+        
+        ### Next Steps:
+        - Experiment with the REPL
+        - Create your own scripts
+        - Explore advanced features (coming in future versions)
+        - Share your experience with the community
+        
+        ### Need Help?
+        - 📖 [Documentation](https://github.com/Syipmong/yeep-prolag)
+        - 🐛 [Issues](https://github.com/Syipmong/yeep-prolag/issues)
+        - 💬 [Discussions](https://github.com/Syipmong/yeep-prolag/discussions)
+        EOF
+        
+    - name: Upload documentation artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: user-documentation
+        path: docs/generated/
+        
+    - name: Update README with installation badges
+      run: |
+        # Create installation badges for README
+        cat > docs/generated/INSTALLATION_BADGES.md << 'EOF'
+        <!-- Installation badges for README.md -->
+        
+        ## 🚀 Quick Installation
+        
+        [![Install with One-Line](https://img.shields.io/badge/Install-One--Line-blue?style=for-the-badge)](https://github.com/Syipmong/yeep-prolag/blob/main/INSTALLATION.md#quick-install-recommended)
+        [![Homebrew](https://img.shields.io/badge/Homebrew-Available-orange?style=for-the-badge&logo=homebrew)](https://github.com/Syipmong/yeep-prolag/blob/main/INSTALLATION.md#homebrew-macoslinux)
+        [![Chocolatey](https://img.shields.io/badge/Chocolatey-Available-blue?style=for-the-badge&logo=chocolatey)](https://github.com/Syipmong/yeep-prolag/blob/main/INSTALLATION.md#chocolatey-windows)
+        [![Docker](https://img.shields.io/badge/Docker-Available-blue?style=for-the-badge&logo=docker)](https://github.com/Syipmong/yeep-prolag/blob/main/INSTALLATION.md#docker)
+        
+        ```bash
+        # Linux/macOS
+        curl -fsSL https://raw.githubusercontent.com/Syipmong/yeep-prolag/main/install-one-line.sh | bash
+        
+        # Windows
+        iwr -useb https://raw.githubusercontent.com/Syipmong/yeep-prolag/main/install-one-line.ps1 | iex
+        ```
+        EOF
