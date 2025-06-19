@@ -7,6 +7,17 @@
 #include <stdbool.h>
 #include <ctype.h>
 
+// Platform-specific includes for standard functions
+#ifdef _WIN32
+#define strdup _strdup
+#else
+// For POSIX systems, ensure strdup is available
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE
+#endif
+#include <unistd.h>
+#endif
+
 // Forward declarations
 typedef struct Token Token;
 typedef struct ASTNode ASTNode;
