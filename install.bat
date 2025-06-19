@@ -32,24 +32,49 @@ if not exist "%INSTALL_DIR%" (
 )
 
 REM Check for pre-built executable (from release download)
+echo.
+echo Checking for Yeep executable...
+echo Current directory: %CD%
+echo Looking for:
+echo   - yeep.exe (release version)
+echo   - build\yeep.exe (source build)
+echo.
+
 if exist "yeep.exe" (
-    echo Found pre-built executable: yeep.exe
+    echo ✅ Found pre-built executable: yeep.exe
     set YEEP_EXE=yeep.exe
 ) else if exist "build\yeep.exe" (
-    echo Found built executable: build\yeep.exe
+    echo ✅ Found built executable: build\yeep.exe
     set YEEP_EXE=build\yeep.exe
 ) else (
-    echo No Yeep executable found!
+    echo ❌ No Yeep executable found!
+    echo.
+    echo Files in current directory:
+    dir /b
     echo.
     echo This usually means one of the following:
     echo 1. You downloaded the source code instead of the release
-    echo 2. The build process failed
-    echo 3. Files are missing from the release
+    echo 2. The CI build failed and no executable was created
+    echo 3. Files are missing from the release download
+    echo 4. The archive wasn't extracted completely
     echo.
-    echo Please:
-    echo - Download the release from: https://github.com/syipmong/yeep-prolag/releases/latest
-    echo - Make sure to download yeep-windows-x64.zip
-    echo - Extract all files before running install.bat
+    echo 🔧 Solutions:
+    echo.
+    echo A) Download Pre-built Release:
+    echo    1. Go to: https://github.com/Syipmong/yeep-prolag/releases/latest
+    echo    2. Download: yeep-windows-x64.zip
+    echo    3. Extract ALL files to a folder
+    echo    4. Verify yeep.exe exists in the folder
+    echo    5. Run install.bat from that folder
+    echo.
+    echo B) Build from Source:
+    echo    1. Install MSYS2 or MinGW-w64
+    echo    2. Run: build.bat
+    echo    3. Then run: install.bat
+    echo.
+    echo C) Check Release Status:
+    echo    - The CI might have failed for the latest release
+    echo    - Try downloading an older working release
     echo.
     pause
     exit /b 1
