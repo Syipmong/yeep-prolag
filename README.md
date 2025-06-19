@@ -1,5 +1,13 @@
 # Yeep Programming Language
 
+[![Build Status](https://github.com/syipmong/yeep-prolag/actions/workflows/build.yml/badge.svg)](https://github.com/syipmong/yeep-prolag/actions/workflows/build.yml)
+[![Latest Release](https://img.shields.io/github/v/release/syipmong/yeep-prolag?color=blue&logo=github)](https://github.com/syipmong/yeep-prolag/releases/latest)
+[![License](https://img.shields.io/github/license/syipmong/yeep-prolag?color=green)](https://github.com/syipmong/yeep-prolag/blob/main/LICENSE)
+[![Platform Support](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey?logo=windows&logoColor=white)](https://github.com/syipmong/yeep-prolag/releases/latest)
+[![Language](https://img.shields.io/badge/language-C-blue?logo=c)](https://github.com/syipmong/yeep-prolag)
+[![GitHub Stars](https://img.shields.io/github/stars/syipmong/yeep-prolag?style=social)](https://github.com/syipmong/yeep-prolag/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/syipmong/yeep-prolag?style=social)](https://github.com/syipmong/yeep-prolag/network/members)
+
 A simple, interpreted programming language written in C with support for variables, functions, control flow, and logical operators.
 
 ## 📥 Download
@@ -171,6 +179,17 @@ while (x > 0) {
     x = x - 1;
 }
 ```
+
+---
+
+## 📊 Project Status
+
+[![GitHub Issues](https://img.shields.io/github/issues/syipmong/yeep-prolag?color=orange&logo=github)](https://github.com/syipmong/yeep-prolag/issues)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/syipmong/yeep-prolag?color=blue&logo=github)](https://github.com/syipmong/yeep-prolag/pulls)
+[![Last Commit](https://img.shields.io/github/last-commit/syipmong/yeep-prolag?color=green&logo=git)](https://github.com/syipmong/yeep-prolag/commits/main)
+[![Repo Size](https://img.shields.io/github/repo-size/syipmong/yeep-prolag?color=lightblue&logo=github)](https://github.com/syipmong/yeep-prolag)
+[![Code Size](https://img.shields.io/github/languages/code-size/syipmong/yeep-prolag?color=purple&logo=c)](https://github.com/syipmong/yeep-prolag)
+[![Downloads](https://img.shields.io/github/downloads/syipmong/yeep-prolag/total?color=brightgreen&logo=download)](https://github.com/syipmong/yeep-prolag/releases)
 
 ## Project Structure
 
