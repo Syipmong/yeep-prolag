@@ -86,8 +86,10 @@ REM Copy files
 echo Copying files to %INSTALL_DIR%...
 copy "%YEEP_EXE%" "%INSTALL_DIR%\yeep.exe" >nul
 if exist "README.md" copy "README.md" "%INSTALL_DIR%\" >nul
+if exist "USAGE.md" copy "USAGE.md" "%INSTALL_DIR%\" >nul
 if exist "LANGUAGE_SPEC.md" copy "LANGUAGE_SPEC.md" "%INSTALL_DIR%\" >nul
 if exist "LICENSE" copy "LICENSE" "%INSTALL_DIR%\" >nul
+if exist "uninstall.bat" copy "uninstall.bat" "%INSTALL_DIR%\" >nul
 
 REM Copy examples
 if not exist "%INSTALL_DIR%\examples" mkdir "%INSTALL_DIR%\examples"
@@ -112,13 +114,28 @@ if errorlevel 1 (
 )
 
 echo.
-echo Installation completed!
-echo Yeep is installed to: %INSTALL_DIR%
+echo ================================================================
+echo ✅ Installation completed successfully!
+echo ================================================================
 echo.
-echo Usage:
-echo   yeep                    - Start interactive shell
-echo   yeep script.yeep        - Run a Yeep script
-echo   yeep examples\hello.yeep - Run example
+echo 📁 Yeep is installed to: %INSTALL_DIR%
+echo 🔗 Added to system PATH for global access
 echo.
-echo You may need to restart your command prompt for PATH changes to take effect.
+echo 🚀 Getting Started:
+echo   yeep                    - Start interactive shell (REPL)
+echo   yeep script.yeep        - Run a Yeep script file
+echo   yeep --help             - Show help information
+echo   yeep --version          - Show version information
+echo.
+echo 📚 Learn More:
+echo   yeep examples\hello.yeep - Run example program
+echo   notepad "%INSTALL_DIR%\README.md"  - Read documentation
+echo   notepad "%INSTALL_DIR%\USAGE.md"   - Detailed usage guide
+echo.
+echo 🗑️ To Uninstall:
+echo   "%INSTALL_DIR%\uninstall.bat"      - Run uninstaller
+echo.
+echo ⚠️  You may need to restart your command prompt for PATH changes to take effect.
+echo.
+echo Happy coding with Yeep! 🎉
 pause

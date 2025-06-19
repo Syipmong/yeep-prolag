@@ -80,6 +80,36 @@ curl -fsSL https://raw.githubusercontent.com/Syipmong/yeep-prolag/main/install-q
    yeep --version
    ```
 
+### 🎯 After Installation - How to Use Yeep
+
+Once installed, you can run Yeep from any command prompt:
+
+```cmd
+# Start interactive shell (REPL)
+yeep
+
+# Run a Yeep script file  
+yeep script.yeep
+
+# Show help and version
+yeep --help
+yeep --version
+
+# Run example programs
+yeep examples/hello.yeep
+```
+
+**📁 Installation Locations:**
+- **Windows System**: `C:\Program Files\Yeep\`
+- **Windows User**: `C:\Users\YourName\Yeep\`
+- **Linux/macOS**: `/usr/local/bin/yeep`
+
+**🗑️ To Uninstall:**
+- **Windows**: Run `uninstall.bat` from installation directory
+- **Linux/macOS**: Run `sudo make uninstall` or delete files manually
+
+> 📖 **See [USAGE.md](USAGE.md) for detailed usage guide and troubleshooting**
+
 ### ⚠️ Windows Installation Troubleshooting
 
 If you encounter issues during Windows installation:

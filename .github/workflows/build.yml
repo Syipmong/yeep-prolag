@@ -63,7 +63,9 @@ jobs:
       run: |
         make clean
         # Build with static linking to avoid DLL dependencies
-        make CFLAGS="-Wall -Wextra -std=c99 -I include -static -static-libgcc"    # Temporarily disabled tests to avoid segfault issues
+        make CFLAGS="-Wall -Wextra -std=c99 -I include -static -static-libgcc"
+
+    # Temporarily disabled tests to avoid segfault issues
     # - name: Test build (Linux/macOS)
     #   if: matrix.os != 'windows-latest'
     #   run: |
@@ -98,7 +100,9 @@ jobs:
         # Copy executable to root of release (not in build/ subfolder)
         cp build/${{ matrix.binary }} release/yeep.exe
         cp install.bat release/
+        cp uninstall.bat release/
         cp README.md release/
+        cp USAGE.md release/
         cp LICENSE release/
         cp -r examples release/
         
@@ -164,14 +168,28 @@ jobs:
              - Windows: Run `install.bat` as administrator
              - Linux/macOS: Run `chmod +x install.sh && ./install.sh`
           
+          ### After Installation
+          ```cmd
+          yeep --version          # Check version
+          yeep                    # Start interactive shell
+          yeep script.yeep        # Run a script
+          yeep examples/hello.yeep # Run examples
+          ```
+          
+          ### Uninstalling
+          - **Windows**: Run `uninstall.bat` from installation directory
+          - **Linux/macOS**: Run `sudo make uninstall`
+          
           ### What's New
           - 🔧 **Fixed Windows DLL dependencies** - Now self-contained executable
+          - 📚 **Complete usage documentation** - USAGE.md included
+          - 🗑️ **Easy uninstaller** - uninstall.bat for Windows
+          - 🚀 **Enhanced installation experience** - Better guidance and error handling
           - Logical operators `&&` and `||` with short-circuit evaluation
           - Enhanced string concatenation with all data types
-          - Improved error handling and user experience
           - Professional CLI with `--help` and `--version` options
           - Shebang support for executable scripts
           
-          For detailed documentation, see the [README](https://github.com/syipmong/yeep-prolag/blob/main/README.md).
+          For detailed documentation, see the [README](https://github.com/Syipmong/yeep-prolag/blob/main/README.md) and [USAGE.md](https://github.com/Syipmong/yeep-prolag/blob/main/USAGE.md).
         draft: false
         prerelease: ${{ steps.prerelease.outputs.is_prerelease == 'true' }}
