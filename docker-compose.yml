@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  yeep:
+    build: .
+    image: yeep-lang:2.0.0
+    container_name: yeep-interpreter
+    volumes:
+      - ./scripts:/workspace:ro  # Mount local scripts directory as read-only
+      - yeep-data:/data          # Persistent volume for data
+    working_dir: /workspace
+    stdin_open: true           # Keep STDIN open for interactive use
+    tty: true                  # Allocate a pseudo-TTY for better interaction
+    restart: unless-stopped
+    
+  yeep-dev:
+    build: .
+    image: yeep-lang:2.0.0
+    container_name: yeep-development
+    volumes:
+      - .:/workspace           # Mount entire project for development
+      - yeep-dev-data:/data    # Separate volume for development data
+    working_dir: /workspace
+    stdin_open: true
+    tty: true
+    command: /bin/bash        # Start with bash for development
+    restart: "no"             # Don't auto-restart development container
+
+volumes:
+  yeep-data:
+    driver: local
+  yeep-dev-data:
+    driver: local
+
+# Usage examples:
+# 
+# Interactive REPL:
+#   docker-compose run --rm yeep
+#
+# Run a script:
+#   docker-compose run --rm yeep yeep script.yeep
+#
+# Development mode:
+#   docker-compose run --rm yeep-dev
+#
+# Background service:
+#   docker-compose up -d yeep

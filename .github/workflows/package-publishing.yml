@@ -1,0 +1,253 @@
+name: Package Manager Publishing
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish'
+        required: true
+        default: '2.0.0'
+
+jobs:
+  publish-homebrew:
+    runs-on: macos-latest
+    if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Calculate SHA256 for Homebrew
+      id: sha256
+      run: |
+        VERSION=${{ github.event.release.tag_name || github.event.inputs.version }}
+        # Download the source tarball
+        curl -L "https://github.com/Syipmong/yeep-prolag/archive/${VERSION}.tar.gz" -o yeep-${VERSION}.tar.gz
+        SHA256=$(shasum -a 256 yeep-${VERSION}.tar.gz | cut -d' ' -f1)
+        echo "sha256=${SHA256}" >> $GITHUB_OUTPUT
+        echo "version=${VERSION}" >> $GITHUB_OUTPUT
+        
+    - name: Update Homebrew formula
+      run: |
+        VERSION=${{ steps.sha256.outputs.version }}
+        SHA256=${{ steps.sha256.outputs.sha256 }}
+        
+        # Update the formula with correct SHA256
+        sed -i '' "s/PLACEHOLDER_SHA256/${SHA256}/g" homebrew/yeep.rb
+        sed -i '' "s/v2.0.0/${VERSION}/g" homebrew/yeep.rb
+        
+    - name: Create Homebrew tap repository
+      run: |
+        echo "To publish to Homebrew, create a tap repository:"
+        echo "1. Create repository: homebrew-yeep"
+        echo "2. Add the formula file"
+        echo "3. Users can install with: brew install syipmong/yeep/yeep"
+        
+        # For now, save the updated formula as an artifact
+        mkdir -p homebrew-tap
+        cp homebrew/yeep.rb homebrew-tap/
+        
+    - name: Upload Homebrew formula
+      uses: actions/upload-artifact@v4
+      with:
+        name: homebrew-formula
+        path: homebrew-tap/
+
+  publish-chocolatey:
+    runs-on: windows-latest
+    if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup NuGet
+      uses: nuget/setup-nuget@v1
+      
+    - name: Update Chocolatey package
+      shell: pwsh
+      run: |
+        $VERSION = "${{ github.event.release.tag_name || github.event.inputs.version }}"
+        $VERSION = $VERSION -replace '^v', ''  # Remove 'v' prefix if present
+        
+        # Update version in nuspec file
+        (Get-Content chocolatey/yeep.nuspec) -replace '<version>2.0.0</version>', "<version>$VERSION</version>" | Set-Content chocolatey/yeep.nuspec
+        
+        # Create chocolatey install script
+        $installScript = @"
+        `$ErrorActionPreference = 'Stop'
+        `$packageName = 'yeep'
+        `$version = '$VERSION'
+        `$url = "https://github.com/Syipmong/yeep-prolag/releases/download/v`$version/yeep-windows-x64.zip"
+        `$checksum = 'PLACEHOLDER_CHECKSUM'
+        `$checksumType = 'sha256'
+        
+        # Download and install
+        `$packageArgs = @{
+            packageName    = `$packageName
+            unzipLocation  = "`$(Split-Path -parent `$MyInvocation.MyCommand.Definition)"
+            url            = `$url
+            checksum       = `$checksum
+            checksumType   = `$checksumType
+        }
+        
+        Install-ChocolateyZipPackage @packageArgs
+        
+        # Add to PATH
+        `$installLocation = "`$(Split-Path -parent `$MyInvocation.MyCommand.Definition)"
+        Install-ChocolateyPath `$installLocation
+        "@
+        
+        $installScript | Out-File -FilePath chocolatey/tools/chocolateyinstall.ps1 -Encoding UTF8
+        
+    - name: Create Chocolatey uninstall script
+      shell: pwsh
+      run: |
+        $uninstallScript = @"
+        `$ErrorActionPreference = 'Stop'
+        `$packageName = 'yeep'
+        
+        # Remove from PATH
+        `$installLocation = "`$(Split-Path -parent `$MyInvocation.MyCommand.Definition)"
+        Uninstall-ChocolateyPath `$installLocation
+        
+        # Remove files
+        Remove-Item "`$installLocation\yeep.exe" -Force -ErrorAction SilentlyContinue
+        "@
+        
+        $uninstallScript | Out-File -FilePath chocolatey/tools/chocolateyuninstall.ps1 -Encoding UTF8
+        
+    - name: Package Chocolatey
+      shell: pwsh
+      run: |
+        cd chocolatey
+        choco pack yeep.nuspec
+        
+    - name: Upload Chocolatey package
+      uses: actions/upload-artifact@v4
+      with:
+        name: chocolatey-package
+        path: chocolatey/*.nupkg
+
+  publish-docker:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+      
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+      
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        tags: |
+          syipmong/yeep:latest
+          syipmong/yeep:${{ github.event.release.tag_name || github.event.inputs.version }}
+          syipmong/yeep:2.0.0
+        platforms: linux/amd64,linux/arm64
+        
+  create-package-instructions:
+    runs-on: ubuntu-latest
+    needs: [publish-homebrew, publish-chocolatey, publish-docker]
+    
+    steps:
+    - name: Create installation instructions
+      run: |
+        cat > PACKAGE_INSTALLATION.md << 'EOF'
+        # 📦 Yeep v2.0.0 - Package Manager Installation
+        
+        ## 🍺 Homebrew (macOS/Linux)
+        ```bash
+        # Add the tap (one-time setup)
+        brew tap syipmong/yeep
+        
+        # Install Yeep
+        brew install yeep
+        
+        # Update Yeep
+        brew upgrade yeep
+        ```
+        
+        ## 🍫 Chocolatey (Windows)
+        ```powershell
+        # Install Yeep
+        choco install yeep
+        
+        # Update Yeep
+        choco upgrade yeep
+        
+        # Uninstall Yeep
+        choco uninstall yeep
+        ```
+        
+        ## 🐳 Docker
+        ```bash
+        # Interactive REPL
+        docker run -it --rm syipmong/yeep:latest
+        
+        # Run a script (mount current directory)
+        docker run -it --rm -v $(pwd):/workspace syipmong/yeep:latest yeep script.yeep
+        
+        # Development environment
+        docker run -it --rm -v $(pwd):/workspace syipmong/yeep:latest /bin/bash
+        ```
+        
+        ## 📥 Direct Download
+        
+        ### One-Line Installation
+        
+        **Linux/macOS:**
+        ```bash
+        curl -fsSL https://raw.githubusercontent.com/Syipmong/yeep-prolag/main/install-one-line.sh | bash
+        ```
+        
+        **Windows:**
+        ```powershell
+        iwr -useb https://raw.githubusercontent.com/Syipmong/yeep-prolag/main/install-one-line.ps1 | iex
+        ```
+        
+        ### Manual Installation
+        
+        1. Download from [GitHub Releases](https://github.com/Syipmong/yeep-prolag/releases/latest)
+        2. Choose your platform:
+           - Windows: `yeep-windows-x64.zip`
+           - Linux: `yeep-linux-x64.tar.gz`
+           - macOS: `yeep-macos-x64.tar.gz`
+        3. Extract and run the installer
+        
+        ## 🎯 Quick Start
+        
+        After installation:
+        ```bash
+        yeep --help              # Show help
+        yeep --version           # Show version
+        yeep                     # Start interactive REPL
+        yeep script.yeep         # Run a script
+        ```
+        
+        ## 🔗 Resources
+        
+        - 📖 [Documentation](https://github.com/Syipmong/yeep-prolag/blob/main/README.md)
+        - 🛠️ [Installation Guide](https://github.com/Syipmong/yeep-prolag/blob/main/INSTALLATION.md)
+        - 🐛 [Issues](https://github.com/Syipmong/yeep-prolag/issues)
+        - 💬 [Discussions](https://github.com/Syipmong/yeep-prolag/discussions)
+        EOF
+        
+    - name: Upload package instructions
+      uses: actions/upload-artifact@v4
+      with:
+        name: package-installation-guide
+        path: PACKAGE_INSTALLATION.md

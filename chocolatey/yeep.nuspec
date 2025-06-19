@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>yeep</id>
+    <version>2.0.0</version>
+    <packageSourceUrl>https://github.com/Syipmong/yeep-prolag</packageSourceUrl>
+    <owners>Yipmong Said</owners>
+    <title>Yeep Programming Language</title>
+    <authors>Yipmong Said</authors>
+    <projectUrl>https://github.com/Syipmong/yeep-prolag</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/Syipmong/yeep-prolag/main/assets/yeep-logo.png</iconUrl>
+    <copyright>2024 Yipmong Said</copyright>
+    <licenseUrl>https://github.com/Syipmong/yeep-prolag/blob/main/LICENSE</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectSourceUrl>https://github.com/Syipmong/yeep-prolag</projectSourceUrl>
+    <docsUrl>https://github.com/Syipmong/yeep-prolag/blob/main/README.md</docsUrl>
+    <bugTrackerUrl>https://github.com/Syipmong/yeep-prolag/issues</bugTrackerUrl>
+    <tags>programming-language interpreter scripting cpp repl</tags>
+    <summary>A simple, interpreted programming language with REPL and script execution</summary>
+    <description><![CDATA[
+# Yeep Programming Language v2.0.0
+
+Yeep is a simple, interpreted programming language written in modern C++. It features an interactive REPL (Read-Eval-Print Loop) and can execute script files.
+
+## Features
+
+- **Interactive REPL** with help system
+- **Script file execution** for .yeep files
+- **Print statements** for output
+- **Modern C++17** implementation
+- **Cross-platform** support (Windows, Linux, macOS)
+- **Professional build system** with automated releases
+
+## Quick Start
+
+After installation, you can use Yeep in two ways:
+
+### Interactive Mode
+```
+yeep
+```
+
+### Script Execution
+```
+yeep script.yeep
+```
+
+## Example Usage
+
+```yeep
+print("Hello, World!");
+print("Welcome to Yeep v2.0.0!");
+```
+
+## Documentation
+
+- **GitHub Repository**: https://github.com/Syipmong/yeep-prolag
+- **Installation Guide**: https://github.com/Syipmong/yeep-prolag/blob/main/INSTALLATION.md
+- **Language Documentation**: https://github.com/Syipmong/yeep-prolag/blob/main/README.md
+
+## Support
+
+For issues, questions, or contributions, please visit the GitHub repository.
+]]></description>
+    <releaseNotes>
+## Yeep v2.0.0 - Major Release
+
+### New Features
+- Complete rewrite in modern C++17
+- Interactive REPL with help system
+- Enhanced script file execution
+- Professional build system
+- Cross-platform support
+
+### Improvements
+- Better error handling
+- Improved performance
+- Modern C++ architecture
+- Comprehensive documentation
+
+### Breaking Changes
+- Migrated from C to C++
+- New build system
+- Updated installation methods
+    </releaseNotes>
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>
