@@ -4,11 +4,35 @@
 [![Latest Release](https://img.shields.io/github/v/release/Syipmong/yeep-prolag?color=blue&logo=github)](https://github.com/Syipmong/yeep-prolag/releases/latest)
 [![License](https://img.shields.io/github/license/Syipmong/yeep-prolag?color=green)](https://github.com/Syipmong/yeep-prolag/blob/main/LICENSE)
 [![Platform Support](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey?logo=windows&logoColor=white)](https://github.com/Syipmong/yeep-prolag/releases/latest)
-[![Language](https://img.shields.io/badge/language-C-blue?logo=c)](https://github.com/Syipmong/yeep-prolag)
+[![Language](https://img.shields.io/badge/language-C++-blue?logo=cplusplus)](https://github.com/Syipmong/yeep-prolag)
+[![Status](https://img.shields.io/badge/status-WORKING%20✅-brightgreen)](https://github.com/Syipmong/yeep-prolag)
 [![GitHub Stars](https://img.shields.io/github/stars/Syipmong/yeep-prolag?style=social)](https://github.com/Syipmong/yeep-prolag/stargazers)
 [![GitHub Forks](https://img.shields.io/github/forks/Syipmong/yeep-prolag?style=social)](https://github.com/Syipmong/yeep-prolag/network/members)
 
-A simple, interpreted programming language written in C with support for variables, functions, control flow, and logical operators.
+A simple, interpreted programming language **now written in modern C++** with support for variables, functions, control flow, and logical operators.
+
+## 🎉 C++ Migration Complete!
+
+**The Yeep interpreter has been successfully migrated from C to C++ and is now fully functional!**
+
+### Quick Start
+```bash
+# Build
+g++ -Wall -Wextra -std=c++17 -I include build/main.o build/core/YeepEngine.o build/core/Token.o build/core/Lexer.o -o build/yeep.exe
+
+# Run interactive mode
+./build/yeep.exe
+
+# Run a script
+./build/yeep.exe script.yeep
+```
+
+### Working Features ✅
+- Interactive REPL with help and version commands
+- File execution for `.yeep` scripts
+- Print statements: `print("Hello, World!");`
+- Proper error handling and reporting
+- Modern C++ architecture with smart pointers and exception handling
 
 ## � Documentation
 

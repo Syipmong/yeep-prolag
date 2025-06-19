@@ -28,9 +28,8 @@ namespace yeep {
 #include "utils/SymbolTable.hpp"
 #include "utils/ErrorHandler.hpp"
 
-namespace yeep {
-    // Version information
-    constexpr const char* VERSION = "1.2.0";
+namespace yeep {    // Version information
+    constexpr const char* VERSION = "2.0.0";
     constexpr const char* COPYRIGHT = "Copyright (c) 2025 Syipmong";
     constexpr const char* LICENSE = "Licensed under MIT License";
     

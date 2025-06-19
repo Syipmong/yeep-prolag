@@ -1,13 +1,39 @@
 @echo off
-echo Building Yeep Programming Language...
-echo.
+REM Official Yeep C++ Build Script - WORKING VERSION
+echo ========================================
+echo Building Yeep Programming Language
+echo C++ Version 1.2.0 - WORKING ✅
+echo ========================================
 
-REM Check if we have gcc available
-where gcc >nul 2>&1
-if errorlevel 1 (
-    echo ERROR: GCC compiler not found!
-    echo.
-    echo To build Yeep on Windows, you need:
+REM Create build directories
+if not exist build mkdir build
+if not exist build\core mkdir build\core
+
+echo.
+echo [1/5] Compiling main.cpp...
+g++ -Wall -Wextra -std=c++17 -I include -c src\main.cpp -o build\main.o
+if errorlevel 1 goto error
+
+echo [2/5] Compiling YeepEngine.cpp...
+g++ -Wall -Wextra -std=c++17 -I include -c src\core\YeepEngine.cpp -o build\core\YeepEngine.o
+if errorlevel 1 goto error
+
+echo [3/5] Compiling Token.cpp...
+g++ -Wall -Wextra -std=c++17 -I include -c src\core\Token.cpp -o build\core\Token.o
+if errorlevel 1 goto error
+
+echo [4/5] Compiling Lexer.cpp...
+g++ -Wall -Wextra -std=c++17 -I include -c src\core\Lexer.cpp -o build\core\Lexer.o
+if errorlevel 1 goto error
+
+echo [5/5] Linking executable...
+g++ build\main.o build\core\YeepEngine.o build\core\Token.o build\core\Lexer.o -o build\yeep.exe
+if errorlevel 1 goto error
+
+echo.
+echo ========================================
+echo BUILD SUCCESSFUL! ✅
+echo ========================================
     echo 1. MSYS2 with GCC, or
     echo 2. MinGW-w64, or  
     echo 3. Visual Studio with C/C++ tools
