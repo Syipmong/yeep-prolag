@@ -131,6 +131,13 @@ This was a known issue in older versions, now fixed!
 - Download the latest release (v1.0.1 or newer)
 - The new version includes static linking (no DLL dependencies)
 
+#### ❌ **"Download was unexpected at this time" Error**
+This was a batch file syntax issue in older versions, now fixed!
+
+**Solution:**
+- Download the latest release (v1.0.6 or newer)
+- If still having issues, try the alternative installers: `install-simple.bat` or `install-debug.bat`
+
 #### ❌ **"Installation failed" Error**
 **Solution:**
 - Make sure you extracted **all files** from the ZIP
