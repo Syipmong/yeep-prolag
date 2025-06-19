@@ -5,7 +5,7 @@
 
 void print_version() {
     printf("Yeep Programming Language v%s\n", YEEP_VERSION);
-    printf("Copyright (c) 2025 Yeep Contributors\n");
+    printf("Copyright (c) 2025 Yipmong Said\n");
     printf("Licensed under MIT License\n");
 }
 

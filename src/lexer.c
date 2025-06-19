@@ -48,12 +48,18 @@ Token* tokenize(const char* source, int* token_count) {
         if (count >= capacity - 1) {
             capacity *= 2;
             tokens = realloc(tokens, sizeof(Token) * capacity);
-        }
-          // Skip whitespace (except newlines)
+        }        // Skip whitespace (except newlines)
         if (source[i] == ' ' || source[i] == '\t' || source[i] == '\r' || source[i] == '\v' || source[i] == '\f') {
             if (source[i] == '\t') column += 4;
             else column++;
             i++;
+            continue;
+        }
+        
+        // Skip any other low-ASCII control characters (like form feed, etc.)
+        if (source[i] > 0 && source[i] < 32 && source[i] != '\n') {
+            i++;
+            column++;
             continue;
         }
         
@@ -240,8 +246,7 @@ Token* tokenize(const char* source, int* token_count) {
             case '}': tokens[count++] = create_token(TOKEN_RIGHT_BRACE, NULL, line, column); break;            default:
                 // Only show error for non-whitespace characters that we don't recognize
                 if (source[i] > 32) { // ASCII 32 is space, anything below is control character
-                    printf("Unexpected character '%c' at line %d, column %d\n", source[i], line, column);
-                } else {
+                    printf("Unexpected character '%c' at line %d, column %d\n", source[i], line, column);                } else if (source[i] != 0) {
                     // For control characters, show the ASCII code
                     printf("Unexpected character (ASCII %d) at line %d, column %d\n", (int)source[i], line, column);
                 }

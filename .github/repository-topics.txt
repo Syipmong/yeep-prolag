@@ -1,0 +1,26 @@
+# Repository Topics (for GitHub)
+# Add these as topics in your GitHub repository settings:
+
+programming-language
+interpreter
+scripting
+c-language
+repl
+compiler
+lexer
+parser
+ast
+language-design
+educational
+student-project
+baze-university
+nigeria
+open-source
+mit-license
+cross-platform
+windows
+linux
+macos
+logical-operators
+string-concatenation
+dynamic-typing
