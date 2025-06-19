@@ -18,13 +18,20 @@ if %errorLevel% == 0 (
 
 REM Create installation directory
 set INSTALL_DIR=%ProgramFiles%\Yeep
-if not exist "%INSTALL_DIR%" (
-    echo Creating installation directory: %INSTALL_DIR%
+echo Creating installation directory: %INSTALL_DIR%
+
+if exist "%INSTALL_DIR%" (
+    echo Directory already exists
+) else (
     mkdir "%INSTALL_DIR%" 2>nul
     if errorlevel 1 (
         echo Failed to create installation directory. Using user directory.
         set INSTALL_DIR=%USERPROFILE%\Yeep
-        mkdir "%INSTALL_DIR%" 2>nul
+        if exist "%INSTALL_DIR%" (
+            echo User directory already exists
+        ) else (
+            mkdir "%INSTALL_DIR%" 2>nul
+        )
     )
 )
 

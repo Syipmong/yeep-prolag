@@ -22,23 +22,49 @@ if %errorLevel% == 0 (
 REM Create installation directory
 set INSTALL_DIR=%ProgramFiles%\Yeep
 echo Creating installation directory: %INSTALL_DIR%
+
+REM Check if Program Files directory exists or can be created
+if exist "%INSTALL_DIR%" (
+    echo [OK] Program Files directory already exists
+    REM Test if we can write to it
+    echo test > "%INSTALL_DIR%\writetest.tmp" 2>nul
+    if errorlevel 1 (
+        echo [WARNING] Cannot write to Program Files directory (permission denied)
+        goto :try_user_directory
+    ) else (
+        del "%INSTALL_DIR%\writetest.tmp" 2>nul
+        echo [OK] Write permissions confirmed
+        goto :directory_ready
+    )
+)
+
+mkdir "%INSTALL_DIR%" 2>nul
+if errorlevel 1 goto :try_user_directory
+
+echo [OK] Program Files directory created successfully
+goto :directory_ready
+
+:try_user_directory
+echo Falling back to user directory...
+set INSTALL_DIR=%USERPROFILE%\Yeep
+echo Creating user directory: %INSTALL_DIR%
+
+if exist "%INSTALL_DIR%" (
+    echo [OK] User directory already exists
+    goto :directory_ready
+)
+
 mkdir "%INSTALL_DIR%" 2>nul
 if errorlevel 1 (
-    echo [WARNING] Failed to create Program Files directory (permission denied)
-    echo Falling back to user directory...
-    set INSTALL_DIR=%USERPROFILE%\Yeep
-    echo Creating user directory: %INSTALL_DIR%
-    mkdir "%INSTALL_DIR%" 2>nul
-    if errorlevel 1 (
-        echo [ERROR] Failed to create user directory!
-        echo Please check your permissions and try again.
-        pause
-        exit /b 1
-    )
-    echo [OK] User directory created successfully
-) else (
-    echo [OK] Installation directory created successfully
+    echo [ERROR] Failed to create user directory!
+    echo Please check your permissions and try again.
+    pause
+    exit /b 1
 )
+
+echo [OK] User directory created successfully
+
+:directory_ready
 
 REM Check for pre-built executable
 echo.
