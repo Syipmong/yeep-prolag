@@ -160,12 +160,39 @@ static bool values_equal(Value a, Value b) {
     }
 }
 
+// Convert any value to string representation
+static char* value_to_string(Value value) {
+    char* result;
+    switch (value.type) {
+        case VALUE_STRING:
+            return strdup(value.data.string);
+        case VALUE_NUMBER:
+            result = malloc(32); // Enough for most numbers
+            sprintf(result, "%g", value.data.number);
+            return result;
+        case VALUE_BOOLEAN:
+            return strdup(value.data.boolean ? "true" : "false");
+        case VALUE_NULL:
+            return strdup("null");
+        case VALUE_FUNCTION:
+            return strdup("[function]");
+        default:
+            return strdup("[unknown]");
+    }
+}
+
 static Value string_concat(Value a, Value b) {
-    char* result = malloc(strlen(a.data.string) + strlen(b.data.string) + 1);
-    strcpy(result, a.data.string);
-    strcat(result, b.data.string);
+    char* a_str = value_to_string(a);
+    char* b_str = value_to_string(b);
+    
+    char* result = malloc(strlen(a_str) + strlen(b_str) + 1);
+    strcpy(result, a_str);
+    strcat(result, b_str);
     
     Value value = create_string(result);
+    
+    free(a_str);
+    free(b_str);
     free(result);
     return value;
 }
@@ -260,11 +287,11 @@ static ReturnValue interpret_node(ASTNode* node, Environment* env) {
             Value left = left_result.value;
             Value right = right_result.value;
             
-            switch (node->data.binary_op.operator) {
-                case TOKEN_PLUS:
+            switch (node->data.binary_op.operator) {                case TOKEN_PLUS:
                     if (left.type == VALUE_NUMBER && right.type == VALUE_NUMBER) {
                         return make_normal(create_number(left.data.number + right.data.number));
-                    } else if (left.type == VALUE_STRING && right.type == VALUE_STRING) {
+                    } else if (left.type == VALUE_STRING || right.type == VALUE_STRING) {
+                        // If either operand is a string, do string concatenation
                         return make_normal(string_concat(left, right));
                     } else {
                         printf("Error: Invalid operands for '+'\n");

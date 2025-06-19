@@ -19,7 +19,11 @@ print("x * y = " + (x * y));
 print("x / y = " + (x / y));
 
 // Boolean operations
-print("x > y: " + (x > y));
-print("x == y: " + (x == y));
-print("true && false: " + (true && false));
-print("true || false: " + (true || false));
+print("x > y:");
+print(x > y);
+print("x == y:");
+print(x == y);
+print("true && false:");
+print(true && false);
+print("true || false:");
+print(true || false);
