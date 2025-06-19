@@ -21,14 +21,23 @@ if %errorLevel% == 0 (
 
 REM Create installation directory
 set INSTALL_DIR=%ProgramFiles%\Yeep
-if not exist "%INSTALL_DIR%" (
-    echo Creating installation directory: %INSTALL_DIR%
+echo Creating installation directory: %INSTALL_DIR%
+mkdir "%INSTALL_DIR%" 2>nul
+if errorlevel 1 (
+    echo [WARNING] Failed to create Program Files directory (permission denied)
+    echo Falling back to user directory...
+    set INSTALL_DIR=%USERPROFILE%\Yeep
+    echo Creating user directory: %INSTALL_DIR%
     mkdir "%INSTALL_DIR%" 2>nul
     if errorlevel 1 (
-        echo Failed to create installation directory. Falling back to user directory.
-        set INSTALL_DIR=%USERPROFILE%\Yeep
-        mkdir "%INSTALL_DIR%" 2>nul
+        echo [ERROR] Failed to create user directory!
+        echo Please check your permissions and try again.
+        pause
+        exit /b 1
     )
+    echo [OK] User directory created successfully
+) else (
+    echo [OK] Installation directory created successfully
 )
 
 REM Check for pre-built executable
@@ -88,26 +97,55 @@ exit /b 1
 echo Using executable: %YEEP_EXE%
 
 REM Copy files
+echo.
 echo Copying files to %INSTALL_DIR%...
-copy "%YEEP_EXE%" "%INSTALL_DIR%\yeep.exe" >nul
-if exist "README.md" copy "README.md" "%INSTALL_DIR%\" >nul
-if exist "USAGE.md" copy "USAGE.md" "%INSTALL_DIR%\" >nul
-if exist "LANGUAGE_SPEC.md" copy "LANGUAGE_SPEC.md" "%INSTALL_DIR%\" >nul
-if exist "LICENSE" copy "LICENSE" "%INSTALL_DIR%\" >nul
-if exist "uninstall.bat" copy "uninstall.bat" "%INSTALL_DIR%\" >nul
+echo [1/6] Copying main executable...
+copy "%YEEP_EXE%" "%INSTALL_DIR%\yeep.exe"
+if errorlevel 1 (
+    echo [ERROR] Failed to copy main executable!
+    echo Check permissions and disk space.
+    pause
+    exit /b 1
+)
+echo [OK] Main executable copied
 
-REM Copy examples
+echo [2/6] Copying documentation...
+if exist "README.md" (
+    copy "README.md" "%INSTALL_DIR%\" >nul
+    echo [OK] README.md copied
+)
+if exist "USAGE.md" (
+    copy "USAGE.md" "%INSTALL_DIR%\" >nul
+    echo [OK] USAGE.md copied
+)
+if exist "LANGUAGE_SPEC.md" (
+    copy "LANGUAGE_SPEC.md" "%INSTALL_DIR%\" >nul
+    echo [OK] LANGUAGE_SPEC.md copied
+)
+if exist "LICENSE" (
+    copy "LICENSE" "%INSTALL_DIR%\" >nul
+    echo [OK] LICENSE copied
+)
+
+echo [3/6] Copying uninstaller...
+if exist "uninstall.bat" (
+    copy "uninstall.bat" "%INSTALL_DIR%\" >nul
+    echo [OK] uninstall.bat copied
+)
+
+echo [4/6] Copying examples...
 if not exist "%INSTALL_DIR%\examples" mkdir "%INSTALL_DIR%\examples"
-if exist "examples\*" copy "examples\*" "%INSTALL_DIR%\examples\" >nul
+if exist "examples\*" (
+    copy "examples\*" "%INSTALL_DIR%\examples\" >nul
+    echo [OK] Examples copied
+)
 
-REM Create yeep.bat wrapper script in installation directory
-echo Creating yeep command wrapper...
+echo [5/6] Creating command wrapper...
 echo @echo off > "%INSTALL_DIR%\yeep.bat"
 echo "%INSTALL_DIR%\yeep.exe" %%* >> "%INSTALL_DIR%\yeep.bat"
+echo [OK] Command wrapper created
 
-REM Add to PATH if possible
-echo.
-echo Adding Yeep to system PATH...
+echo [6/6] Adding to system PATH...
 setx PATH "%PATH%;%INSTALL_DIR%" >nul 2>&1
 if errorlevel 1 (
     echo Failed to add to system PATH automatically.
