@@ -1,0 +1,52 @@
+// Control flow examples
+
+// If-else statements
+let score = 85;
+
+if (score >= 90) {
+    print("Grade: A");
+} else {
+    if (score >= 80) {
+        print("Grade: B");
+    } else {
+        if (score >= 70) {
+            print("Grade: C");
+        } else {
+            print("Grade: F");
+        }
+    }
+}
+
+// While loops
+let count = 1;
+print("Counting from 1 to 5:");
+while (count <= 5) {
+    print(count);
+    count = count + 1;
+}
+
+// Fibonacci sequence using while loop
+let a = 0;
+let b = 1;
+let i = 0;
+print("First 10 Fibonacci numbers:");
+while (i < 10) {
+    print(a);
+    let temp = a + b;
+    a = b;
+    b = temp;
+    i = i + 1;
+}
+
+// Nested conditions and loops
+let x = 1;
+while (x <= 3) {
+    let y = 1;
+    while (y <= 3) {
+        if (x == y) {
+            print("x = y = " + x);
+        }
+        y = y + 1;
+    }
+    x = x + 1;
+}

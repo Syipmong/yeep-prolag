@@ -1,0 +1,43 @@
+// Test file for various language features
+// This file can be used to test the interpreter
+
+// Basic arithmetic and variables
+let x = 10;
+let y = 20;
+let sum = x + y;
+print("Sum: " + sum);
+
+// String operations
+let greeting = "Hello";
+let target = "Yeep";
+let message = greeting + ", " + target + "!";
+print(message);
+
+// Boolean logic
+let is_positive = x > 0;
+let is_even = (x % 2) == 0; // Note: modulo not implemented yet
+print("x is positive: " + is_positive);
+
+// Function definition and call
+fun multiply(a, b) {
+    return a * b;
+}
+
+let product = multiply(6, 7);
+print("6 * 7 = " + product);
+
+// Conditional logic
+if (sum > 25) {
+    print("Sum is greater than 25");
+} else {
+    print("Sum is not greater than 25");
+}
+
+// Loop
+let counter = 0;
+while (counter < 3) {
+    print("Counter: " + counter);
+    counter = counter + 1;
+}
+
+print("Test completed successfully!");

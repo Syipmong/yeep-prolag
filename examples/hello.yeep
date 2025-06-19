@@ -1,0 +1,25 @@
+// Hello World example
+print("Hello, World!");
+
+// Variables
+let name = "Yeep";
+let version = 1.0;
+let active = true;
+
+print("Language: " + name);
+print("Version: " + version);
+print("Active: " + active);
+
+// Simple arithmetic
+let x = 10;
+let y = 5;
+print("x + y = " + (x + y));
+print("x - y = " + (x - y));
+print("x * y = " + (x * y));
+print("x / y = " + (x / y));
+
+// Boolean operations
+print("x > y: " + (x > y));
+print("x == y: " + (x == y));
+print("true && false: " + (true && false));
+print("true || false: " + (true || false));
