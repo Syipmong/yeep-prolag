@@ -2,7 +2,7 @@
 setlocal
 
 echo ================================================================
-echo Installing Yeep Programming Language v1.0.5
+echo Installing Yeep Programming Language v1.0.6
 echo ================================================================
 echo.
 

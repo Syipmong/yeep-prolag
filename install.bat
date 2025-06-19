@@ -2,7 +2,7 @@
 setlocal
 
 echo ================================================================
-echo Installing Yeep Programming Language v1.0.0
+echo Installing Yeep Programming Language v1.0.6
 echo ================================================================
 echo.
 echo [OK] This version includes fixes for Windows DLL dependencies
