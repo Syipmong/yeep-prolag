@@ -63,15 +63,15 @@ jobs:
       run: |
         make clean
         # Build with static linking to avoid DLL dependencies
-        make CFLAGS="-Wall -Wextra -std=c99 -I include -static -static-libgcc"
-
-    # Temporarily disabled tests to avoid segfault issues
+        make CFLAGS="-Wall -Wextra -std=c99 -I include -static -static-libgcc"    # Temporarily disabled tests to avoid segfault issues
     # - name: Test build (Linux/macOS)
     #   if: matrix.os != 'windows-latest'
     #   run: |
     #     # Test version command and file execution
     #     ./build/${{ matrix.binary }} --version
-    #     ./build/${{ matrix.binary }} test_ci.yeep    # - name: Test build (Windows)
+    #     ./build/${{ matrix.binary }} test_ci.yeep
+
+    # - name: Test build (Windows)
     #   if: matrix.os == 'windows-latest'
     #   shell: msys2 {0}
     #   run: |
