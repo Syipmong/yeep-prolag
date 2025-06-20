@@ -1,8 +1,0 @@
-print("=== Yeep v2.0.0 Test Suite ===");
-print("Testing basic functionality...");
-print("Hello, World!");
-print("String literals work correctly");
-print("Multiple print statements");
-print("Special characters: !@#$%^&*()");
-print("Numbers in strings: 123 456 789");
-print("=== Test Complete ===");
