@@ -88,9 +88,7 @@ namespace yeep {
         std::cout << "  " << program_name << " script.yeep        Run a Yeep script" << std::endl;
         std::cout << "  " << program_name << " -i                 Force interactive mode" << std::endl;
         std::cout << "  " << program_name << " --version          Show version" << std::endl;
-    }
-    
-    int YeepEngine::executeSource(const std::string& source, bool interactive) {
+    }    int YeepEngine::executeSource(const std::string& source, bool interactive) {
         try {
             // Lexical analysis
             Lexer lexer(source);

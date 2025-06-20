@@ -1,4 +1,5 @@
 #include "core/Interpreter.hpp"
+#include "core/BuiltinFunctions.hpp"
 #include "ast/Expression.hpp"
 #include <iostream>
 #include <sstream>
@@ -42,11 +43,13 @@ namespace yeep {
         
         throw RuntimeError("Undefined variable '" + name.getLexeme() + "'", name);
     }
-    
-    // Interpreter implementation
+      // Interpreter implementation
     Interpreter::Interpreter() : hadRuntimeError_(false) {
         globals_ = std::make_shared<Environment>();
         environment_ = globals_;
+        
+        // Initialize built-in functions
+        BuiltinFunctions::initialize();
     }
     
     void Interpreter::interpret(const std::vector<std::unique_ptr<Expression>>& statements) {
@@ -182,6 +185,30 @@ namespace yeep {
         return value;
     }
     
+    TokenValue Interpreter::evaluateCall(const CallExpression& expr) {
+        const std::string& functionName = expr.getName().getLexeme();
+        
+        // Check if it's a built-in function
+        if (BuiltinFunctions::isBuiltin(functionName)) {
+            // Evaluate all arguments
+            std::vector<TokenValue> arguments;
+            for (const auto& argExpr : expr.getArguments()) {
+                arguments.push_back(evaluate(const_cast<Expression&>(*argExpr)));
+            }
+            
+            // Call the built-in function
+            try {
+                BuiltinFunction func = BuiltinFunctions::getBuiltin(functionName);
+                return func(arguments);
+            } catch (const std::exception& e) {
+                throw RuntimeError(e.what(), expr.getName());
+            }
+        }
+        
+        // TODO: Add support for user-defined functions in future version
+        throw RuntimeError("Unknown function '" + functionName + "'", expr.getName());
+    }
+
     // Statement execution methods
     TokenValue Interpreter::executePrint(const PrintStatement& stmt) {
         TokenValue value = evaluate(const_cast<Expression&>(stmt.getExpression()));

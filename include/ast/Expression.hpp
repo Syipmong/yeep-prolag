@@ -201,4 +201,21 @@ namespace yeep {
         std::unique_ptr<Expression> body_;
     };
     
+    // Function call expression (func(arg1, arg2))
+    class CallExpression : public Expression {
+    public:
+        CallExpression(const Token& name, std::vector<std::unique_ptr<Expression>> arguments)
+            : name_(name), arguments_(std::move(arguments)) {}
+        
+        TokenValue accept(Interpreter& interpreter) override;
+        std::string toString() const override;
+        
+        const Token& getName() const { return name_; }
+        const std::vector<std::unique_ptr<Expression>>& getArguments() const { return arguments_; }
+        
+    private:
+        Token name_;
+        std::vector<std::unique_ptr<Expression>> arguments_;
+    };
+
 } // namespace yeep

@@ -7,13 +7,13 @@
 #include <stdexcept>
 
 namespace yeep {
-    
-    // Forward declarations
+      // Forward declarations
     class Expression;
     class BinaryExpression;
     class UnaryExpression;
     class AssignmentExpression;
     class VariableExpression;
+    class CallExpression;
     class PrintStatement;
     class LetStatement;
     class BlockStatement;
@@ -60,6 +60,7 @@ namespace yeep {
         TokenValue evaluateBinary(const BinaryExpression& expr);
         TokenValue evaluateUnary(const UnaryExpression& expr);
         TokenValue evaluateAssignment(const AssignmentExpression& expr);
+        TokenValue evaluateCall(const CallExpression& expr);
         
         // Statement execution methods
         TokenValue executePrint(const PrintStatement& stmt);

@@ -210,9 +210,26 @@ namespace yeep {
         if (match({TokenType::STRING})) {
             return std::make_unique<LiteralExpression>(previous().getValue());
         }
-        
-        if (match({TokenType::IDENTIFIER})) {
-            return std::make_unique<VariableExpression>(previous());
+          if (match({TokenType::IDENTIFIER})) {
+            Token name = previous();
+            
+            // Check if it's a function call
+            if (check(TokenType::LEFT_PAREN)) {
+                advance(); // consume '('
+                std::vector<std::unique_ptr<Expression>> arguments;
+                
+                if (!check(TokenType::RIGHT_PAREN)) {
+                    do {
+                        arguments.push_back(parseExpression());
+                    } while (match({TokenType::COMMA}));
+                }
+                
+                consume(TokenType::RIGHT_PAREN, "Expected ')' after arguments");
+                return std::make_unique<CallExpression>(name, std::move(arguments));
+            }
+            
+            // Otherwise it's a variable
+            return std::make_unique<VariableExpression>(name);
         }
         
         if (match({TokenType::LEFT_PAREN})) {

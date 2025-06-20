@@ -120,4 +120,20 @@ namespace yeep {
         return oss.str();
     }
     
+    // CallExpression implementation
+    TokenValue CallExpression::accept(Interpreter& interpreter) {
+        return interpreter.evaluateCall(*this);
+    }
+    
+    std::string CallExpression::toString() const {
+        std::ostringstream oss;
+        oss << name_.getLexeme() << "(";
+        for (size_t i = 0; i < arguments_.size(); ++i) {
+            if (i > 0) oss << ", ";
+            oss << arguments_[i]->toString();
+        }
+        oss << ")";
+        return oss.str();
+    }
+
 } // namespace yeep
