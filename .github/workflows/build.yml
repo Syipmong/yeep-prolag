@@ -1,5 +1,13 @@
 name: Build and Release Yeep
 
+# Add permissions for the workflow
+permissions:
+  contents: write
+  packages: write
+  actions: read
+  issues: read
+  pull-requests: read
+
 on:
   push:
     branches: [ main ]
@@ -248,8 +256,7 @@ jobs:
         for file in *.yeep; do
           if [ -f "$file" ]; then
             cp "$file" release/yeep-${{ github.ref_name }}-macos/examples/
-          fi
-        done
+          fi        done
         
         # Create macOS tar.gz
         cd release
@@ -271,7 +278,7 @@ jobs:
         fi
     
     - name: Create GitHub Release
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       with:
         name: "Yeep Programming Language ${{ github.ref_name }}"
         body: ${{ steps.release_notes.outputs.release_notes }}
@@ -281,5 +288,7 @@ jobs:
           release/yeep-${{ github.ref_name }}-windows.zip
           release/yeep-${{ github.ref_name }}-linux.tar.gz
           release/yeep-${{ github.ref_name }}-macos.tar.gz
+        fail_on_unmatched_files: false
+        generate_release_notes: false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
