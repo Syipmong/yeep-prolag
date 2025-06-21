@@ -409,9 +409,10 @@ namespace yeep {
                 break;
             }
         }
-        
-        return expr;
-    }    Value Interpreter::parsePrimary() {
+          return expr;
+    }
+
+    Value Interpreter::parsePrimary() {
         if (match({TokenType::TRUE})) return previous().getValue();
         if (match({TokenType::FALSE})) return previous().getValue();
         if (match({TokenType::NIL})) return previous().getValue();
