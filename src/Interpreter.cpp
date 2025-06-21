@@ -1,6 +1,7 @@
 #include "Interpreter.hpp"
 #include <iostream>
 #include <stdexcept>
+#include <cmath>
 
 namespace yeep {
 
@@ -298,10 +299,10 @@ namespace yeep {
                 if (left.isNumber() && right.isNumber()) return Value(left.getNumber() == right.getNumber());
                 if (left.isString() && right.isString()) return Value(left.getString() == right.getString());
                 return Value(false);
-                
-            case TokenType::NOT_EQUAL:
+                  case TokenType::NOT_EQUAL: {
                 Value eq = evaluateBinary(left, TokenType::EQUAL, right);
                 return Value(!eq.getBool());
+            }
                 
             default:
                 throw std::runtime_error("Unknown binary operator");
