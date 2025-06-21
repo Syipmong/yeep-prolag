@@ -1,0 +1,24 @@
+// Non-recursive function test
+fun greet(name) {
+    print "Hello, " + name + "!";
+}
+
+fun add(a, b) {
+    return a + b;
+}
+
+fun multiply(x, y) {
+    return x * y;
+}
+
+print "=== Function Tests ===";
+greet("World");
+greet("Alice");
+
+let sum = add(5, 3);
+print "5 + 3 = " + str(sum);
+
+let product = multiply(4, 7);
+print "4 * 7 = " + str(product);
+
+print "=== All tests completed! ===";

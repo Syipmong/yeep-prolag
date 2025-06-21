@@ -255,13 +255,13 @@ namespace yeep {
         for (size_t i = 0; i < arguments.size(); ++i) {
             setVariable(func.getParameters()[i], arguments[i]);
         }
-        
-        // Save current state
+          // Save current state
         size_t savedCurrent = current_;
         std::vector<Token> savedTokens = tokens_;
         bool savedHasReturned = hasReturned_;
         Value savedReturnValue = returnValue_;
-          // Execute function body
+        
+        // Execute function body
         tokens_ = func.getBody();
         current_ = 0;
         hasReturned_ = false;
