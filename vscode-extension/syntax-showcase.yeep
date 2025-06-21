@@ -1,47 +1,47 @@
-# Yeep Language Syntax Showcase
-# This file demonstrates the syntax highlighting capabilities of the Yeep VSCode extension
+// Yeep Language Syntax Showcase
+// This file demonstrates the syntax highlighting capabilities of the Yeep VSCode extension
 
-# =============================================================================
-# 1. BASIC SYNTAX
-# =============================================================================
+// =============================================================================
+// 1. BASIC SYNTAX
+// =============================================================================
 
-# Comments are prefixed with #
-print("Hello, Yeep World!"); # This is a print statement
+// Comments are prefixed with //
+print("Hello, Yeep World!"); // This is a print statement
 
-# =============================================================================
-# 2. VARIABLES AND DATA TYPES
-# =============================================================================
+// =============================================================================
+// 2. VARIABLES AND DATA TYPES
+// =============================================================================
 
-# Numbers
+// Numbers
 let age = 25;
 let pi = 3.14159;
 let negative = -42;
 
-# Strings
+// Strings
 let name = "Yeep Programming Language";
 let message = "Welcome to Yeep v2.0.1!";
 
-# Booleans
+// Booleans
 let isAwesome = true;
 let isDifficult = false;
 
-# Arrays
+// Arrays
 let numbers = [1, 2, 3, 4, 5];
 let words = ["hello", "world", "yeep"];
 let mixed = [1, "two", 3.5, true];
 
-# =============================================================================
-# 3. OPERATORS
-# =============================================================================
+// =============================================================================
+// 3. OPERATORS
+// =============================================================================
 
-# Arithmetic operators
+// Arithmetic operators
 let sum = 10 + 5;
 let difference = 20 - 8;
 let product = 4 * 7;
 let quotient = 15 / 3;
 let remainder = 17 % 5;
 
-# Comparison operators
+// Comparison operators
 let isEqual = (5 == 5);
 let isNotEqual = (3 != 4);
 let isLess = (2 < 10);
@@ -49,35 +49,35 @@ let isGreater = (8 > 3);
 let isLessOrEqual = (5 <= 5);
 let isGreaterOrEqual = (7 >= 4);
 
-# Logical operators
+// Logical operators
 let andResult = true && false;
 let orResult = true || false;
 let notResult = !true;
 
-# Word-based logical operators
+// Word-based logical operators
 let wordAnd = true and false;
 let wordOr = true or false;
 let wordNot = not false;
 
-# =============================================================================
-# 4. CONTROL FLOW
-# =============================================================================
+// =============================================================================
+// 4. CONTROL FLOW
+// =============================================================================
 
-# If-else statements
+// If-else statements
 if (age >= 18) {
     print("You are an adult");
 } else {
     print("You are a minor");
 }
 
-# While loops
+// While loops
 let counter = 0;
 while (counter < 5) {
     print("Counter: " + str(counter));
     counter = counter + 1;
 }
 
-# For loops
+// For loops
 for (let i = 0; i < 10; i = i + 1) {
     if (i % 2 == 0) {
         print("Even: " + str(i));
@@ -86,21 +86,21 @@ for (let i = 0; i < 10; i = i + 1) {
     }
 }
 
-# =============================================================================
-# 5. FUNCTIONS
-# =============================================================================
+// =============================================================================
+// 5. FUNCTIONS
+// =============================================================================
 
-# Function definition
+// Function definition
 function greet(person) {
     return "Hello, " + person + "!";
 }
 
-# Function with multiple parameters
+// Function with multiple parameters
 function add(a, b) {
     return a + b;
 }
 
-# Function with complex logic
+// Function with complex logic
 function factorial(n) {
     if (n <= 1) {
         return 1;
@@ -109,7 +109,7 @@ function factorial(n) {
     }
 }
 
-# Function calls
+// Function calls
 let greeting = greet("World");
 let sum_result = add(15, 25);
 let fact_5 = factorial(5);
@@ -118,71 +118,71 @@ print(greeting);
 print("Sum: " + str(sum_result));
 print("5! = " + str(fact_5));
 
-# =============================================================================
-# 6. BUILT-IN FUNCTIONS
-# =============================================================================
+// =============================================================================
+// 6. BUILT-IN FUNCTIONS
+// =============================================================================
 
-# Input/Output
+// Input/Output
 print("This is a print statement");
 let user_input = input("Enter your name: ");
 
-# String functions
+// String functions
 let text = "Hello World";
 let text_length = len(text);
 let text_type = type(text);
 
-# Array functions
+// Array functions
 let my_array = [1, 2, 3];
 let array_length = len(my_array);
 push(my_array, 4);
 let last_element = pop(my_array);
 let element_at_index = at(my_array, 1);
 
-# Math functions
+// Math functions
 let square_root = sqrt(16);
 let absolute_value = abs(-10);
 let floor_value = floor(3.7);
 let ceiling_value = ceil(3.2);
 let rounded_value = round(3.6);
 
-# Trigonometric functions
+// Trigonometric functions
 let sine = sin(1.5);
 let cosine = cos(0);
 let tangent = tan(0.5);
 
-# Logarithm and power
+// Logarithm and power
 let logarithm = log(10);
 let power = pow(2, 3);
 
-# Random numbers
+// Random numbers
 let random_num = random();
 let random_range = range(1, 10);
 
-# Type conversion
+// Type conversion
 let string_to_num = num("42");
 let num_to_string = str(123);
 
-# =============================================================================
-# 7. COMPLEX EXAMPLES
-# =============================================================================
+// =============================================================================
+// 7. COMPLEX EXAMPLES
+// =============================================================================
 
-# Bubble sort algorithm
+// Bubble sort algorithm
 function bubbleSort(arr) {
     let n = len(arr);
     for (let i = 0; i < n - 1; i = i + 1) {
         for (let j = 0; j < n - i - 1; j = j + 1) {
             if (at(arr, j) > at(arr, j + 1)) {
-                # Swap elements
+                // Swap elements
                 let temp = at(arr, j);
-                # Note: This is a simplified example
-                # In practice, you'd need array modification functions
+                // Note: This is a simplified example
+                // In practice, you'd need array modification functions
             }
         }
     }
     return arr;
 }
 
-# Fibonacci sequence
+// Fibonacci sequence
 function fibonacci(n) {
     if (n <= 1) {
         return n;
@@ -190,7 +190,7 @@ function fibonacci(n) {
     return fibonacci(n - 1) + fibonacci(n - 2);
 }
 
-# Calculator function
+// Calculator function
 function calculate(operation, a, b) {
     if (operation == "add") {
         return a + b;
@@ -209,11 +209,11 @@ function calculate(operation, a, b) {
     }
 }
 
-# =============================================================================
-# 8. ADVANCED PATTERNS
-# =============================================================================
+// =============================================================================
+// 8. ADVANCED PATTERNS
+// =============================================================================
 
-# Nested functions and closures
+// Nested functions and closures
 function outerFunction(x) {
     function innerFunction(y) {
         return x + y;
@@ -221,7 +221,7 @@ function outerFunction(x) {
     return innerFunction;
 }
 
-# Higher-order function example
+// Higher-order function example
 function applyOperation(arr, operation) {
     let result = [];
     for (let i = 0; i < len(arr); i = i + 1) {
@@ -235,7 +235,7 @@ function applyOperation(arr, operation) {
     return result;
 }
 
-# Example usage
+// Example usage
 let data = [1, 2, 3, 4, 5];
 let squared = applyOperation(data, "square");
 let doubled = applyOperation(data, "double");
@@ -244,9 +244,9 @@ print("Original: " + str(data));
 print("Squared: " + str(squared));
 print("Doubled: " + str(doubled));
 
-# =============================================================================
-# 9. ERROR HANDLING PATTERNS
-# =============================================================================
+// =============================================================================
+// 9. ERROR HANDLING PATTERNS
+// =============================================================================
 
 function safeDivision(a, b) {
     if (type(a) != "number" or type(b) != "number") {
@@ -258,9 +258,9 @@ function safeDivision(a, b) {
     return a / b;
 }
 
-# =============================================================================
-# 10. INTERACTIVE EXAMPLE
-# =============================================================================
+// =============================================================================
+// 10. INTERACTIVE EXAMPLE
+// =============================================================================
 
 function interactiveDemo() {
     print("=== Yeep Interactive Demo ===");
@@ -280,5 +280,5 @@ function interactiveDemo() {
     print("Thanks for trying Yeep v2.0.1!");
 }
 
-# Uncomment the line below to run the interactive demo
-# interactiveDemo();
+// Uncomment the line below to run the interactive demo
+// interactiveDemo();
