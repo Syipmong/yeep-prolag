@@ -627,13 +627,15 @@ namespace yeep {
     Token Interpreter::advance() {
         if (!isAtEnd()) current_++;
         return previous();
-    }
-
-    bool Interpreter::isAtEnd() {
-        return peek().getType() == TokenType::EOF_TOKEN;
+    }    bool Interpreter::isAtEnd() {
+        return current_ >= tokens_.size() || peek().getType() == TokenType::EOF_TOKEN;
     }
 
     Token Interpreter::peek() {
+        if (current_ >= tokens_.size()) {
+            // Return a synthetic EOF token if we're past the end
+            return Token(TokenType::EOF_TOKEN, "", 0);
+        }
         return tokens_[current_];
     }
 
