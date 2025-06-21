@@ -147,11 +147,16 @@ namespace yeep {
         }
         size_t conditionEnd = current_;
         consume(TokenType::SEMICOLON, "Expected ';' after for condition");
-        
-        // Parse increment (optional) - store the tokens for re-execution
+          // Parse increment (optional) - store the tokens for re-execution
         size_t incrementStart = current_;
         if (!check(TokenType::RIGHT_PAREN)) {
-            parseExpression(); // Parse but don't execute yet
+            // Skip over the increment expression without executing it
+            int parenCount = 0;
+            while (!isAtEnd() && (parenCount > 0 || !check(TokenType::RIGHT_PAREN))) {
+                if (check(TokenType::LEFT_PAREN)) parenCount++;
+                else if (check(TokenType::RIGHT_PAREN)) parenCount--;
+                advance();
+            }
         }
         size_t incrementEnd = current_;
         consume(TokenType::RIGHT_PAREN, "Expected ')' after for clauses");
@@ -184,14 +189,9 @@ namespace yeep {
                 condition = parseExpression();
             } else {
                 break; // No condition means run once
-            }
-        }
+            }        }
         
-        // Skip to end of loop body if we exited early
-        if (!hasReturned_) {
-            current_ = bodyStart;
-            skipStatement();
-        }
+        // No need to skip anything - we've completed the loop normally
     }
 
     void Interpreter::parseFunctionStatement() {
