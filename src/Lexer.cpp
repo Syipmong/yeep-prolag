@@ -31,11 +31,12 @@ namespace yeep {
             
             char c = advance();
             
-            switch (c) {
-                case '(': tokens.push_back(makeToken(TokenType::LEFT_PAREN)); break;
+            switch (c) {                case '(': tokens.push_back(makeToken(TokenType::LEFT_PAREN)); break;
                 case ')': tokens.push_back(makeToken(TokenType::RIGHT_PAREN)); break;
                 case '{': tokens.push_back(makeToken(TokenType::LEFT_BRACE)); break;
                 case '}': tokens.push_back(makeToken(TokenType::RIGHT_BRACE)); break;
+                case '[': tokens.push_back(makeToken(TokenType::LEFT_BRACKET)); break;
+                case ']': tokens.push_back(makeToken(TokenType::RIGHT_BRACKET)); break;
                 case ',': tokens.push_back(makeToken(TokenType::COMMA)); break;
                 case ';': tokens.push_back(makeToken(TokenType::SEMICOLON)); break;
                 case '+': tokens.push_back(makeToken(TokenType::PLUS)); break;

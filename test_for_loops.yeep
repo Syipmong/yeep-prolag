@@ -1,0 +1,29 @@
+=== Yeep v2.0 For Loops Test ===
+
+print "=== Basic For Loop ===";
+for (let i = 1; i <= 5; i = i + 1) {
+    print "Count: " + str(i);
+}
+
+print "=== For Loop with Step ===";
+for (let i = 0; i < 10; i = i + 2) {
+    print "Even: " + str(i);
+}
+
+print "=== Nested For Loops ===";
+for (let i = 1; i <= 3; i = i + 1) {
+    for (let j = 1; j <= 3; j = j + 1) {
+        print str(i) + " x " + str(j) + " = " + str(i * j);
+    }
+}
+
+print "=== For Loop with Function ===";
+fun square(x) {
+    return x * x;
+}
+
+for (let i = 1; i <= 5; i = i + 1) {
+    print str(i) + "² = " + str(square(i));
+}
+
+print "=== All for loop tests completed! ===";

@@ -46,6 +46,13 @@ namespace yeep {
         // I/O functions
         functions_["input"] = input;
         
+        // Array functions
+        functions_["push"] = push;
+        functions_["pop"] = pop;
+        functions_["size"] = size;
+        functions_["get"] = get;
+        functions_["set"] = set;
+        
         initialized_ = true;
     }
 
@@ -269,6 +276,99 @@ namespace yeep {
         std::string line;
         std::getline(std::cin, line);
         return Value(line);
+    }
+
+    // Array functions
+    Value BuiltinFunctions::push(const std::vector<Value>& args) {
+        if (args.size() < 2) {
+            throw std::runtime_error("push() expects at least 2 arguments");
+        }
+        
+        if (!args[0].isArray()) {
+            throw std::runtime_error("push() first argument must be an array");
+        }
+        
+        // Note: This creates a new array rather than modifying in place
+        // In a real implementation, we'd need reference semantics
+        Array arr = args[0].getArray();
+        for (size_t i = 1; i < args.size(); ++i) {
+            arr.push_back(args[i]);
+        }
+        
+        return Value(arr);
+    }
+
+    Value BuiltinFunctions::pop(const std::vector<Value>& args) {
+        checkArgCount(args, 1, "pop");
+        
+        if (!args[0].isArray()) {
+            throw std::runtime_error("pop() argument must be an array");
+        }
+        
+        Array arr = args[0].getArray();
+        if (arr.empty()) {
+            return Value(); // nil
+        }
+        
+        Value result = arr.back();
+        arr.pop_back();
+        return result;
+    }
+
+    Value BuiltinFunctions::size(const std::vector<Value>& args) {
+        checkArgCount(args, 1, "size");
+        
+        if (args[0].isArray()) {
+            return Value(static_cast<double>(args[0].getArray().size()));
+        } else if (args[0].isString()) {
+            return Value(static_cast<double>(args[0].getString().length()));
+        }
+        
+        throw std::runtime_error("size() argument must be an array or string");
+    }
+
+    Value BuiltinFunctions::get(const std::vector<Value>& args) {
+        checkArgCount(args, 2, "get");
+        
+        if (!args[0].isArray()) {
+            throw std::runtime_error("get() first argument must be an array");
+        }
+        
+        if (!args[1].isNumber()) {
+            throw std::runtime_error("get() second argument must be a number");
+        }
+        
+        const Array& arr = args[0].getArray();
+        int index = static_cast<int>(args[1].getNumber());
+        
+        if (index < 0 || index >= static_cast<int>(arr.size())) {
+            throw std::runtime_error("Array index out of bounds");
+        }
+        
+        return arr[index];
+    }
+
+    Value BuiltinFunctions::set(const std::vector<Value>& args) {
+        checkArgCount(args, 3, "set");
+        
+        if (!args[0].isArray()) {
+            throw std::runtime_error("set() first argument must be an array");
+        }
+        
+        if (!args[1].isNumber()) {
+            throw std::runtime_error("set() second argument must be a number");
+        }
+        
+        // Note: This creates a new array rather than modifying in place
+        Array arr = args[0].getArray();
+        int index = static_cast<int>(args[1].getNumber());
+        
+        if (index < 0 || index >= static_cast<int>(arr.size())) {
+            throw std::runtime_error("Array index out of bounds");
+        }
+        
+        arr[index] = args[2];
+        return Value(arr);
     }
 
     void BuiltinFunctions::checkArgCount(const std::vector<Value>& args, size_t expected, const std::string& name) {

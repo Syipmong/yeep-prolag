@@ -37,12 +37,13 @@ namespace yeep {
         
         // Assignment
         ASSIGN,         // =
-        
-        // Punctuation
+          // Punctuation
         LEFT_PAREN,     // (
         RIGHT_PAREN,    // )
         LEFT_BRACE,     // {
         RIGHT_BRACE,    // }
+        LEFT_BRACKET,   // [
+        RIGHT_BRACKET,  // ]
         COMMA,          // ,
         SEMICOLON,      // ;
         
@@ -60,7 +61,9 @@ namespace yeep {
         NEWLINE,
         EOF_TOKEN,
         INVALID
-    };
+    };    // Forward declaration for arrays
+    class Value;
+    using Array = std::vector<Value>;
 
     // Value type for runtime values
     class Value {
@@ -69,21 +72,35 @@ namespace yeep {
         Value(double d) : data_(d) {}
         Value(const std::string& s) : data_(s) {}
         Value(bool b) : data_(b) {}
+        Value(const Array& arr) : data_(arr) {}
         
         bool isNil() const { return std::holds_alternative<std::nullptr_t>(data_); }
         bool isNumber() const { return std::holds_alternative<double>(data_); }
         bool isString() const { return std::holds_alternative<std::string>(data_); }
         bool isBool() const { return std::holds_alternative<bool>(data_); }
+        bool isArray() const { return std::holds_alternative<Array>(data_); }
         
         double getNumber() const { return std::get<double>(data_); }
         const std::string& getString() const { return std::get<std::string>(data_); }
         bool getBool() const { return std::get<bool>(data_); }
+        const Array& getArray() const { return std::get<Array>(data_); }
+        Array& getArray() { return std::get<Array>(data_); }
         
         std::string toString() const {
             if (isNil()) return "nil";
             if (isBool()) return getBool() ? "true" : "false";
             if (isString()) return getString();
             if (isNumber()) return std::to_string(getNumber());
+            if (isArray()) {
+                std::string result = "[";
+                const Array& arr = getArray();
+                for (size_t i = 0; i < arr.size(); ++i) {
+                    if (i > 0) result += ", ";
+                    result += arr[i].toString();
+                }
+                result += "]";
+                return result;
+            }
             return "unknown";
         }
         
@@ -92,11 +109,12 @@ namespace yeep {
             if (isBool()) return getBool();
             if (isNumber()) return getNumber() != 0.0;
             if (isString()) return !getString().empty();
+            if (isArray()) return !getArray().empty();
             return true;
         }
         
     private:
-        std::variant<std::nullptr_t, double, std::string, bool> data_;
+        std::variant<std::nullptr_t, double, std::string, bool, Array> data_;
     };
 
     class Token {

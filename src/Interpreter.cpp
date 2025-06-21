@@ -5,7 +5,7 @@
 
 namespace yeep {
 
-    Interpreter::Interpreter() : current_(0) {
+    Interpreter::Interpreter() : current_(0), hasReturned_(false) {
         BuiltinFunctions::initialize();
     }
 
@@ -13,10 +13,10 @@ namespace yeep {
         tokens_ = tokens;
         current_ = 0;
         
-        try {
-            while (!isAtEnd()) {
+        try {            while (!isAtEnd()) {
                 parseStatement();
-            }        } catch (const std::exception& e) {
+            }
+        } catch (const std::exception& e) {
             std::cerr << "Error: " << e.what() << std::endl;
         }
     }
@@ -32,6 +32,12 @@ namespace yeep {
                 parseIfStatement();
             } else if (match({TokenType::WHILE})) {
                 parseWhileStatement();
+            } else if (match({TokenType::FOR})) {
+                parseForStatement();
+            } else if (match({TokenType::FUN})) {
+                parseFunctionStatement();
+            } else if (match({TokenType::RETURN})) {
+                parseReturnStatement();
             } else if (match({TokenType::LEFT_BRACE})) {
                 parseBlockStatement();
             } else {
@@ -45,8 +51,7 @@ namespace yeep {
 
     void Interpreter::parsePrintStatement() {
         Value value = parseExpression();
-        consume(TokenType::SEMICOLON, "Expected ';' after print statement");
-        std::cout << value.toString() << std::endl;
+        consume(TokenType::SEMICOLON, "Expected ';' after print statement");        std::cout << value.toString() << std::endl;
     }
 
     void Interpreter::parseLetStatement() {
@@ -58,7 +63,7 @@ namespace yeep {
         } // Otherwise, value remains nil
         
         consume(TokenType::SEMICOLON, "Expected ';' after variable declaration");
-        globals_[name.getLexeme()] = value;
+        setVariable(name.getLexeme(), value);
     }
 
     void Interpreter::parseExpressionStatement() {
@@ -107,46 +112,189 @@ namespace yeep {
         }
     }
 
-    void Interpreter::parseBlockStatement() {
-        while (!check(TokenType::RIGHT_BRACE) && !isAtEnd()) {
-            parseStatement();
+    void Interpreter::parseForStatement() {
+        consume(TokenType::LEFT_PAREN, "Expected '(' after 'for'");
+        
+        // Parse initialization (optional)
+        if (!match({TokenType::SEMICOLON})) {
+            if (match({TokenType::LET})) {
+                parseLetStatement();
+            } else {
+                parseExpressionStatement();
+            }
         }
-        consume(TokenType::RIGHT_BRACE, "Expected '}' after block");
+        
+        // Parse condition (optional)
+        Value condition = Value(true); // Default to true if no condition
+        if (!check(TokenType::SEMICOLON)) {
+            condition = parseExpression();
+        }
+        consume(TokenType::SEMICOLON, "Expected ';' after for condition");
+        
+        // Parse increment (optional)
+        size_t incrementStart = current_;
+        if (!check(TokenType::RIGHT_PAREN)) {
+            parseExpression(); // Parse but don't execute yet
+        }
+        size_t incrementEnd = current_;
+        consume(TokenType::RIGHT_PAREN, "Expected ')' after for clauses");
+        
+        // Execute loop
+        while (condition.isTruthy()) {
+            parseStatement(); // Execute body
+            
+            if (hasReturned_) break; // Exit if return was called
+            
+            // Execute increment
+            if (incrementStart < incrementEnd) {
+                size_t savedCurrent = current_;
+                current_ = incrementStart;
+                parseExpression();
+                current_ = savedCurrent;
+            }
+            
+            // Re-evaluate condition
+            if (!check(TokenType::SEMICOLON)) {
+                size_t savedCurrent = current_;
+                current_ = incrementStart - 1; // Go back to condition
+                // Find the condition again - this is a simplified approach
+                condition = parseExpression();
+                current_ = savedCurrent;
+            }
+        }
     }
 
-    void Interpreter::skipStatement() {
-        // Skip a statement without executing it
-        if (match({TokenType::PRINT})) {
-            parseExpression();
-            consume(TokenType::SEMICOLON, "Expected ';'");
-        } else if (match({TokenType::LET})) {
-            consume(TokenType::IDENTIFIER, "Expected variable name");
-            if (match({TokenType::ASSIGN})) {
-                parseExpression();
-            }
-            consume(TokenType::SEMICOLON, "Expected ';'");
-        } else if (match({TokenType::IF})) {
-            consume(TokenType::LEFT_PAREN, "Expected '('");
-            parseExpression();
-            consume(TokenType::RIGHT_PAREN, "Expected ')'");
-            skipStatement();
-            if (match({TokenType::ELSE})) {
-                skipStatement();
-            }
-        } else if (match({TokenType::WHILE})) {
-            consume(TokenType::LEFT_PAREN, "Expected '('");
-            parseExpression();
-            consume(TokenType::RIGHT_PAREN, "Expected ')'");
-            skipStatement();
-        } else if (match({TokenType::LEFT_BRACE})) {
-            while (!check(TokenType::RIGHT_BRACE) && !isAtEnd()) {
-                skipStatement();
-            }
-            consume(TokenType::RIGHT_BRACE, "Expected '}'");
-        } else {
-            parseExpression();
-            consume(TokenType::SEMICOLON, "Expected ';'");
+    void Interpreter::parseFunctionStatement() {
+        Token name = consume(TokenType::IDENTIFIER, "Expected function name");
+        
+        consume(TokenType::LEFT_PAREN, "Expected '(' after function name");
+        
+        std::vector<std::string> parameters;
+        if (!check(TokenType::RIGHT_PAREN)) {
+            do {
+                Token param = consume(TokenType::IDENTIFIER, "Expected parameter name");
+                parameters.push_back(param.getLexeme());
+            } while (match({TokenType::COMMA}));
         }
+        consume(TokenType::RIGHT_PAREN, "Expected ')' after parameters");
+        
+        consume(TokenType::LEFT_BRACE, "Expected '{' before function body");
+        
+        // Store the function body tokens
+        size_t bodyStart = current_;
+        int braceCount = 1;
+        while (braceCount > 0 && !isAtEnd()) {
+            if (check(TokenType::LEFT_BRACE)) braceCount++;
+            else if (check(TokenType::RIGHT_BRACE)) braceCount--;
+            advance();
+        }
+        size_t bodyEnd = current_ - 1; // Don't include the closing brace
+        
+        // Create function and store it
+        std::vector<Token> bodyTokens(tokens_.begin() + bodyStart, tokens_.begin() + bodyEnd);
+        Function func(name.getLexeme(), parameters, bodyTokens, bodyStart, bodyEnd);
+        functions_[name.getLexeme()] = func;
+    }
+
+    void Interpreter::parseReturnStatement() {
+        Value value;
+        if (!check(TokenType::SEMICOLON)) {
+            value = parseExpression();
+        }
+        consume(TokenType::SEMICOLON, "Expected ';' after return value");
+        
+        returnValue_ = value;
+        hasReturned_ = true;
+    }
+
+    // Function call support
+    Value Interpreter::callFunction(const std::string& name, const std::vector<Value>& arguments) {
+        auto it = functions_.find(name);
+        if (it == functions_.end()) {
+            throw std::runtime_error("Unknown function: " + name);
+        }
+        
+        const Function& func = it->second;
+        
+        // Check parameter count
+        if (arguments.size() != func.getParameters().size()) {
+            throw std::runtime_error("Function " + name + " expects " + 
+                std::to_string(func.getParameters().size()) + " arguments, got " + 
+                std::to_string(arguments.size()));
+        }
+        
+        // Push new scope for function execution
+        pushScope();
+        
+        // Bind parameters to arguments
+        for (size_t i = 0; i < arguments.size(); ++i) {
+            setVariable(func.getParameters()[i], arguments[i]);
+        }
+        
+        // Save current state
+        size_t savedCurrent = current_;
+        std::vector<Token> savedTokens = tokens_;
+        bool savedHasReturned = hasReturned_;
+        Value savedReturnValue = returnValue_;
+        
+        // Execute function body
+        tokens_ = func.getBody();
+        current_ = 0;
+        hasReturned_ = false;
+        returnValue_ = Value(); // nil by default
+        
+        while (!isAtEnd() && !hasReturned_) {
+            parseStatement();
+        }
+        
+        Value result = returnValue_;
+        
+        // Restore state
+        current_ = savedCurrent;
+        tokens_ = savedTokens;
+        hasReturned_ = savedHasReturned;
+        returnValue_ = savedReturnValue;
+        
+        // Pop scope
+        popScope();
+        
+        return result;
+    }
+
+    void Interpreter::pushScope() {
+        scopes_.push_back(std::unordered_map<std::string, Value>());
+    }
+
+    void Interpreter::popScope() {
+        if (!scopes_.empty()) {
+            scopes_.pop_back();
+        }
+    }
+
+    void Interpreter::setVariable(const std::string& name, const Value& value) {
+        if (!scopes_.empty()) {
+            scopes_.back()[name] = value;
+        } else {
+            globals_[name] = value;
+        }
+    }
+
+    Value Interpreter::getVariable(const std::string& name) {
+        // Search from innermost scope to outermost
+        for (int i = scopes_.size() - 1; i >= 0; --i) {
+            auto it = scopes_[i].find(name);
+            if (it != scopes_[i].end()) {
+                return it->second;
+            }
+        }
+        
+        // Check global scope
+        auto it = globals_.find(name);
+        if (it != globals_.end()) {
+            return it->second;
+        }
+        
+        throw std::runtime_error("Undefined variable: " + name);
     }
 
     // Expression parsing (recursive descent)
@@ -263,15 +411,25 @@ namespace yeep {
         }
         
         return expr;
-    }
-
-    Value Interpreter::parsePrimary() {
+    }    Value Interpreter::parsePrimary() {
         if (match({TokenType::TRUE})) return previous().getValue();
         if (match({TokenType::FALSE})) return previous().getValue();
         if (match({TokenType::NIL})) return previous().getValue();
         
         if (match({TokenType::NUMBER, TokenType::STRING})) {
             return previous().getValue();
+        }
+        
+        // Array literal
+        if (match({TokenType::LEFT_BRACKET})) {
+            Array arr;
+            if (!check(TokenType::RIGHT_BRACKET)) {
+                do {
+                    arr.push_back(parseExpression());
+                } while (match({TokenType::COMMA}));
+            }
+            consume(TokenType::RIGHT_BRACKET, "Expected ']' after array elements");
+            return Value(arr);
         }
         
         if (match({TokenType::IDENTIFIER})) {
@@ -290,20 +448,16 @@ namespace yeep {
                 
                 consume(TokenType::RIGHT_PAREN, "Expected ')' after arguments");
                 
-                // Check if it's a built-in function
+                // Check if it's a built-in function first
                 if (BuiltinFunctions::isBuiltin(name)) {
                     return BuiltinFunctions::call(name, arguments);
                 } else {
-                    throw std::runtime_error("Unknown function: " + name);
+                    // Try user-defined function
+                    return callFunction(name, arguments);
                 }
             } else {
-                // Variable access
-                auto it = globals_.find(name);
-                if (it != globals_.end()) {
-                    return it->second;
-                } else {
-                    throw std::runtime_error("Undefined variable: " + name);
-                }
+                // Variable access - use new scope-aware method
+                return getVariable(name);
             }
         }
         

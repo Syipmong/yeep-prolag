@@ -47,6 +47,13 @@ namespace yeep {
         
         // Utility
         static void checkArgCount(const std::vector<Value>& args, size_t expected, const std::string& name);
+        
+        // Array functions
+        static Value push(const std::vector<Value>& args);
+        static Value pop(const std::vector<Value>& args);
+        static Value size(const std::vector<Value>& args);
+        static Value get(const std::vector<Value>& args);
+        static Value set(const std::vector<Value>& args);
     };
 
 } // namespace yeep
