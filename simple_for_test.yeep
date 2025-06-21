@@ -1,0 +1,8 @@
+// Minimal for loop test
+let numbers = [1, 2, 3];
+
+print "=== Simple for loop ===";
+for (let i = 0; i < 3; i = i + 1) {
+    print "i = " + str(i);
+}
+print "=== End test ===";

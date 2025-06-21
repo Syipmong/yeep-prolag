@@ -1,0 +1,6 @@
+fun name(name) {
+    print "Hello, " + name + "!";
+}
+
+print "=== Name Function Test ===";
+name("Yipmong");
