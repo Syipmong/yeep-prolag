@@ -1,292 +1,285 @@
-name: Build and Release Yeep v2.0.0
+name: Build and Release Yeep
 
 on:
   push:
-    branches: [ main, master ]
-    tags: [ 'v*' ]
+    branches: [ main ]
+    tags:
+      - 'v*'
   pull_request:
-    branches: [ main, master ]
-  workflow_dispatch:
-
-env:
-  BUILD_TYPE: Release
+    branches: [ main ]
 
 jobs:
-  build:
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        include:
-          - os: ubuntu-latest
-            target: linux-x64
-            binary: yeep
-            archive: tar.gz
-          - os: windows-latest
-            target: windows-x64
-            binary: yeep.exe
-            archive: zip
-          - os: macos-latest
-            target: macos-x64
-            binary: yeep
-            archive: tar.gz
-
-    runs-on: ${{ matrix.os }}
-
+  build-windows:
+    runs-on: windows-latest
+    
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Set up build environment (Linux)
-      if: matrix.os == 'ubuntu-latest'
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y g++ make
-
-    - name: Set up build environment (macOS)
-      if: matrix.os == 'macos-latest'
-      run: |
-        # Xcode command line tools should be pre-installed
-        g++ --version || (echo "Installing Xcode command line tools..." && xcode-select --install)
-
-    - name: Set up build environment (Windows)
-      if: matrix.os == 'windows-latest'
+    - uses: actions/checkout@v4
+    
+    - name: Setup MinGW
       uses: msys2/setup-msys2@v2
       with:
         msystem: MINGW64
         update: true
-        install: >-
-          mingw-w64-x86_64-gcc
-          mingw-w64-x86_64-gcc-libs
-          mingw-w64-x86_64-make
-
-    - name: Create test file
-      run: |
-        echo 'print("GitHub Actions CI test successful!");' > test_ci.yeep
-
-    - name: Clean and prepare build directory
-      if: matrix.os != 'windows-latest'
-      run: |
-        rm -rf build || true
-        mkdir -p build/core
-
-    - name: Clean and prepare build directory (Windows)
-      if: matrix.os == 'windows-latest'
-      shell: pwsh
-      run: |
-        if (Test-Path build) { Remove-Item -Recurse -Force build }
-        New-Item -ItemType Directory -Path "build/core" -Force
-
-    - name: Build Yeep (Linux/macOS)
-      if: matrix.os != 'windows-latest'
-      run: |
-        echo "Building Yeep Programming Language v2.0.0 for ${{ matrix.target }}..."
-        g++ --version
-        
-        # Compile core components
-        g++ -Wall -Wextra -std=c++17 -I include -c src/main.cpp -o build/main.o
-        g++ -Wall -Wextra -std=c++17 -I include -c src/core/YeepEngine.cpp -o build/core/YeepEngine.o
-        g++ -Wall -Wextra -std=c++17 -I include -c src/core/Token.cpp -o build/core/Token.o
-        g++ -Wall -Wextra -std=c++17 -I include -c src/core/Lexer.cpp -o build/core/Lexer.o
-        
-        # Link executable
-        g++ build/main.o build/core/YeepEngine.o build/core/Token.o build/core/Lexer.o -o build/${{ matrix.binary }}
-        chmod +x build/${{ matrix.binary }}
-        
-        echo "Build completed successfully!"
-
-    - name: Build Yeep (Windows)
-      if: matrix.os == 'windows-latest'
+        install: mingw-w64-x86_64-gcc mingw-w64-x86_64-make
+    
+    - name: Build Yeep v2.0.1
       shell: msys2 {0}
       run: |
-        echo "Building Yeep Programming Language v2.0.0 for Windows..."
+        echo "Building Yeep Programming Language v2.0.1"
         g++ --version
         
-        # Compile core components
-        g++ -Wall -Wextra -std=c++17 -I include -c src/main.cpp -o build/main.o
-        g++ -Wall -Wextra -std=c++17 -I include -c src/core/YeepEngine.cpp -o build/core/YeepEngine.o
-        g++ -Wall -Wextra -std=c++17 -I include -c src/core/Token.cpp -o build/core/Token.o
-        g++ -Wall -Wextra -std=c++17 -I include -c src/core/Lexer.cpp -o build/core/Lexer.o
+        # Create build directory
+        mkdir -p build
         
-        # Link executable with static linking
-        g++ build/main.o build/core/YeepEngine.o build/core/Token.o build/core/Lexer.o -o build/${{ matrix.binary }} -static -static-libgcc -static-libstdc++
+        # Compile all source files
+        g++ -std=c++17 -Wall -Wextra -O2 \
+          -Iinclude \
+          src/Token.cpp \
+          src/Lexer.cpp \
+          src/BuiltinFunctions.cpp \
+          src/Interpreter.cpp \
+          src/main.cpp \
+          -o build/yeep.exe
         
         echo "Build completed successfully!"
-
-    - name: Test Yeep executable (Linux/macOS)
-      if: matrix.os != 'windows-latest'
-      run: |
-        echo "Testing Yeep executable..."
-        ./build/${{ matrix.binary }} test_ci.yeep
-        echo "Test completed successfully!"
-
-    - name: Test Yeep executable (Windows)
-      if: matrix.os == 'windows-latest'
+        ls -la build/
+    
+    - name: Test Yeep Executable
       shell: msys2 {0}
       run: |
         echo "Testing Yeep executable..."
-        ./build/${{ matrix.binary }} test_ci.yeep
-        echo "Test completed successfully!"
-
-    - name: Package release (Linux/macOS)
-      if: matrix.os != 'windows-latest'
-      run: |
-        mkdir -p release
-        cp build/${{ matrix.binary }} release/
-        cp README.md release/
-        cp CHANGELOG.md release/
-        cp LICENSE release/
-        cp demo_v2.yeep release/
-        cp INSTALLATION.md release/
+        # Test with simple program
+        echo 'print "Hello from GitHub Actions!";' > test_github.yeep
+        ./build/yeep.exe test_github.yeep
         
-        # Create installation script
-        cat > release/install.sh << 'EOF'
-        #!/bin/bash
-        echo "Installing Yeep Programming Language v2.0.0..."
-        sudo cp yeep /usr/local/bin/yeep
-        sudo chmod +x /usr/local/bin/yeep
-        echo "Yeep installed successfully!"
-        echo "Run 'yeep' to start the interpreter."
-        EOF
-        chmod +x release/install.sh
-        
-        # Create archive
-        tar -czf yeep-${{ matrix.target }}.tar.gz -C release .
-
-    - name: Package release (Windows)
-      if: matrix.os == 'windows-latest'
-      shell: pwsh
-      run: |
-        New-Item -ItemType Directory -Path release -Force
-        Copy-Item "build/${{ matrix.binary }}" "release/yeep.exe"
-        Copy-Item "README.md" "release/"
-        Copy-Item "CHANGELOG.md" "release/"
-        Copy-Item "LICENSE" "release/"
-        Copy-Item "demo_v2.yeep" "release/"
-        Copy-Item "INSTALLATION.md" "release/"
-        
-        # Create installation batch file
-        @"
-        @echo off
-        echo Installing Yeep Programming Language v2.0.0...
-        if not exist "%USERPROFILE%\bin" mkdir "%USERPROFILE%\bin"
-        copy yeep.exe "%USERPROFILE%\bin\yeep.exe"
-        echo Yeep installed successfully!
-        echo Run 'yeep' to start the interpreter.
-        echo Note: You may need to add %USERPROFILE%\bin to your PATH
-        "@ | Out-File -FilePath "release/install.bat" -Encoding ASCII
-        
-        # Create archive
-        Compress-Archive -Path "release/*" -DestinationPath "yeep-${{ matrix.target }}.zip"
-
-    - name: Upload artifacts
+        # Test with existing test files if they exist
+        if [ -f "test_simple.yeep" ]; then
+          echo "Running test_simple.yeep..."
+          ./build/yeep.exe test_simple.yeep
+        fi
+    
+    - name: Upload Windows Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: yeep-${{ matrix.target }}
-        path: |
-          yeep-${{ matrix.target }}.tar.gz
-          yeep-${{ matrix.target }}.zip
-        if-no-files-found: ignore
+        name: yeep-windows-x64
+        path: build/yeep.exe
 
-  release:
-    if: startsWith(github.ref, 'refs/tags/v')
-    needs: build
+  build-linux:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v4
     
-    - name: Download all artifacts
-      uses: actions/download-artifact@v4
-
-    - name: Check if prerelease
-      id: prerelease
+    - name: Install Dependencies
       run: |
-        if [[ "${{ github.ref_name }}" =~ (alpha|beta|rc|pre|dev|nightly) ]]; then
-          echo "is_prerelease=true" >> $GITHUB_OUTPUT
-          echo "release_type=prerelease" >> $GITHUB_OUTPUT
-        else
-          echo "is_prerelease=false" >> $GITHUB_OUTPUT
-          echo "release_type=stable" >> $GITHUB_OUTPUT
+        sudo apt-get update
+        sudo apt-get install -y build-essential g++
+    
+    - name: Build Yeep v2.0.1
+      run: |
+        echo "Building Yeep Programming Language v2.0.1 for Linux"
+        g++ --version
+        
+        # Create build directory
+        mkdir -p build
+        
+        # Compile all source files
+        g++ -std=c++17 -Wall -Wextra -O2 \
+          -Iinclude \
+          src/Token.cpp \
+          src/Lexer.cpp \
+          src/BuiltinFunctions.cpp \
+          src/Interpreter.cpp \
+          src/main.cpp \
+          -o build/yeep
+        
+        echo "Build completed successfully!"
+        ls -la build/
+    
+    - name: Test Yeep Executable
+      run: |
+        echo "Testing Yeep executable..."
+        # Test with simple program
+        echo 'print "Hello from GitHub Actions Linux!";' > test_github.yeep
+        ./build/yeep test_github.yeep
+        
+        # Test with existing test files if they exist
+        if [ -f "test_simple.yeep" ]; then
+          echo "Running test_simple.yeep..."
+          ./build/yeep test_simple.yeep
         fi
+    
+    - name: Upload Linux Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: yeep-linux-x64
+        path: build/yeep
 
+  build-macos:
+    runs-on: macos-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Install Dependencies
+      run: |
+        # Xcode command line tools should be available
+        clang++ --version
+    
+    - name: Build Yeep v2.0.1
+      run: |
+        echo "Building Yeep Programming Language v2.0.1 for macOS"
+        clang++ --version
+        
+        # Create build directory
+        mkdir -p build
+        
+        # Compile all source files
+        clang++ -std=c++17 -Wall -Wextra -O2 \
+          -Iinclude \
+          src/Token.cpp \
+          src/Lexer.cpp \
+          src/BuiltinFunctions.cpp \
+          src/Interpreter.cpp \
+          src/main.cpp \
+          -o build/yeep
+        
+        echo "Build completed successfully!"
+        ls -la build/
+    
+    - name: Test Yeep Executable
+      run: |
+        echo "Testing Yeep executable..."
+        # Test with simple program
+        echo 'print "Hello from GitHub Actions macOS!";' > test_github.yeep
+        ./build/yeep test_github.yeep
+        
+        # Test with existing test files if they exist
+        if [ -f "test_simple.yeep" ]; then
+          echo "Running test_simple.yeep..."
+          ./build/yeep test_simple.yeep
+        fi
+    
+    - name: Upload macOS Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: yeep-macos-x64
+        path: build/yeep
+
+  release:
+    needs: [build-windows, build-linux, build-macos]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Download All Artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: artifacts/
+    
+    - name: Prepare Release Assets
+      run: |
+        echo "Preparing release assets..."
+        ls -la artifacts/
+        
+        # Create release directory
+        mkdir -p release
+        
+        # Package Windows release
+        mkdir -p release/yeep-${{ github.ref_name }}-windows
+        cp artifacts/yeep-windows-x64/yeep.exe release/yeep-${{ github.ref_name }}-windows/
+        cp README.md release/yeep-${{ github.ref_name }}-windows/ || echo "README.md not found"
+        cp LICENSE release/yeep-${{ github.ref_name }}-windows/ || echo "LICENSE not found"
+        cp VERSION release/yeep-${{ github.ref_name }}-windows/ || echo "VERSION not found"
+        if [ -f "RELEASE-v2.0.1.md" ]; then
+          cp RELEASE-v2.0.1.md release/yeep-${{ github.ref_name }}-windows/RELEASE-NOTES.md
+        fi
+        
+        # Copy example files if they exist
+        mkdir -p release/yeep-${{ github.ref_name }}-windows/examples
+        for file in *.yeep; do
+          if [ -f "$file" ]; then
+            cp "$file" release/yeep-${{ github.ref_name }}-windows/examples/
+          fi
+        done
+        
+        # Create Windows ZIP
+        cd release
+        zip -r yeep-${{ github.ref_name }}-windows.zip yeep-${{ github.ref_name }}-windows/
+        cd ..
+        
+        # Package Linux release
+        mkdir -p release/yeep-${{ github.ref_name }}-linux
+        cp artifacts/yeep-linux-x64/yeep release/yeep-${{ github.ref_name }}-linux/
+        cp README.md release/yeep-${{ github.ref_name }}-linux/ || echo "README.md not found"
+        cp LICENSE release/yeep-${{ github.ref_name }}-linux/ || echo "LICENSE not found"
+        cp VERSION release/yeep-${{ github.ref_name }}-linux/ || echo "VERSION not found"
+        if [ -f "RELEASE-v2.0.1.md" ]; then
+          cp RELEASE-v2.0.1.md release/yeep-${{ github.ref_name }}-linux/RELEASE-NOTES.md
+        fi
+        
+        # Copy example files
+        mkdir -p release/yeep-${{ github.ref_name }}-linux/examples
+        for file in *.yeep; do
+          if [ -f "$file" ]; then
+            cp "$file" release/yeep-${{ github.ref_name }}-linux/examples/
+          fi
+        done
+        
+        # Create Linux tar.gz
+        cd release
+        tar -czf yeep-${{ github.ref_name }}-linux.tar.gz yeep-${{ github.ref_name }}-linux/
+        cd ..
+        
+        # Package macOS release
+        mkdir -p release/yeep-${{ github.ref_name }}-macos
+        cp artifacts/yeep-macos-x64/yeep release/yeep-${{ github.ref_name }}-macos/
+        cp README.md release/yeep-${{ github.ref_name }}-macos/ || echo "README.md not found"
+        cp LICENSE release/yeep-${{ github.ref_name }}-macos/ || echo "LICENSE not found"
+        cp VERSION release/yeep-${{ github.ref_name }}-macos/ || echo "VERSION not found"
+        if [ -f "RELEASE-v2.0.1.md" ]; then
+          cp RELEASE-v2.0.1.md release/yeep-${{ github.ref_name }}-macos/RELEASE-NOTES.md
+        fi
+        
+        # Copy example files
+        mkdir -p release/yeep-${{ github.ref_name }}-macos/examples
+        for file in *.yeep; do
+          if [ -f "$file" ]; then
+            cp "$file" release/yeep-${{ github.ref_name }}-macos/examples/
+          fi
+        done
+        
+        # Create macOS tar.gz
+        cd release
+        tar -czf yeep-${{ github.ref_name }}-macos.tar.gz yeep-${{ github.ref_name }}-macos/
+        cd ..
+        
+        echo "Release assets prepared:"
+        ls -la release/
+    
+    - name: Read Release Notes
+      id: release_notes
+      run: |
+        if [ -f "RELEASE-v2.0.1.md" ]; then
+          echo "release_notes<<EOF" >> $GITHUB_OUTPUT
+          cat RELEASE-v2.0.1.md >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+        else
+          echo "release_notes=Yeep Programming Language ${{ github.ref_name }} Release" >> $GITHUB_OUTPUT
+        fi
+    
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v1
       with:
-        files: |
-          yeep-*/yeep-*.tar.gz
-          yeep-*/yeep-*.zip
-        body: |
-          # Yeep Programming Language ${{ github.ref_name }} - Official Release
-          
-          🎉 **Modern C++ Programming Language with Interactive REPL**
-          
-          ${{ steps.prerelease.outputs.is_prerelease == 'true' && '⚠️ **This is a prerelease version** - May contain bugs or incomplete features.' || '' }}
-          
-          ## 📥 Downloads
-          
-          Choose your platform:
-          - **🪟 Windows**: `yeep-windows-x64.zip` (Self-contained, no dependencies)
-          - **🐧 Linux**: `yeep-linux-x64.tar.gz`
-          - **🍎 macOS**: `yeep-macos-x64.tar.gz`
-          
-          ## 🚀 Quick Installation
-          
-          ### One-Line Install (Recommended)
-          
-          **Linux/macOS:**
-          ```bash
-          curl -fsSL https://raw.githubusercontent.com/Syipmong/yeep-prolag/main/install-one-line.sh | bash
-          ```
-          
-          **Windows (PowerShell):**
-          ```powershell
-          iwr -useb https://raw.githubusercontent.com/Syipmong/yeep-prolag/main/install-one-line.ps1 | iex
-          ```
-          
-          ### Manual Installation
-          1. Download the appropriate archive for your platform
-          2. Extract the archive
-          3. Run the installer:
-             - **Windows**: Run `install.bat`
-             - **Linux/macOS**: Run `chmod +x install.sh && ./install.sh`
-          
-          ## 🎯 Getting Started
-          
-          After installation:
-          ```bash
-          yeep                    # Start interactive REPL
-          yeep script.yeep        # Run a script file
-          yeep demo_v2.yeep       # Try the demo
-          ```
-          
-          ## ✨ What's New in v2.0.0
-          
-          - 🔄 **Complete C++ rewrite** - Modern C++17 architecture
-          - 🖥️ **Interactive REPL** with help system  
-          - 📝 **Script execution** for .yeep files
-          - 🖨️ **Print statements** with string support
-          - 🏗️ **Professional build system** - Cross-platform compilation
-          - 📦 **Easy installation** - One-line installers for all platforms
-          - 🔧 **Static linking** - No external dependencies
-          - 📚 **Comprehensive documentation** - Installation guides and examples
-          
-          ## 📖 Example Code
-          
-          ```yeep
-          print("Hello, Yeep v2.0.0!");
-          print("Welcome to modern programming!");
-          ```
-          
-          ## 🔗 Resources
-          
-          - 📖 **Documentation**: [README.md](https://github.com/Syipmong/yeep-prolag/blob/main/README.md)
-          - 🛠️ **Installation Guide**: [INSTALLATION.md](https://github.com/Syipmong/yeep-prolag/blob/main/INSTALLATION.md)
-          - 📋 **Changelog**: [CHANGELOG.md](https://github.com/Syipmong/yeep-prolag/blob/main/CHANGELOG.md)
-          - 🐛 **Issues**: [GitHub Issues](https://github.com/Syipmong/yeep-prolag/issues)
-          
-          Ready for production use! 🚀
+        name: "Yeep Programming Language ${{ github.ref_name }}"
+        body: ${{ steps.release_notes.outputs.release_notes }}
         draft: false
-        prerelease: ${{ steps.prerelease.outputs.is_prerelease == 'true' }}
+        prerelease: false
+        files: |
+          release/yeep-${{ github.ref_name }}-windows.zip
+          release/yeep-${{ github.ref_name }}-linux.tar.gz
+          release/yeep-${{ github.ref_name }}-macos.tar.gz
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
