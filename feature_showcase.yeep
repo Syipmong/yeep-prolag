@@ -1,0 +1,59 @@
+=== Yeep v2.0 Feature Showcase ===
+
+print "=== 1. Basic Language Features ===";
+let x = 42;
+let name = "Yeep";
+let flag = true;
+print "Variable x: " + str(x);
+print "Variable name: " + name;
+print "Variable flag: " + str(flag);
+
+print "=== 2. Arithmetic & Logic ===";
+print "10 + 5 = " + str(10 + 5);
+print "10 - 3 = " + str(10 - 3);
+print "4 * 7 = " + str(4 * 7);
+print "20 / 4 = " + str(20 / 4);
+print "10 > 5: " + str(10 > 5);
+print "3 == 3: " + str(3 == 3);
+
+print "=== 3. Built-in Functions ===";
+print "sqrt(16) = " + str(sqrt(16));
+print "max(1, 8, 3) = " + str(max(1, 8, 3));
+print "length('Hello') = " + str(length("Hello"));
+print "uppercase('hello') = " + str(uppercase("hello"));
+
+print "=== 4. User-Defined Functions ===";
+fun double(n) {
+    return n * 2;
+}
+
+fun greet(name) {
+    print "Hello, " + name + "!";
+}
+
+print "double(21) = " + str(double(21));
+greet("World");
+
+print "=== 5. Arrays ===";
+let numbers = [1, 2, 3, 4, 5];
+let fruits = ["apple", "banana", "orange"];
+print "Numbers: " + str(numbers);
+print "Fruits: " + str(fruits);
+print "Array size: " + str(size(numbers));
+print "First element: " + str(get(numbers, 0));
+print "After push: " + str(push(numbers, 6));
+
+print "=== 6. Control Flow ===";
+if (x > 40) {
+    print "x is greater than 40";
+} else {
+    print "x is not greater than 40";
+}
+
+let i = 0;
+while (i < 3) {
+    print "While loop iteration: " + str(i);
+    i = i + 1;
+}
+
+print "=== Yeep v2.0 Feature Showcase Complete! ===";

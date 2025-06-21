@@ -91,47 +91,66 @@ namespace yeep {
                 parseStatement();
             }
         }
-    }
-
-    void Interpreter::parseWhileStatement() {
-        size_t loopStart = current_;
+    }    void Interpreter::parseWhileStatement() {
+        consume(TokenType::LEFT_PAREN, "Expected '(' after 'while'");
         
-        while (true) {
-            current_ = loopStart; // Reset to loop start
+        // Store the condition tokens for re-evaluation
+        size_t conditionStart = current_;
+        Value condition = parseExpression();
+        size_t conditionEnd = current_;
+        
+        consume(TokenType::RIGHT_PAREN, "Expected ')' after while condition");
+        
+        // Store the body start position
+        size_t bodyStart = current_;
+        
+        // Execute loop
+        while (condition.isTruthy()) {
+            // Execute body
+            current_ = bodyStart;
+            parseStatement();
             
-            consume(TokenType::LEFT_PAREN, "Expected '(' after 'while'");
-            Value condition = parseExpression();
-            consume(TokenType::RIGHT_PAREN, "Expected ')' after while condition");
+            if (hasReturned_) break; // Exit if return was called
             
-            if (!condition.isTruthy()) {
-                skipStatement(); // Skip the body
-                break;
-            }
-            
-            parseStatement(); // Execute body
+            // Re-evaluate condition
+            current_ = conditionStart;
+            condition = parseExpression();
+            current_ = conditionEnd;
         }
-    }
-
-    void Interpreter::parseForStatement() {
+        
+        // Skip the body if we didn't execute it or if we exited early
+        if (!condition.isTruthy()) {
+            current_ = bodyStart;
+            skipStatement();
+        }
+    }void Interpreter::parseForStatement() {
         consume(TokenType::LEFT_PAREN, "Expected '(' after 'for'");
         
         // Parse initialization (optional)
         if (!match({TokenType::SEMICOLON})) {
             if (match({TokenType::LET})) {
-                parseLetStatement();
+                Token name = consume(TokenType::IDENTIFIER, "Expected variable name");
+                Value value;
+                if (match({TokenType::ASSIGN})) {
+                    value = parseExpression();
+                }
+                setVariable(name.getLexeme(), value);
             } else {
-                parseExpressionStatement();
+                parseExpression(); // Assignment expression
             }
+            consume(TokenType::SEMICOLON, "Expected ';' after for-loop initializer");
         }
         
-        // Parse condition (optional)
+        // Parse condition (optional) - store the tokens for re-evaluation
+        size_t conditionStart = current_;
         Value condition = Value(true); // Default to true if no condition
         if (!check(TokenType::SEMICOLON)) {
             condition = parseExpression();
         }
+        size_t conditionEnd = current_;
         consume(TokenType::SEMICOLON, "Expected ';' after for condition");
         
-        // Parse increment (optional)
+        // Parse increment (optional) - store the tokens for re-execution
         size_t incrementStart = current_;
         if (!check(TokenType::RIGHT_PAREN)) {
             parseExpression(); // Parse but don't execute yet
@@ -139,28 +158,36 @@ namespace yeep {
         size_t incrementEnd = current_;
         consume(TokenType::RIGHT_PAREN, "Expected ')' after for clauses");
         
+        // Store the body start position
+        size_t bodyStart = current_;
+        
         // Execute loop
         while (condition.isTruthy()) {
-            parseStatement(); // Execute body
+            // Execute body
+            current_ = bodyStart;
+            parseStatement();
             
             if (hasReturned_) break; // Exit if return was called
             
             // Execute increment
             if (incrementStart < incrementEnd) {
-                size_t savedCurrent = current_;
                 current_ = incrementStart;
                 parseExpression();
-                current_ = savedCurrent;
             }
             
             // Re-evaluate condition
-            if (!check(TokenType::SEMICOLON)) {
-                size_t savedCurrent = current_;
-                current_ = incrementStart - 1; // Go back to condition
-                // Find the condition again - this is a simplified approach
+            if (conditionStart < conditionEnd) {
+                current_ = conditionStart;
                 condition = parseExpression();
-                current_ = savedCurrent;
+            } else {
+                break; // No condition means run once
             }
+        }
+        
+        // Skip to end of loop body if we exited early
+        if (!hasReturned_) {
+            current_ = bodyStart;
+            skipStatement();
         }
     }
 
@@ -205,9 +232,7 @@ namespace yeep {
         
         returnValue_ = value;
         hasReturned_ = true;
-    }
-
-    // Function call support
+    }    // Function call support
     Value Interpreter::callFunction(const std::string& name, const std::vector<Value>& arguments) {
         auto it = functions_.find(name);
         if (it == functions_.end()) {
@@ -243,8 +268,18 @@ namespace yeep {
         hasReturned_ = false;
         returnValue_ = Value(); // nil by default
         
-        while (!isAtEnd() && !hasReturned_) {
-            parseStatement();
+        try {
+            while (current_ < tokens_.size() && !hasReturned_) {
+                parseStatement();
+            }
+        } catch (const std::exception& e) {
+            // Restore state even if exception occurs
+            current_ = savedCurrent;
+            tokens_ = savedTokens;
+            hasReturned_ = savedHasReturned;
+            returnValue_ = savedReturnValue;
+            popScope();
+            throw; // Re-throw the exception
         }
         
         Value result = returnValue_;
@@ -432,12 +467,18 @@ namespace yeep {
             consume(TokenType::RIGHT_BRACKET, "Expected ']' after array elements");
             return Value(arr);
         }
-        
-        if (match({TokenType::IDENTIFIER})) {
+          if (match({TokenType::IDENTIFIER})) {
             std::string name = previous().getLexeme();
             
+            // Check for assignment
+            if (check(TokenType::ASSIGN)) {
+                advance(); // consume '='
+                Value value = parseExpression();
+                setVariable(name, value);
+                return value;
+            }
             // Check for function call
-            if (check(TokenType::LEFT_PAREN)) {
+            else if (check(TokenType::LEFT_PAREN)) {
                 advance(); // consume '('
                 
                 std::vector<Value> arguments;
