@@ -1,4 +1,4 @@
-=== Yeep v2.0 User-Defined Functions Test ===
+// === Yeep v2.0 User-Defined Functions Test ===
 
 // Define a simple function
 fun greet(name) {

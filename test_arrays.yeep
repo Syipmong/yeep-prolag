@@ -1,4 +1,4 @@
-=== Yeep v2.0 Arrays Test ===
+// === Yeep v2.0 Arrays Test ===
 
 // Create arrays
 let numbers = [1, 2, 3, 4, 5];

@@ -1,4 +1,4 @@
-=== Yeep v2.0 Feature Showcase ===
+// === Yeep v2.0 Feature Showcase ===
 
 print "=== 1. Basic Language Features ===";
 let x = 42;
