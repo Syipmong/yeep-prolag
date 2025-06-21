@@ -1,0 +1,28 @@
+// Testing current built-in functions
+print("=== Testing Built-in Functions ===");
+
+// Math functions
+print("Math Functions:");
+let result1 = sqrt(16);
+print("sqrt(16) = " + result1);
+
+let result2 = abs(-5);
+print("abs(-5) = " + result2);
+
+let result3 = pow(2, 3);
+print("pow(2, 3) = " + result3);
+
+// String functions
+print("String Functions:");
+let str = "hello";
+let strLen = length(str);
+print("length('hello') = " + strLen);
+
+let upperStr = uppercase(str);
+print("uppercase('hello') = " + upperStr);
+
+// Type functions
+print("Type Functions:");
+let num = 42;
+let numType = type(num);
+print("type(42) = " + numType);

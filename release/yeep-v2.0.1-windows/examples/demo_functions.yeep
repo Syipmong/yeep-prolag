@@ -1,0 +1,53 @@
+// Yeep v2.1.0-dev - Advanced Function Examples
+// Demonstrates the new built-in functions
+
+print("=== Yeep v2.1.0-dev Function Demo ===");
+print("");
+
+// Mathematical functions
+print("--- Mathematical Functions ---");
+print("abs(-42) = " + toString(abs(-42)));
+print("sqrt(16) = " + toString(sqrt(16)));
+print("pow(2, 3) = " + toString(pow(2, 3)));
+print("max(5, 10, 3, 8) = " + toString(max(5, 10, 3, 8)));
+print("min(5, 10, 3, 8) = " + toString(min(5, 10, 3, 8)));
+print("floor(3.7) = " + toString(floor(3.7)));
+print("ceil(3.2) = " + toString(ceil(3.2)));
+print("round(3.6) = " + toString(round(3.6)));
+print("");
+
+// String functions
+print("--- String Functions ---");
+print("length('Hello') = " + toString(length("Hello")));
+print("uppercase('hello') = " + uppercase("hello"));
+print("lowercase('WORLD') = " + lowercase("WORLD"));
+print("contains('Hello World', 'World') = " + toString(contains("Hello World", "World")));
+print("startsWith('Hello', 'He') = " + toString(startsWith("Hello", "He")));
+print("endsWith('Hello', 'lo') = " + toString(endsWith("Hello", "lo")));
+print("substring('Hello World', 6, 5) = " + substring("Hello World", 6, 5));
+print("");
+
+// Type conversion functions  
+print("--- Type Conversion ---");
+print("toString(42) = '" + toString(42) + "'");
+print("toNumber('123') = " + toString(toNumber("123")));
+print("toBoolean(1) = " + toString(toBoolean(1)));
+print("toBoolean(0) = " + toString(toBoolean(0)));
+print("");
+
+// Utility functions
+print("--- Utility Functions ---");
+print("type(42) = " + type(42));
+print("type('hello') = " + type("hello"));
+print("type(true) = " + type(true));
+print("random(1, 10) = " + toString(random(1, 10)));
+print("time() = " + toString(time()));
+print("");
+
+print("=== Demo Complete! ===");
+print("Try these functions in the REPL:")
+print("  yeep");
+print("  > abs(-5)");
+print("  > sqrt(25)");
+print("  > uppercase('hello world')");
+print("  > random(1, 100)");

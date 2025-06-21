@@ -78,11 +78,33 @@ A simple, interpreted programming language **now written in modern C++** with su
 
 ## Quick Start
 
-### 🚀 Easy Installation (Recommended)
+### 🚀 System-Wide Installation (v2.0.1)
 
-#### One-Line Install (Linux/macOS)
+Yeep v2.0.1 supports easy system-wide installation. Run `yeep` from anywhere after installation!
+
+#### Quick Install
+
+**Windows:**
+```cmd
+# Clone or download the repository
+git clone https://github.com/Syipmong/yeep-prolag.git
+cd yeep-prolag
+
+# Build and install (requires Administrator)
+build.bat
+install.bat
+```
+
+**Linux/macOS:**
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Syipmong/yeep-prolag/main/install-quick.sh | bash
+# Clone or download the repository
+git clone https://github.com/Syipmong/yeep-prolag.git
+cd yeep-prolag
+
+# Build and install (requires sudo for system-wide)
+chmod +x build.sh install.sh
+./build.sh
+sudo ./install.sh
 ```
 
 #### Download from GitHub Releases
@@ -98,7 +120,7 @@ curl -fsSL https://raw.githubusercontent.com/Syipmong/yeep-prolag/main/install-q
    **Windows:**
    ```cmd
    # Extract the ZIP file
-   # Right-click "install.bat" → "Run as administrator"
+   # Right-click Command Prompt → "Run as administrator"
    install.bat
    ```
 
@@ -108,46 +130,51 @@ curl -fsSL https://raw.githubusercontent.com/Syipmong/yeep-prolag/main/install-q
    tar -xzf yeep-linux-x64.tar.gz  # or yeep-macos-x64.tar.gz
    cd yeep-linux-x64               # or yeep-macos-x64
    
-   # Install for current user
-   chmod +x install.sh
-   ./install.sh
-   
-   # OR install system-wide
+   # Install system-wide (recommended)
    sudo ./install.sh
+   
+   # OR install for current user only
+   ./install.sh
    ```
 
 4. **Verify installation**:
    ```bash
    yeep --version
+   yeep --help
    ```
 
 ### 🎯 After Installation - How to Use Yeep
 
-Once installed, you can run Yeep from any command prompt:
+Once installed, you can run Yeep from any directory:
 
-```cmd
-# Start interactive shell (REPL)
+```bash
+# Start interactive REPL with colorized output
 yeep
 
 # Run a Yeep script file  
-yeep script.yeep
+yeep myscript.yeep
 
-# Show help and version
+# Show help and version info
 yeep --help
 yeep --version
 
-# Run example programs
-yeep examples/hello.yeep
+# Try REPL built-in commands
+yeep
+> help
+> examples
+> version
+> clear
 ```
 
 **📁 Installation Locations:**
 - **Windows System**: `C:\Program Files\Yeep\`
-- **Windows User**: `C:\Users\YourName\Yeep\`
-- **Linux/macOS**: `/usr/local/bin/yeep`
+- **Windows User**: `%USERPROFILE%\Yeep\`
+- **Linux/macOS System**: `/usr/local/bin/yeep`, `/usr/local/lib/yeep/`
+- **Linux/macOS User**: `~/.local/bin/yeep`, `~/.local/lib/yeep/`
 
 **🗑️ To Uninstall:**
-- **Windows**: Run `uninstall.bat` from installation directory
-- **Linux/macOS**: Run `sudo make uninstall` or delete files manually
+- **Windows**: Run uninstaller from installation directory
+- **Linux/macOS**: Run the uninstall script from lib directory
 
 > 📖 **See [USAGE.md](USAGE.md) for detailed usage guide and troubleshooting**
 

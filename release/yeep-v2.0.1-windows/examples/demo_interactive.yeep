@@ -1,0 +1,33 @@
+// Yeep v2.1.0-dev - Interactive Demo
+// This script demonstrates interactive features
+
+print("=== Interactive Yeep Demo ===");
+print("");
+print("This demo shows interactive input capabilities:");
+print("");
+
+// Get user's name
+let name = input("What's your name? ");
+print("Hello, " + name + "!");
+print("");
+
+// Get user's age and do some math
+let ageStr = input("How old are you? ");
+let age = toNumber(ageStr);
+print("You are " + toString(age) + " years old.");
+print("In 10 years, you'll be " + toString(age + 10) + " years old.");
+print("");
+
+// Fun with random numbers
+print("Let's play a guessing game!");
+let secret = random(1, 10);
+let guess = toNumber(input("Guess a number between 1 and 10: "));
+
+if (guess == secret) {
+    print("🎉 Congratulations! You guessed it!");
+} else {
+    print("😅 Sorry! The number was " + toString(secret));
+}
+
+print("");
+print("=== Demo Complete! ===");

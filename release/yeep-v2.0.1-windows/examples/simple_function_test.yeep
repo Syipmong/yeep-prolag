@@ -1,0 +1,9 @@
+print "=== Simple Function Test ===";
+
+fun hello() {
+    print "Hello from function!";
+}
+
+hello();
+
+print "=== Test completed! ===";
