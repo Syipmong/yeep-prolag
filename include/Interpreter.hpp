@@ -9,11 +9,10 @@
 namespace yeep {
 
     // Forward declarations
-    class Interpreter;
-
-    // User-defined function class
+    class Interpreter;    // User-defined function class
     class Function {
     public:
+        Function() = default; // Default constructor for std::unordered_map
         Function(const std::string& name, const std::vector<std::string>& params, 
                  const std::vector<Token>& body, size_t bodyStart, size_t bodyEnd)
             : name_(name), parameters_(params), body_(body), bodyStart_(bodyStart), bodyEnd_(bodyEnd) {}
