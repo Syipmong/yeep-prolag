@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/github/license/Syipmong/yeep-prolag?color=green)](https://github.com/Syipmong/yeep-prolag/blob/main/LICENSE)
 [![Platform Support](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-lightgrey?logo=windows&logoColor=white)](https://github.com/Syipmong/yeep-prolag/releases/latest)
 [![Language](https://img.shields.io/badge/language-C++-blue?logo=cplusplus)](https://github.com/Syipmong/yeep-prolag)
-[![Status](https://img.shields.io/badge/status-v2.0.0%20RELEASED-brightgreen)](https://github.com/Syipmong/yeep-prolag)
+[![Status](https://img.shields.io/badge/status-v2.0.1%20RELEASED-brightgreen)](https://github.com/Syipmong/yeep-prolag)
 [![GitHub Stars](https://img.shields.io/github/stars/Syipmong/yeep-prolag?style=social)](https://github.com/Syipmong/yeep-prolag/stargazers)
 [![GitHub Forks](https://img.shields.io/github/forks/Syipmong/yeep-prolag?style=social)](https://github.com/Syipmong/yeep-prolag/network/members)
 
