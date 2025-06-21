@@ -35,6 +35,9 @@ namespace yeep {
         void parsePrintStatement();
         void parseLetStatement();
         void parseExpressionStatement();
+        void parseIfStatement();
+        void parseWhileStatement();
+        void parseBlockStatement();
         
         // Utility methods
         bool match(std::initializer_list<TokenType> types);
@@ -44,6 +47,7 @@ namespace yeep {
         Token peek();
         Token previous();
         Token consume(TokenType type, const std::string& message);
+        void skipStatement();
         
         // Expression evaluation
         Value evaluateBinary(const Value& left, TokenType op, const Value& right);

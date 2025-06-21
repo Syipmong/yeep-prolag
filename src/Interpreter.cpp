@@ -16,8 +16,7 @@ namespace yeep {
         try {
             while (!isAtEnd()) {
                 parseStatement();
-            }
-        } catch (const std::exception& e) {
+            }        } catch (const std::exception& e) {
             std::cerr << "Error: " << e.what() << std::endl;
         }
     }
@@ -29,6 +28,12 @@ namespace yeep {
                 parsePrintStatement();
             } else if (match({TokenType::LET})) {
                 parseLetStatement();
+            } else if (match({TokenType::IF})) {
+                parseIfStatement();
+            } else if (match({TokenType::WHILE})) {
+                parseWhileStatement();
+            } else if (match({TokenType::LEFT_BRACE})) {
+                parseBlockStatement();
             } else {
                 parseExpressionStatement();
             }
@@ -59,6 +64,89 @@ namespace yeep {
     void Interpreter::parseExpressionStatement() {
         parseExpression();
         consume(TokenType::SEMICOLON, "Expected ';' after expression");
+    }
+
+    void Interpreter::parseIfStatement() {
+        consume(TokenType::LEFT_PAREN, "Expected '(' after 'if'");
+        Value condition = parseExpression();
+        consume(TokenType::RIGHT_PAREN, "Expected ')' after if condition");
+        
+        if (condition.isTruthy()) {
+            parseStatement(); // then branch
+            
+            // Skip else branch if present
+            if (match({TokenType::ELSE})) {
+                skipStatement();
+            }
+        } else {
+            skipStatement(); // skip then branch
+            
+            // Execute else branch if present
+            if (match({TokenType::ELSE})) {
+                parseStatement();
+            }
+        }
+    }
+
+    void Interpreter::parseWhileStatement() {
+        size_t loopStart = current_;
+        
+        while (true) {
+            current_ = loopStart; // Reset to loop start
+            
+            consume(TokenType::LEFT_PAREN, "Expected '(' after 'while'");
+            Value condition = parseExpression();
+            consume(TokenType::RIGHT_PAREN, "Expected ')' after while condition");
+            
+            if (!condition.isTruthy()) {
+                skipStatement(); // Skip the body
+                break;
+            }
+            
+            parseStatement(); // Execute body
+        }
+    }
+
+    void Interpreter::parseBlockStatement() {
+        while (!check(TokenType::RIGHT_BRACE) && !isAtEnd()) {
+            parseStatement();
+        }
+        consume(TokenType::RIGHT_BRACE, "Expected '}' after block");
+    }
+
+    void Interpreter::skipStatement() {
+        // Skip a statement without executing it
+        if (match({TokenType::PRINT})) {
+            parseExpression();
+            consume(TokenType::SEMICOLON, "Expected ';'");
+        } else if (match({TokenType::LET})) {
+            consume(TokenType::IDENTIFIER, "Expected variable name");
+            if (match({TokenType::ASSIGN})) {
+                parseExpression();
+            }
+            consume(TokenType::SEMICOLON, "Expected ';'");
+        } else if (match({TokenType::IF})) {
+            consume(TokenType::LEFT_PAREN, "Expected '('");
+            parseExpression();
+            consume(TokenType::RIGHT_PAREN, "Expected ')'");
+            skipStatement();
+            if (match({TokenType::ELSE})) {
+                skipStatement();
+            }
+        } else if (match({TokenType::WHILE})) {
+            consume(TokenType::LEFT_PAREN, "Expected '('");
+            parseExpression();
+            consume(TokenType::RIGHT_PAREN, "Expected ')'");
+            skipStatement();
+        } else if (match({TokenType::LEFT_BRACE})) {
+            while (!check(TokenType::RIGHT_BRACE) && !isAtEnd()) {
+                skipStatement();
+            }
+            consume(TokenType::RIGHT_BRACE, "Expected '}'");
+        } else {
+            parseExpression();
+            consume(TokenType::SEMICOLON, "Expected ';'");
+        }
     }
 
     // Expression parsing (recursive descent)
