@@ -299,7 +299,9 @@ namespace yeep {
     }
 
     Value BuiltinFunctions::pop(const std::vector<Value>& args) {
-        checkArgCount(args, 1, "pop");
+        if (args.size() != 1) {
+            throw std::runtime_error("pop() expects 1 argument");
+        }
         
         if (!args[0].isArray()) {
             throw std::runtime_error("pop() argument must be an array");
@@ -307,28 +309,33 @@ namespace yeep {
         
         Array arr = args[0].getArray();
         if (arr.empty()) {
-            return Value(); // nil
+            throw std::runtime_error("Cannot pop from empty array");
         }
         
         Value result = arr.back();
         arr.pop_back();
+        
         return result;
     }
 
     Value BuiltinFunctions::size(const std::vector<Value>& args) {
-        checkArgCount(args, 1, "size");
+        if (args.size() != 1) {
+            throw std::runtime_error("size() expects 1 argument");
+        }
         
         if (args[0].isArray()) {
             return Value(static_cast<double>(args[0].getArray().size()));
         } else if (args[0].isString()) {
-            return Value(static_cast<double>(args[0].getString().length()));
+            return Value(static_cast<double>(args[0].getString().size()));
+        } else {
+            throw std::runtime_error("size() argument must be an array or string");
         }
-        
-        throw std::runtime_error("size() argument must be an array or string");
     }
 
     Value BuiltinFunctions::get(const std::vector<Value>& args) {
-        checkArgCount(args, 2, "get");
+        if (args.size() != 2) {
+            throw std::runtime_error("get() expects 2 arguments");
+        }
         
         if (!args[0].isArray()) {
             throw std::runtime_error("get() first argument must be an array");
@@ -349,7 +356,9 @@ namespace yeep {
     }
 
     Value BuiltinFunctions::set(const std::vector<Value>& args) {
-        checkArgCount(args, 3, "set");
+        if (args.size() != 3) {
+            throw std::runtime_error("set() expects 3 arguments");
+        }
         
         if (!args[0].isArray()) {
             throw std::runtime_error("set() first argument must be an array");
@@ -359,7 +368,8 @@ namespace yeep {
             throw std::runtime_error("set() second argument must be a number");
         }
         
-        // Note: This creates a new array rather than modifying in place
+        // Note: This would need reference semantics to work properly
+        // For now, it returns a modified copy
         Array arr = args[0].getArray();
         int index = static_cast<int>(args[1].getNumber());
         
