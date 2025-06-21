@@ -261,15 +261,14 @@ namespace yeep {
         std::vector<Token> savedTokens = tokens_;
         bool savedHasReturned = hasReturned_;
         Value savedReturnValue = returnValue_;
-        
-        // Execute function body
+          // Execute function body
         tokens_ = func.getBody();
         current_ = 0;
         hasReturned_ = false;
         returnValue_ = Value(); // nil by default
         
         try {
-            while (current_ < tokens_.size() && !hasReturned_) {
+            while (!isAtEnd() && !hasReturned_) {
                 parseStatement();
             }
         } catch (const std::exception& e) {

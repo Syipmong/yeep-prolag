@@ -1,0 +1,9 @@
+// Function with parameters test
+fun add(a, b) {
+    return a + b;
+}
+
+print "Before function call";
+let result = add(5, 3);
+print "Result: " + str(result);
+print "After function call";

@@ -1,0 +1,8 @@
+// Simple function test
+fun hello() {
+    print "Hello from function!";
+}
+
+print "Before function call";
+hello();
+print "After function call";
