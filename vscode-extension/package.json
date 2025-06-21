@@ -1,17 +1,21 @@
-{  "name": "yeep-language",
+{
+  "name": "yeep-language",
   "displayName": "Yeep Programming Language",
-  "description": "Syntax highlighting and language support for the Yeep programming language - a simple, interpreted language with variables, arithmetic, and logical operations",
-  "version": "1.0.5",
+  "description": "🎯 Official VSCode extension for Yeep v2.0.1 - Modern syntax highlighting, IntelliSense, and language support for the Yeep programming language. Features include variables, functions, control flow, built-in functions, and interactive REPL support.",
+  "version": "2.0.2",
   "publisher": "YipmongSaid",
+  "icon": "icon.png",
   "galleryBanner": {
-    "color": "#1e1e1e",
+    "color": "#2D5A87",
     "theme": "dark"
   },
   "engines": {
-    "vscode": "^1.60.0"
+    "vscode": "^1.74.0"
   },
   "categories": [
-    "Programming Languages"
+    "Programming Languages",
+    "Snippets",
+    "Other"
   ],
   "keywords": [
     "yeep",
@@ -20,9 +24,18 @@
     "syntax",
     "highlighting",
     "interpreter",
-    "scripting"
+    "scripting",
+    "repl",
+    "c++",
+    "modern",
+    "v2.0.1",
+    "cross-platform",
+    "functions",
+    "variables"
+  ],  "activationEvents": [
+    "onLanguage:yeep"
   ],
-  "contributes": {
+  "main": "./src/extension.js","contributes": {
     "languages": [
       {
         "id": "yeep",
@@ -33,7 +46,11 @@
         "extensions": [
           ".yeep"
         ],
-        "configuration": "./language-configuration.json"
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./icon.png",
+          "dark": "./icon.png"
+        }
       }
     ],
     "grammars": [
@@ -41,6 +58,54 @@
         "language": "yeep",
         "scopeName": "source.yeep",
         "path": "./syntaxes/yeep.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "yeep",
+        "path": "./snippets/yeep.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "yeep.runFile",
+        "title": "Run Yeep File",
+        "category": "Yeep"
+      },
+      {
+        "command": "yeep.runInteractive",
+        "title": "Start Yeep REPL",
+        "category": "Yeep"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "when": "resourceExtname == .yeep",
+          "command": "yeep.runFile",
+          "group": "navigation"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "yeep.runFile",
+          "when": "resourceExtname == .yeep"
+        },
+        {
+          "command": "yeep.runInteractive"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "yeep.runFile",
+        "key": "f5",
+        "when": "resourceExtname == .yeep"
+      },
+      {
+        "command": "yeep.runInteractive",
+        "key": "ctrl+shift+y",
+        "mac": "cmd+shift+y"
       }
     ]
   },

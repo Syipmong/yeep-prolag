@@ -15,18 +15,26 @@
       "include": "#keywords"
     },
     {
+      "include": "#builtin-functions"
+    },
+    {
       "include": "#operators"
     },
     {
+      "include": "#punctuation"
+    },
+    {
       "include": "#variables"
+    },
+    {
+      "include": "#function-calls"
     }
   ],
-  "repository": {
-    "comments": {
+  "repository": {    "comments": {
       "patterns": [
         {
-          "name": "comment.line.number-sign.yeep",
-          "match": "#.*$"
+          "name": "comment.line.double-slash.yeep",
+          "match": "//.*$"
         }
       ]
     },
@@ -39,7 +47,7 @@
           "patterns": [
             {
               "name": "constant.character.escape.yeep",
-              "match": "\\\\."
+              "match": "\\\\[\"\\\\nrt]"
             }
           ]
         }
@@ -48,20 +56,50 @@
     "numbers": {
       "patterns": [
         {
-          "name": "constant.numeric.yeep",
-          "match": "\\b\\d+(\\.\\d+)?\\b"
+          "name": "constant.numeric.decimal.yeep",
+          "match": "\\b\\d+\\.\\d+\\b"
+        },
+        {
+          "name": "constant.numeric.integer.yeep",
+          "match": "\\b\\d+\\b"
         }
       ]
     },
     "keywords": {
       "patterns": [
         {
-          "name": "keyword.control.yeep",
-          "match": "\\b(if|else|while|for|function|return)\\b"
+          "name": "keyword.control.conditional.yeep",
+          "match": "\\b(if|else)\\b"
+        },
+        {
+          "name": "keyword.control.loop.yeep",
+          "match": "\\b(while|for)\\b"
+        },        {
+          "name": "keyword.control.function.yeep",
+          "match": "\\b(fun|return)\\b"
         },
         {
           "name": "keyword.other.yeep",
-          "match": "\\b(print|and|or|not|true|false)\\b"
+          "match": "\\b(let)\\b"
+        },
+        {
+          "name": "constant.language.boolean.yeep",
+          "match": "\\b(true|false)\\b"
+        },
+        {
+          "name": "constant.language.null.yeep",
+          "match": "\\b(null|undefined)\\b"
+        },
+        {
+          "name": "keyword.operator.logical.yeep",
+          "match": "\\b(and|or|not)\\b"
+        }
+      ]
+    },    "builtin-functions": {
+      "patterns": [
+        {
+          "name": "support.function.builtin.yeep",
+          "match": "\\b(print|input|str|length|uppercase|lowercase|sqrt|max|min|abs|floor|ceil|round|size|get|push|pop|type|random|range)\\b"
         }
       ]
     },
@@ -78,6 +116,54 @@
         {
           "name": "keyword.operator.assignment.yeep",
           "match": "="
+        },
+        {
+          "name": "keyword.operator.logical.yeep",
+          "match": "(&&|\\|\\||!)"
+        }
+      ]
+    },
+    "punctuation": {
+      "patterns": [
+        {
+          "name": "punctuation.terminator.statement.yeep",
+          "match": ";"
+        },
+        {
+          "name": "punctuation.separator.comma.yeep",
+          "match": ","
+        },
+        {
+          "name": "punctuation.section.brackets.begin.yeep",
+          "match": "\\["
+        },
+        {
+          "name": "punctuation.section.brackets.end.yeep",
+          "match": "\\]"
+        },
+        {
+          "name": "punctuation.section.braces.begin.yeep",
+          "match": "\\{"
+        },
+        {
+          "name": "punctuation.section.braces.end.yeep",
+          "match": "\\}"
+        },
+        {
+          "name": "punctuation.section.parens.begin.yeep",
+          "match": "\\("
+        },
+        {
+          "name": "punctuation.section.parens.end.yeep",
+          "match": "\\)"
+        }
+      ]
+    },
+    "function-calls": {
+      "patterns": [
+        {
+          "name": "entity.name.function.yeep",
+          "match": "\\b[a-zA-Z_][a-zA-Z0-9_]*(?=\\s*\\()"
         }
       ]
     },
