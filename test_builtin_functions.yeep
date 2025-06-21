@@ -1,0 +1,28 @@
+print("=== Yeep v2.0 Built-in Functions Test ===");
+
+// Basic math functions
+print("Math Functions:");
+print("sqrt(16) = " + toString(sqrt(16)));
+print("abs(-5) = " + toString(abs(-5)));
+print("pow(2, 3) = " + toString(pow(2, 3)));
+print("max(1, 5, 3) = " + toString(max(1, 5, 3)));
+print("min(1, 5, 3) = " + toString(min(1, 5, 3)));
+print("floor(3.7) = " + toString(floor(3.7)));
+print("ceil(3.2) = " + toString(ceil(3.2)));
+print("round(3.6) = " + toString(round(3.6)));
+
+// String functions
+print("String Functions:");
+let text = "Hello World";
+print("length('" + text + "') = " + toString(length(text)));
+print("uppercase('" + text + "') = " + uppercase(text));
+print("lowercase('" + text + "') = " + lowercase(text));
+print("substring('" + text + "', 0, 5) = " + substring(text, 0, 5));
+
+// Type functions
+print("Type Functions:");
+print("type(42) = " + type(42));
+print("type('hello') = " + type("hello"));
+print("type(true) = " + type(true));
+
+print("=== All tests completed! ===");
