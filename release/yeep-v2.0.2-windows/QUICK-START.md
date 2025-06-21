@@ -1,4 +1,4 @@
-# Yeep v2.0.1 - Quick Start Guide
+# Yeep v2.0.2 - Quick Start Guide
 
 ## Installation
 

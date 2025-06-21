@@ -50,7 +50,7 @@ namespace {
 
 void printWelcome() {
     std::cout << colorize("╔══════════════════════════════════════════════════════════════╗", CYAN) << std::endl;
-    std::cout << colorize("║", CYAN) << colorize("               🎯 Yeep Programming Language v2.0.1            ", BOLD) << colorize("║", CYAN) << std::endl;
+    std::cout << colorize("║", CYAN) << colorize("               🎯 Yeep Programming Language v2.0.2            ", BOLD) << colorize("║", CYAN) << std::endl;
     std::cout << colorize("║", CYAN) << "                                                              " << colorize("║", CYAN) << std::endl;
     std::cout << colorize("║", CYAN) << colorize("  Interactive REPL - Read, Evaluate, Print, Loop              ", GREEN) << colorize("║", CYAN) << std::endl;
     std::cout << colorize("║", CYAN) << "                                                              " << colorize("║", CYAN) << std::endl;
@@ -102,7 +102,7 @@ void printHelp() {
 
 void printVersion() {
     std::cout << colorize("\n🎯 Yeep Programming Language", BOLD) << std::endl;
-    std::cout << colorize("Version: ", CYAN) << "2.0.1" << std::endl;
+    std::cout << colorize("Version: ", CYAN) << "2.0.2" << std::endl;
     std::cout << colorize("Built: ", CYAN) << __DATE__ << " " << __TIME__ << std::endl;
     std::cout << colorize("Architecture: ", CYAN) << "Modern C++17" << std::endl;
     std::cout << colorize("Platform: ", CYAN) << 
@@ -258,7 +258,7 @@ int runFile(const std::string& filename) {
 }
 
 void printUsage(const char* programName) {
-    std::cout << colorize("🎯 Yeep Programming Language v2.0.1", BOLD) << std::endl;
+    std::cout << colorize("🎯 Yeep Programming Language v2.0.2", BOLD) << std::endl;
     std::cout << std::endl;
     std::cout << colorize("Usage:", CYAN) << std::endl;
     std::cout << "  " << programName << "                    " << colorize("# Start interactive REPL", GREEN) << std::endl;
