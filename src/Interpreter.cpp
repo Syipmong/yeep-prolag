@@ -636,4 +636,46 @@ namespace yeep {
         }
     }
 
+    void Interpreter::parseBlockStatement() {
+        while (!check(TokenType::RIGHT_BRACE) && !isAtEnd()) {
+            parseStatement();
+        }
+        consume(TokenType::RIGHT_BRACE, "Expected '}' after block");
+    }
+
+    void Interpreter::skipStatement() {
+        // Skip a statement without executing it
+        if (match({TokenType::PRINT})) {
+            parseExpression();
+            consume(TokenType::SEMICOLON, "Expected ';'");
+        } else if (match({TokenType::LET})) {
+            consume(TokenType::IDENTIFIER, "Expected variable name");
+            if (match({TokenType::ASSIGN})) {
+                parseExpression();
+            }
+            consume(TokenType::SEMICOLON, "Expected ';'");
+        } else if (match({TokenType::IF})) {
+            consume(TokenType::LEFT_PAREN, "Expected '('");
+            parseExpression();
+            consume(TokenType::RIGHT_PAREN, "Expected ')'");
+            skipStatement();
+            if (match({TokenType::ELSE})) {
+                skipStatement();
+            }
+        } else if (match({TokenType::WHILE})) {
+            consume(TokenType::LEFT_PAREN, "Expected '('");
+            parseExpression();
+            consume(TokenType::RIGHT_PAREN, "Expected ')'");
+            skipStatement();
+        } else if (match({TokenType::LEFT_BRACE})) {
+            while (!check(TokenType::RIGHT_BRACE) && !isAtEnd()) {
+                skipStatement();
+            }
+            consume(TokenType::RIGHT_BRACE, "Expected '}'");
+        } else {
+            parseExpression();
+            consume(TokenType::SEMICOLON, "Expected ';'");
+        }
+    }
+
 } // namespace yeep
