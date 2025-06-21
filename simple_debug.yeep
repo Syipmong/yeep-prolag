@@ -1,0 +1,6 @@
+// Very simple for loop debug
+print "=== Simple counter ===";
+for (let i = 0; i < 3; i = i + 1) {
+    print "Loop iteration: i = " + str(i);
+}
+print "=== Done ===";

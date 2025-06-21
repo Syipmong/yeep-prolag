@@ -66,8 +66,7 @@ namespace yeep {
         void parseBlockStatement();
         void parseFunctionStatement();
         void parseReturnStatement();
-        
-        // Utility methods
+          // Utility methods
         bool match(std::initializer_list<TokenType> types);
         bool check(TokenType type);
         Token advance();
@@ -76,6 +75,7 @@ namespace yeep {
         Token previous();
         Token consume(TokenType type, const std::string& message);
         void skipStatement();
+        void skipExpression(); // Skip over expression tokens without executing
         
         // Function call support
         Value callFunction(const std::string& name, const std::vector<Value>& arguments);

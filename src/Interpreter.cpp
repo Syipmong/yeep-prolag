@@ -160,9 +160,28 @@ namespace yeep {
         }
         size_t incrementEnd = current_;
         consume(TokenType::RIGHT_PAREN, "Expected ')' after for clauses");
-        
-        // Store the body start position
+          // Store the body start position
         size_t bodyStart = current_;
+        
+        // Skip over the body to find the end of the for statement
+        size_t forStatementEnd = current_;
+        int braceCount = 0;
+        if (check(TokenType::LEFT_BRACE)) {
+            braceCount = 1;
+            advance();
+            while (braceCount > 0 && !isAtEnd()) {
+                if (check(TokenType::LEFT_BRACE)) braceCount++;
+                else if (check(TokenType::RIGHT_BRACE)) braceCount--;
+                advance();
+            }
+            forStatementEnd = current_;
+        } else {
+            // Single statement body
+            size_t savedCurrent = current_;
+            skipStatement();
+            forStatementEnd = current_;
+            current_ = savedCurrent; // Restore for execution
+        }
         
         // Execute loop - evaluate condition fresh at start
         if (conditionStart < conditionEnd) {
@@ -189,9 +208,11 @@ namespace yeep {
                 condition = parseExpression();
             } else {
                 break; // No condition means run once
-            }        }
+            }
+        }
         
-        // No need to skip anything - we've completed the loop normally
+        // Position parser at the end of the for statement for continued parsing
+        current_ = forStatementEnd;
     }
 
     void Interpreter::parseFunctionStatement() {
@@ -696,20 +717,19 @@ namespace yeep {
         consume(TokenType::RIGHT_BRACE, "Expected '}' after block");
     }
 
-    void Interpreter::skipStatement() {
-        // Skip a statement without executing it
+    void Interpreter::skipStatement() {        // Skip a statement without executing it
         if (match({TokenType::PRINT})) {
-            parseExpression();
+            skipExpression();
             consume(TokenType::SEMICOLON, "Expected ';'");
         } else if (match({TokenType::LET})) {
             consume(TokenType::IDENTIFIER, "Expected variable name");
             if (match({TokenType::ASSIGN})) {
-                parseExpression();
+                skipExpression();
             }
             consume(TokenType::SEMICOLON, "Expected ';'");
         } else if (match({TokenType::IF})) {
             consume(TokenType::LEFT_PAREN, "Expected '('");
-            parseExpression();
+            skipExpression();
             consume(TokenType::RIGHT_PAREN, "Expected ')'");
             skipStatement();
             if (match({TokenType::ELSE})) {
@@ -717,7 +737,7 @@ namespace yeep {
             }
         } else if (match({TokenType::WHILE})) {
             consume(TokenType::LEFT_PAREN, "Expected '('");
-            parseExpression();
+            skipExpression();
             consume(TokenType::RIGHT_PAREN, "Expected ')'");
             skipStatement();
         } else if (match({TokenType::LEFT_BRACE})) {
@@ -726,8 +746,38 @@ namespace yeep {
             }
             consume(TokenType::RIGHT_BRACE, "Expected '}'");
         } else {
-            parseExpression();
+            skipExpression();
             consume(TokenType::SEMICOLON, "Expected ';'");
+        }}
+
+    void Interpreter::skipExpression() {
+        // Skip over expression tokens without executing them
+        int parenCount = 0;
+        int bracketCount = 0;
+        
+        while (!isAtEnd()) {
+            TokenType type = peek().getType();
+            
+            if (type == TokenType::LEFT_PAREN) {
+                parenCount++;
+            } else if (type == TokenType::RIGHT_PAREN) {
+                parenCount--;
+                if (parenCount < 0) break; // Reached end of expression
+            } else if (type == TokenType::LEFT_BRACKET) {
+                bracketCount++;
+            } else if (type == TokenType::RIGHT_BRACKET) {
+                bracketCount--;
+                if (bracketCount < 0) break; // Reached end of expression
+            } else if (parenCount == 0 && bracketCount == 0) {
+                // At top level, check for expression terminators
+                if (type == TokenType::SEMICOLON || type == TokenType::COMMA ||
+                    type == TokenType::RIGHT_PAREN || type == TokenType::RIGHT_BRACKET ||
+                    type == TokenType::RIGHT_BRACE || type == TokenType::EOF_TOKEN) {
+                    break;
+                }
+            }
+            
+            advance();
         }
     }
 
