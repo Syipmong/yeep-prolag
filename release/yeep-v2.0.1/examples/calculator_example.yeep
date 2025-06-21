@@ -1,0 +1,31 @@
+// Calculator example with built-in functions
+print("=== Yeep Calculator ===");
+
+let a = 15.5;
+let b = 4.2;
+
+print("Basic Operations:");
+print("a = " + toString(a));
+print("b = " + toString(b));
+print("a + b = " + toString(a + b));
+print("a - b = " + toString(a - b));
+print("a * b = " + toString(a * b));
+print("a / b = " + toString(a / b));
+
+print("Advanced Math:");
+print("sqrt(a) = " + toString(sqrt(a)));
+print("pow(a, 2) = " + toString(pow(a, 2)));
+print("abs(a - b) = " + toString(abs(a - b)));
+print("max(a, b) = " + toString(max(a, b)));
+print("min(a, b) = " + toString(min(a, b)));
+
+print("Random number: " + toString(random()));
+
+print("String Operations:");
+let name = "Yeep";
+let version = "2.0";
+print("Language: " + name);
+print("Version: " + version);
+print("Full name: " + name + " v" + version);
+print("Length of name: " + toString(length(name)));
+print("Uppercase: " + uppercase(name));

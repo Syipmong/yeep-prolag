@@ -1,0 +1,27 @@
+// === Yeep v2.0 Arrays Test ===
+
+// Create arrays
+let numbers = [1, 2, 3, 4, 5];
+let names = ["Alice", "Bob", "Charlie"];
+let mixed = [1, "hello", true, 3.14];
+
+print "=== Array Creation ===";
+print "Numbers: " + str(numbers);
+print "Names: " + str(names);
+print "Mixed: " + str(mixed);
+
+print "=== Array Functions ===";
+print "Size of numbers: " + str(size(numbers));
+print "First number: " + str(get(numbers, 0));
+print "Last name: " + str(get(names, 2));
+
+// Test array manipulation
+let newNumbers = push(numbers, 6);
+print "After push(6): " + str(newNumbers);
+
+print "=== For Loop with Arrays ===";
+for (let i = 0; i < size(numbers); i = i + 1) {
+    print "numbers[" + str(i) + "] = " + str(get(numbers, i));
+}
+
+print "=== All array tests completed! ===";
