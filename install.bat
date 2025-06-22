@@ -105,31 +105,30 @@ echo 🔧 Adding to system PATH...
 
 if "!INSTALL_TYPE!"=="system" (
     REM System-wide PATH (requires admin)
-    for /f "skip=2 tokens=*" %%A in ('reg query "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /v PATH 2>nul') do set "SYSTEM_PATH=%%A"
+    for /f "skip=2 tokens=*" %%A in ('reg query "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /v PATH 2^>nul') do set "SYSTEM_PATH=%%A"
     if defined SYSTEM_PATH (
         set "SYSTEM_PATH=!SYSTEM_PATH:*REG_EXPAND_SZ=!"
         echo !SYSTEM_PATH! | findstr /i "!PATH_DIR!" >nul
         if errorlevel 1 (
-            reg add "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /v PATH /d "!SYSTEM_PATH!;!PATH_DIR!" /f >nul
+            reg add "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /v PATH /d "!SYSTEM_PATH!;!PATH_DIR!" /f >nul 2>nul
             echo ✅ Added to system PATH
         ) else (
             echo ℹ️  Already in system PATH
         )
     )
-) else (
-    REM User-specific PATH
-    for /f "skip=2 tokens=*" %%A in ('reg query "HKCU\Environment" /v PATH 2>nul') do set "USER_PATH=%%A"
+) else (REM User-specific PATH
+    for /f "skip=2 tokens=*" %%A in ('reg query "HKCU\Environment" /v PATH 2^>nul') do set "USER_PATH=%%A"
     if defined USER_PATH (
         set "USER_PATH=!USER_PATH:*REG_SZ=!"
         echo !USER_PATH! | findstr /i "!PATH_DIR!" >nul
         if errorlevel 1 (
-            reg add "HKCU\Environment" /v PATH /d "!USER_PATH!;!PATH_DIR!" /f >nul
+            reg add "HKCU\Environment" /v PATH /d "!USER_PATH!;!PATH_DIR!" /f >nul 2>nul
             echo ✅ Added to user PATH
         ) else (
             echo ℹ️  Already in user PATH
         )
     ) else (
-        reg add "HKCU\Environment" /v PATH /d "!PATH_DIR!" /f >nul
+        reg add "HKCU\Environment" /v PATH /d "!PATH_DIR!" /f >nul 2>nul
         echo ✅ Added to user PATH
     )
 )
