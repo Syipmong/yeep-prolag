@@ -50,7 +50,7 @@ namespace {
 
 void printWelcome() {
     std::cout << colorize("╔══════════════════════════════════════════════════════════════╗", CYAN) << std::endl;
-    std::cout << colorize("║", CYAN) << colorize("               🎯 Yeep Programming Language v2.0.3            ", BOLD) << colorize("║", CYAN) << std::endl;
+    std::cout << colorize("║", CYAN) << colorize("               🎯 Yeep Programming Language v2.0.4            ", BOLD) << colorize("║", CYAN) << std::endl;
     std::cout << colorize("║", CYAN) << "                                                              " << colorize("║", CYAN) << std::endl;
     std::cout << colorize("║", CYAN) << colorize("  Interactive REPL - Read, Evaluate, Print, Loop              ", GREEN) << colorize("║", CYAN) << std::endl;
     std::cout << colorize("║", CYAN) << "                                                              " << colorize("║", CYAN) << std::endl;
@@ -59,8 +59,8 @@ void printWelcome() {
     std::cout << colorize("║", CYAN) << colorize("    version  ", YELLOW) << "- Show version information                    " << colorize("║", CYAN) << std::endl;
     std::cout << colorize("║", CYAN) << colorize("    clear    ", YELLOW) << "- Clear the screen                            " << colorize("║", CYAN) << std::endl;
     std::cout << colorize("║", CYAN) << colorize("    vars     ", YELLOW) << "- Show all variables                          " << colorize("║", CYAN) << std::endl;
-    std::cout << colorize("║", CYAN) << colorize("    funcs    ", YELLOW) << "- Show all functions                          " << colorize("║", CYAN) << std::endl;
-    std::cout << colorize("║", CYAN) << colorize("    examples ", YELLOW) << "- Show example code                           " << colorize("║", CYAN) << std::endl;
+    std::cout << colorize("║", CYAN) << colorize("    funcs    ", YELLOW) << "- Show all functions                          " << colorize("║", CYAN) << std::endl;    std::cout << colorize("║", CYAN) << colorize("    examples ", YELLOW) << "- Show example code                           " << colorize("║", CYAN) << std::endl;
+    std::cout << colorize("║", CYAN) << colorize("    features ", YELLOW) << "- Show new features in v2.0.4                " << colorize("║", CYAN) << std::endl;
     std::cout << colorize("║", CYAN) << colorize("    exit     ", YELLOW) << "- Exit the REPL                               " << colorize("║", CYAN) << std::endl;
     std::cout << colorize("║", CYAN) << "                                                              " << colorize("║", CYAN) << std::endl;
     std::cout << colorize("║", CYAN) << "  Type Yeep expressions and press Enter to evaluate them.   " << colorize("║", CYAN) << std::endl;
@@ -84,13 +84,16 @@ void printHelp() {
     std::cout << "      return \"Hello, \" + name + \"!\";" << std::endl;
     std::cout << "  }" << std::endl;
     std::cout << std::endl;
-    
-    std::cout << colorize("Built-in Functions:", CYAN) << std::endl;
+      std::cout << colorize("Built-in Functions:", CYAN) << std::endl;
     std::cout << "  print(value)                   // Output to console" << std::endl;
     std::cout << "  str(value)                     // Convert to string" << std::endl;
     std::cout << "  sqrt(16)                       // Math functions" << std::endl;
     std::cout << "  length(\"hello\")                // String/array length" << std::endl;
     std::cout << "  max(1, 5, 3)                   // Maximum value" << std::endl;
+    std::cout << "  readFile(\"data.txt\")           // Read file contents" << std::endl;
+    std::cout << "  writeFile(\"out.txt\", \"data\")   // Write to file" << std::endl;
+    std::cout << "  env(\"PATH\")                    // Get environment variable" << std::endl;
+    std::cout << "  now()                          // Current timestamp" << std::endl;
     std::cout << std::endl;
     
     std::cout << colorize("Control Flow:", CYAN) << std::endl;
@@ -102,7 +105,7 @@ void printHelp() {
 
 void printVersion() {
     std::cout << colorize("\n🎯 Yeep Programming Language", BOLD) << std::endl;
-    std::cout << colorize("Version: ", CYAN) << "2.0.3" << std::endl;
+    std::cout << colorize("Version: ", CYAN) << "2.0.4" << std::endl;
     std::cout << colorize("Built: ", CYAN) << __DATE__ << " " << __TIME__ << std::endl;
     std::cout << colorize("Architecture: ", CYAN) << "Modern C++17" << std::endl;
     std::cout << colorize("Platform: ", CYAN) << 
@@ -149,6 +152,34 @@ void printExamples() {
     std::cout << "       return n * factorial(n - 1);" << std::endl;
     std::cout << "   }" << std::endl;
     std::cout << "   print(factorial(5));" << std::endl;
+    std::cout << std::endl;
+}
+
+void printFeatures() {
+    std::cout << colorize("\n🚀 New Features in Yeep v2.0.4:", BOLD) << std::endl;
+    std::cout << std::endl;
+    
+    std::cout << colorize("1. Enhanced REPL Commands:", YELLOW) << std::endl;
+    std::cout << "   " << colorize("vars", CYAN) << " - View all defined variables with types" << std::endl;
+    std::cout << "   " << colorize("funcs", CYAN) << " - View all functions (user-defined & built-ins)" << std::endl;
+    std::cout << std::endl;
+    
+    std::cout << colorize("2. File I/O Operations:", YELLOW) << std::endl;
+    std::cout << "   " << colorize("readFile(\"data.txt\")", GREEN) << " - Read entire file as string" << std::endl;
+    std::cout << "   " << colorize("writeFile(\"out.txt\", content)", GREEN) << " - Write string to file" << std::endl;
+    std::cout << "   " << colorize("fileExists(\"file.txt\")", GREEN) << " - Check if file exists" << std::endl;
+    std::cout << std::endl;
+    
+    std::cout << colorize("3. System Integration:", YELLOW) << std::endl;
+    std::cout << "   " << colorize("env(\"PATH\")", GREEN) << " - Get environment variables" << std::endl;
+    std::cout << "   " << colorize("now()", GREEN) << " - Current timestamp" << std::endl;
+    std::cout << "   " << colorize("exec(\"ls\")", GREEN) << " - Execute system commands" << std::endl;
+    std::cout << std::endl;
+    
+    std::cout << colorize("4. Examples:", YELLOW) << std::endl;    std::cout << "   let config = readFile(\"config.txt\");" << std::endl;
+    std::cout << "   writeFile(\"log.txt\", \"Started at: \" + str(now()));" << std::endl;
+    std::cout << "   let home = env(\"HOME\");" << std::endl;
+    std::cout << "   if (fileExists(\"backup.txt\")) { print(\"Backup found!\"); }" << std::endl;
     std::cout << std::endl;
 }
 
@@ -199,18 +230,70 @@ void runRepl() {
         } else if (input == "clear") {
             clearScreen();
             printWelcome();
-            continue;
-        } else if (input == "examples") {
+            continue;        } else if (input == "examples") {
             printExamples();
+            continue;
+        } else if (input == "features") {
+            printFeatures();
             continue;
         } else if (input == "exit" || input == "quit") {
             std::cout << colorize("Goodbye! Thanks for using Yeep! 👋", YELLOW) << std::endl;
-            break;
-        } else if (input == "vars") {
-            std::cout << colorize("🔍 Variable inspection not yet implemented", YELLOW) << std::endl;
+            break;        } else if (input == "vars") {
+            // Show all variables
+            const auto& vars = interpreter.getGlobals();
+            if (vars.empty()) {
+                std::cout << colorize("� No variables defined", YELLOW) << std::endl;
+            } else {
+                std::cout << colorize("🔍 Global Variables:", BOLD) << std::endl;                for (const auto& [name, value] : vars) {
+                    std::cout << "  " << colorize(name, CYAN) << " = ";
+                    if (value.isString()) {
+                        std::cout << colorize("\"" + value.toString() + "\"", GREEN);
+                    } else if (value.isNumber()) {
+                        std::cout << colorize(value.toString(), BLUE);
+                    } else if (value.isBool()) {
+                        std::cout << colorize(value.toString(), MAGENTA);
+                    } else if (value.isArray()) {
+                        std::cout << colorize(value.toString(), YELLOW);
+                    } else {
+                        std::cout << colorize(value.toString(), YELLOW);
+                    }                    std::cout << std::endl;
+                }
+            }
+            std::cout << std::endl;
             continue;
         } else if (input == "funcs") {
-            std::cout << colorize("🔍 Function inspection not yet implemented", YELLOW) << std::endl;
+            // Show all functions
+            const auto& funcs = interpreter.getFunctions();
+            if (funcs.empty()) {
+                std::cout << colorize("📭 No user-defined functions", YELLOW) << std::endl;
+            } else {
+                std::cout << colorize("🔍 User-Defined Functions:", BOLD) << std::endl;
+                for (const auto& [name, func] : funcs) {
+                    std::cout << "  " << colorize("fun " + name, CYAN) << "(";
+                    const auto& params = func.getParameters();
+                    for (size_t i = 0; i < params.size(); ++i) {
+                        if (i > 0) std::cout << ", ";
+                        std::cout << colorize(params[i], YELLOW);
+                    }
+                    std::cout << ")" << std::endl;
+                }
+            }
+            std::cout << std::endl;            std::cout << colorize("Built-in Functions:", BOLD) << std::endl;
+            std::cout << "  " << colorize("print", CYAN) << "(value) - Output to console" << std::endl;
+            std::cout << "  " << colorize("str", CYAN) << "(value) - Convert to string" << std::endl;
+            std::cout << "  " << colorize("sqrt", CYAN) << "(number) - Square root" << std::endl;
+            std::cout << "  " << colorize("abs", CYAN) << "(number) - Absolute value" << std::endl;
+            std::cout << "  " << colorize("max", CYAN) << "(...numbers) - Maximum value" << std::endl;
+            std::cout << "  " << colorize("min", CYAN) << "(...numbers) - Minimum value" << std::endl;
+            std::cout << "  " << colorize("size", CYAN) << "(array) - Array length" << std::endl;
+            std::cout << "  " << colorize("get", CYAN) << "(array, index) - Get array element" << std::endl;
+            std::cout << "  " << colorize("set", CYAN) << "(array, index, value) - Set array element" << std::endl;
+            std::cout << "  " << colorize("readFile", CYAN) << "(filename) - Read file contents" << std::endl;
+            std::cout << "  " << colorize("writeFile", CYAN) << "(filename, content) - Write to file" << std::endl;
+            std::cout << "  " << colorize("fileExists", CYAN) << "(filename) - Check if file exists" << std::endl;
+            std::cout << "  " << colorize("env", CYAN) << "(varname) - Get environment variable" << std::endl;
+            std::cout << "  " << colorize("now", CYAN) << "() - Current timestamp" << std::endl;
+            std::cout << "  " << colorize("exec", CYAN) << "(command) - Execute system command" << std::endl;
             continue;
         }
         
@@ -258,7 +341,7 @@ int runFile(const std::string& filename) {
 }
 
 void printUsage(const char* programName) {
-    std::cout << colorize("🎯 Yeep Programming Language v2.0.3", BOLD) << std::endl;
+    std::cout << colorize("🎯 Yeep Programming Language v2.0.4", BOLD) << std::endl;
     std::cout << std::endl;
     std::cout << colorize("Usage:", CYAN) << std::endl;
     std::cout << "  " << programName << "                    " << colorize("# Start interactive REPL", GREEN) << std::endl;

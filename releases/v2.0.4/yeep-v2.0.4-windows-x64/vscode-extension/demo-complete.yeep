@@ -1,0 +1,99 @@
+// === Yeep v2.0.1 VSCode Extension Demo ===
+// This file showcases all the syntax highlighting and IntelliSense features
+
+// === 1. Comments ===
+// Single line comments work perfectly
+// TODO: Add more features
+// FIXME: Check this later
+
+// === 2. Variables ===
+let name = "Yeep Developer";
+let version = 2.0;
+let isAwesome = true;
+let features = ["syntax highlighting", "snippets", "IntelliSense"];
+
+// === 3. Functions ===
+fun greet(person) {
+    return "Hello, " + person + "!";
+}
+
+fun calculateArea(width, height) {
+    return width * height;
+}
+
+fun fibonacci(n) {
+    if (n <= 1) {
+        return n;
+    }
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+// === 4. Control Flow ===
+if (version >= 2.0) {
+    print("Using modern Yeep!");
+} else {
+    print("Please upgrade to Yeep v2.0+");
+}
+
+let counter = 0;
+while (counter < 3) {
+    print("Loop iteration: " + str(counter));
+    counter = counter + 1;
+}
+
+// === 5. Built-in Functions ===
+print("String length: " + str(length(name)));
+print("Uppercase: " + uppercase("yeep"));
+print("Square root: " + str(sqrt(25)));
+print("Maximum: " + str(max(10, 20, 15)));
+
+// === 6. Arrays ===
+let numbers = [1, 2, 3, 4, 5];
+print("Array size: " + str(size(numbers)));
+print("First element: " + str(get(numbers, 0)));
+print("After push: " + str(push(numbers, 6)));
+
+// === 7. Complex Example ===
+fun processData(data) {
+    let result = [];
+    let i = 0;
+    
+    while (i < size(data)) {
+        let item = get(data, i);
+        if (item > 0) {
+            result = push(result, item * 2);
+        }
+        i = i + 1;
+    }
+    
+    return result;
+}
+
+let testData = [-1, 2, -3, 4, 5];
+let processed = processData(testData);
+print("Processed data: " + str(processed));
+
+// === 8. Mathematical Operations ===
+let a = 10;
+let b = 3;
+print("Addition: " + str(a + b));
+print("Subtraction: " + str(a - b));
+print("Multiplication: " + str(a * b));
+print("Division: " + str(a / b));
+
+// === 9. Logical Operations ===
+let x = true;
+let y = false;
+print("AND: " + str(x && y));
+print("OR: " + str(x || y));
+print("NOT: " + str(!x));
+
+// === 10. Comparisons ===
+print("Equal: " + str(a == b));
+print("Not equal: " + str(a != b));
+print("Greater: " + str(a > b));
+print("Less: " + str(a < b));
+print("Greater or equal: " + str(a >= b));
+print("Less or equal: " + str(a <= b));
+
+print("=== Yeep VSCode Extension Demo Complete! ===");

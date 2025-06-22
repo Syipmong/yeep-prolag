@@ -1,0 +1,120 @@
+{
+  "name": "yeep-language",
+  "displayName": "Yeep Programming Language",
+  "description": "🎯 Official VSCode extension for Yeep v2.0.1 - Modern syntax highlighting, IntelliSense, and language support for the Yeep programming language. Features include variables, functions, control flow, built-in functions, and interactive REPL support.",
+  "version": "2.0.2",
+  "publisher": "YipmongSaid",
+  "icon": "icon.png",
+  "galleryBanner": {
+    "color": "#2D5A87",
+    "theme": "dark"
+  },
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets",
+    "Other"
+  ],
+  "keywords": [
+    "yeep",
+    "programming",
+    "language",
+    "syntax",
+    "highlighting",
+    "interpreter",
+    "scripting",
+    "repl",
+    "c++",
+    "modern",
+    "v2.0.1",
+    "cross-platform",
+    "functions",
+    "variables"
+  ],  "activationEvents": [
+    "onLanguage:yeep"
+  ],
+  "main": "./src/extension.js","contributes": {
+    "languages": [
+      {
+        "id": "yeep",
+        "aliases": [
+          "Yeep",
+          "yeep"
+        ],
+        "extensions": [
+          ".yeep"
+        ],
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./icon.png",
+          "dark": "./icon.png"
+        }
+      }
+    ],
+    "grammars": [
+      {
+        "language": "yeep",
+        "scopeName": "source.yeep",
+        "path": "./syntaxes/yeep.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "yeep",
+        "path": "./snippets/yeep.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "yeep.runFile",
+        "title": "Run Yeep File",
+        "category": "Yeep"
+      },
+      {
+        "command": "yeep.runInteractive",
+        "title": "Start Yeep REPL",
+        "category": "Yeep"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "when": "resourceExtname == .yeep",
+          "command": "yeep.runFile",
+          "group": "navigation"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "yeep.runFile",
+          "when": "resourceExtname == .yeep"
+        },
+        {
+          "command": "yeep.runInteractive"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "yeep.runFile",
+        "key": "f5",
+        "when": "resourceExtname == .yeep"
+      },
+      {
+        "command": "yeep.runInteractive",
+        "key": "ctrl+shift+y",
+        "mac": "cmd+shift+y"
+      }
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Syipmong/yeep-prolag.git"
+  },
+  "homepage": "https://github.com/Syipmong/yeep-prolag/wiki",
+  "bugs": {
+    "url": "https://github.com/Syipmong/yeep-prolag/issues"
+  },  "license": "MIT"
+}

@@ -41,9 +41,16 @@ namespace yeep {
         static Value type(const std::vector<Value>& args);
         static Value toString(const std::vector<Value>& args);
         static Value toNumber(const std::vector<Value>& args);
-        
-        // I/O functions
+          // I/O functions
         static Value input(const std::vector<Value>& args);
+        static Value readFile(const std::vector<Value>& args);
+        static Value writeFile(const std::vector<Value>& args);
+        static Value fileExists(const std::vector<Value>& args);
+        
+        // System functions
+        static Value env(const std::vector<Value>& args);
+        static Value currentTime(const std::vector<Value>& args);
+        static Value exec(const std::vector<Value>& args);
         
         // Utility
         static void checkArgCount(const std::vector<Value>& args, size_t expected, const std::string& name);

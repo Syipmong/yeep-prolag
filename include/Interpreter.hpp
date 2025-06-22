@@ -29,14 +29,16 @@ namespace yeep {
         std::vector<Token> body_;
         size_t bodyStart_;
         size_t bodyEnd_;
-    };
-
-    class Interpreter {
+    };    class Interpreter {
     public:
         Interpreter();
         void interpret(const std::vector<Token>& tokens);
         
-    private:        std::vector<Token> tokens_;
+        // REPL inspection methods
+        const std::unordered_map<std::string, Value>& getGlobals() const { return globals_; }
+        const std::unordered_map<std::string, Function>& getFunctions() const { return functions_; }
+        
+    private:std::vector<Token> tokens_;
         size_t current_;
         std::unordered_map<std::string, Value> globals_;
         std::unordered_map<std::string, Function> functions_;
@@ -86,9 +88,7 @@ namespace yeep {
         
         // Expression evaluation
         Value evaluateBinary(const Value& left, TokenType op, const Value& right);
-        Value evaluateUnary(TokenType op, const Value& operand);
-        
-        // Error handling
+        Value evaluateUnary(TokenType op, const Value& operand);        // Error handling
         void error(const std::string& message);
         void synchronize();
     };

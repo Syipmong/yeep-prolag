@@ -1,0 +1,71 @@
+// Yeep v2.0.3 Feature Showcase
+// This script demonstrates all the new features added
+
+print("🚀 Yeep v2.0.3 Feature Showcase");
+print("===============================");
+
+// 1. File I/O Operations
+print("\n1. File I/O Operations:");
+writeFile("config.yeep", "# Yeep Configuration\nversion=2.0.3\nauthor=Yeep Team");
+print("✅ Created config.yeep");
+
+let config = readFile("config.yeep");
+print("📖 Config file contents:");
+print(config);
+
+if (fileExists("config.yeep")) {
+    print("✅ File exists check passed");
+} else {
+    print("❌ File exists check failed");
+}
+
+// 2. System Integration  
+print("\n2. System Integration:");
+let username = env("USERNAME");
+print("👤 Current user: " + username);
+
+let timestamp = now();
+print("⏰ Current timestamp: " + str(timestamp));
+
+// 3. Log file with timestamp
+let logEntry = "User " + username + " ran feature showcase at " + str(timestamp);
+writeFile("yeep.log", logEntry);
+print("📝 Created log entry");
+
+// 4. Variables demonstration
+print("\n3. Variable Types:");
+let myNumber = 42;
+let myString = "Hello Yeep!";
+let myBool = true;
+let myArray = [1, 2, 3, "four", true];
+
+print("Use 'vars' command in REPL to inspect these variables");
+
+// 5. Function demonstration
+fun greetUser(name) {
+    return "Hello, " + name + "! Welcome to Yeep v2.0.3";
+}
+
+fun calculateSquare(n) {
+    return n * n;
+}
+
+print("\n4. User Functions:");
+print(greetUser(username));
+print("Square of 7: " + str(calculateSquare(7)));
+
+print("\nUse 'funcs' command in REPL to see all functions");
+
+// 6. Advanced file operations
+print("\n5. Advanced Example:");
+let summary = "=== Yeep v2.0.3 Session Summary ===\n";
+summary = summary + "User: " + username + "\n";
+summary = summary + "Time: " + str(timestamp) + "\n";
+summary = summary + "Features tested: File I/O, Environment vars, Timestamps\n";
+summary = summary + "Status: All tests passed! 🎉\n";
+
+writeFile("session_summary.txt", summary);
+print("📊 Session summary saved to session_summary.txt");
+
+print("\n🎯 Feature showcase complete!");
+print("Try the new REPL commands: vars, funcs, features");

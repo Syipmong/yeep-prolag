@@ -5,6 +5,9 @@
 #include <stdexcept>
 #include <random>
 #include <chrono>
+#include <fstream>
+#include <cstdlib>
+#include <cstdio>
 
 namespace yeep {
 
@@ -42,9 +45,22 @@ namespace yeep {
         functions_["str"] = toString;  // alias
         functions_["toNumber"] = toNumber;
         functions_["num"] = toNumber;  // alias
-        
-        // I/O functions
+          // I/O functions
         functions_["input"] = input;
+        functions_["readFile"] = readFile;
+        functions_["readfile"] = readFile;  // alias
+        functions_["writeFile"] = writeFile;
+        functions_["writefile"] = writeFile;  // alias
+        functions_["fileExists"] = fileExists;
+        functions_["exists"] = fileExists;  // alias
+        
+        // System functions
+        functions_["env"] = env;
+        functions_["environment"] = env;  // alias
+        functions_["now"] = currentTime;
+        functions_["time"] = currentTime;  // alias
+        functions_["exec"] = exec;
+        functions_["system"] = exec;  // alias
         
         // Array functions
         functions_["push"] = push;
@@ -379,13 +395,103 @@ namespace yeep {
         
         arr[index] = args[2];
         return Value(arr);
-    }
-
-    void BuiltinFunctions::checkArgCount(const std::vector<Value>& args, size_t expected, const std::string& name) {
+    }    void BuiltinFunctions::checkArgCount(const std::vector<Value>& args, size_t expected, const std::string& name) {
         if (args.size() != expected) {
             throw std::runtime_error(name + "() expects " + std::to_string(expected) + 
                                    " arguments, got " + std::to_string(args.size()));
         }
+    }
+
+    // File I/O functions
+    Value BuiltinFunctions::readFile(const std::vector<Value>& args) {
+        checkArgCount(args, 1, "readFile");
+        
+        if (!args[0].isString()) {
+            throw std::runtime_error("readFile() argument must be a string");
+        }
+        
+        std::ifstream file(args[0].getString());
+        if (!file.is_open()) {
+            throw std::runtime_error("Failed to open file: " + args[0].getString());
+        }
+        
+        std::string content((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+        file.close();
+        
+        return Value(content);
+    }
+
+    Value BuiltinFunctions::writeFile(const std::vector<Value>& args) {
+        checkArgCount(args, 2, "writeFile");
+        
+        if (!args[0].isString()) {
+            throw std::runtime_error("writeFile() first argument must be a string (filename)");
+        }
+        if (!args[1].isString()) {
+            throw std::runtime_error("writeFile() second argument must be a string (content)");
+        }
+        
+        std::ofstream file(args[0].getString());
+        if (!file.is_open()) {
+            throw std::runtime_error("Failed to create/open file: " + args[0].getString());
+        }
+        
+        file << args[1].getString();
+        file.close();
+        
+        return Value(true);  // Success
+    }
+
+    Value BuiltinFunctions::fileExists(const std::vector<Value>& args) {
+        checkArgCount(args, 1, "fileExists");
+        
+        if (!args[0].isString()) {
+            throw std::runtime_error("fileExists() argument must be a string");
+        }
+        
+        std::ifstream file(args[0].getString());
+        bool exists = file.good();
+        file.close();
+        
+        return Value(exists);
+    }
+
+    // System functions
+    Value BuiltinFunctions::env(const std::vector<Value>& args) {
+        checkArgCount(args, 1, "env");
+        
+        if (!args[0].isString()) {
+            throw std::runtime_error("env() argument must be a string");
+        }
+        
+        const char* envVar = std::getenv(args[0].getString().c_str());
+        if (envVar == nullptr) {
+            return Value();  // nil
+        }
+        
+        return Value(std::string(envVar));
+    }
+
+    Value BuiltinFunctions::currentTime(const std::vector<Value>& args) {
+        if (args.size() != 0) {
+            throw std::runtime_error("now() expects no arguments");
+        }
+        
+        auto now = std::chrono::system_clock::now();
+        auto time_t = std::chrono::system_clock::to_time_t(now);
+        
+        return Value(static_cast<double>(time_t));
+    }
+
+    Value BuiltinFunctions::exec(const std::vector<Value>& args) {
+        checkArgCount(args, 1, "exec");
+        
+        if (!args[0].isString()) {
+            throw std::runtime_error("exec() argument must be a string");
+        }
+        
+        int result = std::system(args[0].getString().c_str());
+        return Value(static_cast<double>(result));
     }
 
 } // namespace yeep

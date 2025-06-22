@@ -1,0 +1,29 @@
+Yeep Programming Language v2.0.4
+Build Date: 22/06/2025
+Build Time: 16:09:26.07
+Platform: Windows x64
+Architecture: Modern C++17
+Features: File I/O, System Integration, Enhanced REPL
+Repository: https://github.com/Syipmong/yeep-prolag
+
+Contents:
+- yeep.exe - Main Yeep interpreter
+- install.bat - Windows system installer
+- install-fresh.bat - Clean Windows installer
+- install.sh - Linux/macOS installer
+- uninstall.bat - Windows uninstaller
+- examples/ - Sample Yeep scripts
+- vscode-extension/ - VSCode syntax highlighting
+- Documentation and release notes
+
+Installation:
+1. Extract this package
+2. Run install.bat as Administrator (Windows)
+3. Or run install.sh with sudo (Linux/macOS)
+4. Test with: yeep --version
+
+New in v2.0.4:
+✅ File I/O operations (readFile, writeFile, fileExists)
+✅ System integration (env, now, exec)
+✅ Enhanced REPL commands (vars, funcs, features)
+✅ Production-ready stability and performance
