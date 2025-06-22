@@ -1,0 +1,8 @@
+print "hello"
+print "Testing multiline"
+fun test() \
+{ \
+  print "This is a multiline function" \
+}
+test()
+exit

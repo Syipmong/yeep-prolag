@@ -1,8 +1,7 @@
 {
   "name": "yeep-language",
-  "displayName": "Yeep Programming Language",
-  "description": "🎯 Official VSCode extension for Yeep v2.0.1 - Modern syntax highlighting, IntelliSense, and language support for the Yeep programming language. Features include variables, functions, control flow, built-in functions, and interactive REPL support.",
-  "version": "2.0.2",
+  "displayName": "Yeep Programming Language",  "description": "🎯 Official VSCode extension for Yeep v2.0.5 - Modern syntax highlighting, IntelliSense, debugging, and language support for the Yeep programming language. Features include variables, functions, control flow, built-in functions, interactive REPL support, and integrated debugging with play button.",
+  "version": "2.0.5",
   "publisher": "YipmongSaid",
   "icon": "icon.png",
   "galleryBanner": {
@@ -27,11 +26,14 @@
     "scripting",
     "repl",
     "c++",
-    "modern",
-    "v2.0.1",
+    "modern",    "v2.0.5",
     "cross-platform",
     "functions",
-    "variables"
+    "variables",
+    "debug",
+    "debugging",
+    "run",
+    "execute"
   ],  "activationEvents": [
     "onLanguage:yeep"
   ],
@@ -41,7 +43,8 @@
         "id": "yeep",
         "aliases": [
           "Yeep",
-          "yeep"
+          "yeep",
+          "yip"
         ],
         "extensions": [
           ".yeep"
@@ -65,24 +68,51 @@
         "language": "yeep",
         "path": "./snippets/yeep.json"
       }
-    ],
-    "commands": [
+    ],    "commands": [
       {
         "command": "yeep.runFile",
-        "title": "Run Yeep File",
-        "category": "Yeep"
+        "title": "▶️ Run Yeep File",
+        "category": "Yeep",
+        "icon": "$(play)"
       },
       {
         "command": "yeep.runInteractive",
-        "title": "Start Yeep REPL",
-        "category": "Yeep"
+        "title": "🎮 Start Yeep REPL",
+        "category": "Yeep",
+        "icon": "$(terminal)"
+      },
+      {
+        "command": "yeep.debugFile",
+        "title": "🐛 Debug Yeep File",
+        "category": "Yeep",
+        "icon": "$(debug-start)"
       }
-    ],
-    "menus": {
+    ],    "menus": {
+      "editor/title": [
+        {
+          "when": "resourceExtname == .yeep",
+          "command": "yeep.runFile",
+          "group": "navigation",
+          "alt": "yeep.debugFile"
+        }
+      ],
+      "editor/title/run": [
+        {
+          "when": "resourceExtname == .yeep",
+          "command": "yeep.runFile",
+          "group": "1_run",
+          "alt": "yeep.debugFile"
+        }
+      ],
       "editor/context": [
         {
           "when": "resourceExtname == .yeep",
           "command": "yeep.runFile",
+          "group": "navigation"
+        },
+        {
+          "when": "resourceExtname == .yeep",
+          "command": "yeep.debugFile",
           "group": "navigation"
         }
       ],
@@ -92,14 +122,23 @@
           "when": "resourceExtname == .yeep"
         },
         {
+          "command": "yeep.debugFile",
+          "when": "resourceExtname == .yeep"
+        },
+        {
           "command": "yeep.runInteractive"
         }
       ]
-    },
-    "keybindings": [
+    },    "keybindings": [
       {
         "command": "yeep.runFile",
         "key": "f5",
+        "when": "resourceExtname == .yeep"
+      },
+      {
+        "command": "yeep.debugFile",
+        "key": "ctrl+f5",
+        "mac": "cmd+f5",
         "when": "resourceExtname == .yeep"
       },
       {
@@ -107,14 +146,97 @@
         "key": "ctrl+shift+y",
         "mac": "cmd+shift+y"
       }
+    ],
+    "taskDefinitions": [
+      {
+        "type": "yeep",
+        "required": [
+          "file"
+        ],
+        "properties": {
+          "file": {
+            "type": "string",
+            "description": "The Yeep file to run"
+          },
+          "args": {
+            "type": "array",
+            "description": "Additional arguments to pass to Yeep"
+          }
+        }
+      }
+    ],
+    "debuggers": [
+      {
+        "type": "yeep",
+        "label": "Yeep Debug",
+        "program": "./src/debugAdapter.js",
+        "runtime": "node",
+        "configurationAttributes": {
+          "launch": {
+            "required": [
+              "program"
+            ],
+            "properties": {
+              "program": {
+                "type": "string",
+                "description": "Absolute path to a Yeep file.",
+                "default": "${workspaceFolder}/${fileBasename}"
+              },
+              "args": {
+                "type": "array",
+                "description": "Command line arguments passed to the program.",
+                "items": {
+                  "type": "string"
+                },
+                "default": []
+              },
+              "yeepPath": {
+                "type": "string",
+                "description": "Path to Yeep executable",
+                "default": "yeep"
+              }
+            }
+          }
+        },
+        "initialConfigurations": [
+          {
+            "type": "yeep",
+            "request": "launch",
+            "name": "Launch Yeep",
+            "program": "${workspaceFolder}/${fileBasename}",
+            "yeepPath": "yeep"
+          }
+        ],
+        "configurationSnippets": [
+          {
+            "label": "Yeep: Launch",
+            "description": "A new configuration for launching a Yeep program",
+            "body": {
+              "type": "yeep",
+              "request": "launch",
+              "name": "Launch Yeep",
+              "program": "^\"\\${workspaceFolder}/\\${fileBasename}\"",
+              "yeepPath": "yeep"
+            }
+          }
+        ]
+      }
     ]
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/Syipmong/yeep-prolag.git"
   },
-  "homepage": "https://github.com/Syipmong/yeep-prolag/wiki",
-  "bugs": {
+  "homepage": "https://github.com/Syipmong/yeep-prolag/wiki",  "bugs": {
     "url": "https://github.com/Syipmong/yeep-prolag/issues"
-  },  "license": "MIT"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "vscode-debugadapter": "^1.51.0",
+    "await-notify": "^1.0.1"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.74.0",
+    "@types/node": "16.x"
+  }
 }

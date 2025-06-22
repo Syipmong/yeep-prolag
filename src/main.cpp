@@ -49,22 +49,23 @@ namespace {
 }
 
 void printWelcome() {
-    std::cout << colorize("╔══════════════════════════════════════════════════════════════╗", CYAN) << std::endl;
-    std::cout << colorize("║", CYAN) << colorize("               🎯 Yeep Programming Language v2.0.4            ", BOLD) << colorize("║", CYAN) << std::endl;
-    std::cout << colorize("║", CYAN) << "                                                              " << colorize("║", CYAN) << std::endl;
-    std::cout << colorize("║", CYAN) << colorize("  Interactive REPL - Read, Evaluate, Print, Loop              ", GREEN) << colorize("║", CYAN) << std::endl;
-    std::cout << colorize("║", CYAN) << "                                                              " << colorize("║", CYAN) << std::endl;
-    std::cout << colorize("║", CYAN) << "  Commands:                                                   " << colorize("║", CYAN) << std::endl;
-    std::cout << colorize("║", CYAN) << colorize("    help     ", YELLOW) << "- Show this help message                      " << colorize("║", CYAN) << std::endl;
-    std::cout << colorize("║", CYAN) << colorize("    version  ", YELLOW) << "- Show version information                    " << colorize("║", CYAN) << std::endl;
-    std::cout << colorize("║", CYAN) << colorize("    clear    ", YELLOW) << "- Clear the screen                            " << colorize("║", CYAN) << std::endl;
-    std::cout << colorize("║", CYAN) << colorize("    vars     ", YELLOW) << "- Show all variables                          " << colorize("║", CYAN) << std::endl;
-    std::cout << colorize("║", CYAN) << colorize("    funcs    ", YELLOW) << "- Show all functions                          " << colorize("║", CYAN) << std::endl;    std::cout << colorize("║", CYAN) << colorize("    examples ", YELLOW) << "- Show example code                           " << colorize("║", CYAN) << std::endl;
-    std::cout << colorize("║", CYAN) << colorize("    features ", YELLOW) << "- Show new features in v2.0.4                " << colorize("║", CYAN) << std::endl;
-    std::cout << colorize("║", CYAN) << colorize("    exit     ", YELLOW) << "- Exit the REPL                               " << colorize("║", CYAN) << std::endl;
-    std::cout << colorize("║", CYAN) << "                                                              " << colorize("║", CYAN) << std::endl;
-    std::cout << colorize("║", CYAN) << "  Type Yeep expressions and press Enter to evaluate them.   " << colorize("║", CYAN) << std::endl;
-    std::cout << colorize("╚══════════════════════════════════════════════════════════════╝", CYAN) << std::endl;
+    std::cout << colorize("🎯 Yeep Programming Language v2.0.5", BOLD) << std::endl;
+    std::cout << colorize("Interactive REPL - Read, Evaluate, Print, Loop", GREEN) << std::endl;
+    std::cout << std::endl;
+    
+    std::cout << colorize("Commands:", CYAN) << std::endl;
+    std::cout << "  " << colorize("help", YELLOW) << "     - Show this help message" << std::endl;
+    std::cout << "  " << colorize("version", YELLOW) << "  - Show version information" << std::endl;
+    std::cout << "  " << colorize("clear", YELLOW) << "    - Clear the screen" << std::endl;
+    std::cout << "  " << colorize("vars", YELLOW) << "     - Show all variables" << std::endl;
+    std::cout << "  " << colorize("funcs", YELLOW) << "    - Show all functions" << std::endl;
+    std::cout << "  " << colorize("examples", YELLOW) << " - Show example code" << std::endl;
+    std::cout << "  " << colorize("features", YELLOW) << " - Show new features in v2.0.5" << std::endl;
+    std::cout << "  " << colorize("exit", YELLOW) << "     - Exit the REPL" << std::endl;
+    std::cout << std::endl;
+    
+    std::cout << "Type Yeep expressions and press Enter to evaluate them." << std::endl;
+    std::cout << "For multiline input, end with '\\' to continue on next line." << std::endl;
     std::cout << std::endl;
 }
 
@@ -105,7 +106,7 @@ void printHelp() {
 
 void printVersion() {
     std::cout << colorize("\n🎯 Yeep Programming Language", BOLD) << std::endl;
-    std::cout << colorize("Version: ", CYAN) << "2.0.4" << std::endl;
+    std::cout << colorize("Version: ", CYAN) << "2.0.5" << std::endl;
     std::cout << colorize("Built: ", CYAN) << __DATE__ << " " << __TIME__ << std::endl;
     std::cout << colorize("Architecture: ", CYAN) << "Modern C++17" << std::endl;
     std::cout << colorize("Platform: ", CYAN) << 
@@ -156,7 +157,7 @@ void printExamples() {
 }
 
 void printFeatures() {
-    std::cout << colorize("\n🚀 New Features in Yeep v2.0.4:", BOLD) << std::endl;
+    std::cout << colorize("\n🚀 New Features in Yeep v2.0.5:", BOLD) << std::endl;
     std::cout << std::endl;
     
     std::cout << colorize("1. Enhanced REPL Commands:", YELLOW) << std::endl;
@@ -196,11 +197,17 @@ void runRepl() {
     
     yeep::Interpreter interpreter;
     std::string input;
+    std::string multilineInput;
     int commandCount = 0;
+    bool inMultilineMode = false;
     
     while (true) {
-        // Show prompt
-        std::cout << colorize("yeep", GREEN) << colorize("> ", BLUE);
+        // Show appropriate prompt
+        if (inMultilineMode) {
+            std::cout << colorize("...", YELLOW) << colorize("> ", BLUE);
+        } else {
+            std::cout << colorize("yeep", GREEN) << colorize("> ", BLUE);
+        }
         
         // Get input line
         if (!std::getline(std::cin, input)) {
@@ -209,11 +216,28 @@ void runRepl() {
             break;
         }
         
-        // Trim whitespace
-        input.erase(0, input.find_first_not_of(" \t\n\r"));
+        // Trim whitespace from the right
         input.erase(input.find_last_not_of(" \t\n\r") + 1);
         
-        // Skip empty lines
+        // Check for multiline continuation
+        if (!input.empty() && input.back() == '\\') {
+            // Remove the backslash and add to multiline input
+            input.pop_back();
+            multilineInput += input + " ";
+            inMultilineMode = true;
+            continue;
+        } else if (inMultilineMode) {
+            // Complete the multiline input
+            multilineInput += input;
+            input = multilineInput;
+            multilineInput.clear();
+            inMultilineMode = false;
+        }
+        
+        // Trim whitespace from the left now
+        input.erase(0, input.find_first_not_of(" \t\n\r"));
+        
+        // Skip empty lines (unless we were in multiline mode)
         if (input.empty()) {
             continue;
         }
@@ -341,7 +365,7 @@ int runFile(const std::string& filename) {
 }
 
 void printUsage(const char* programName) {
-    std::cout << colorize("🎯 Yeep Programming Language v2.0.4", BOLD) << std::endl;
+    std::cout << colorize("🎯 Yeep Programming Language v2.0.5", BOLD) << std::endl;
     std::cout << std::endl;
     std::cout << colorize("Usage:", CYAN) << std::endl;
     std::cout << "  " << programName << "                    " << colorize("# Start interactive REPL", GREEN) << std::endl;

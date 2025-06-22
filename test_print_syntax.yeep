@@ -1,0 +1,2 @@
+print("with parentheses");
+print "without parentheses";

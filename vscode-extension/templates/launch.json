@@ -1,0 +1,19 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "yeep",
+            "request": "launch",
+            "name": "Launch Current Yeep File",
+            "program": "${file}",
+            "yeepPath": "yeep"
+        },
+        {
+            "type": "yeep",
+            "request": "launch",
+            "name": "Launch Yeep File (Enter Path)",
+            "program": "${workspaceFolder}/main.yeep",
+            "yeepPath": "yeep"
+        }
+    ]
+}

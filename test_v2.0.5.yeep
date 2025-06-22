@@ -1,0 +1,15 @@
+print("Testing Yeep v2.0.5 improvements");
+print("Clean interface - no more box styling!");
+print("Multiline support test:");
+// This would be entered interactively with backslashes
+fun greet(name) {
+    return "Hello, " + name + "!";
+}
+print(greet("World"));
+print("Yeep v2.0.5 is ready!");
+
+// Test both print syntaxes - both should work with semicolons
+print "=== Functionality Tests ===";
+print("Both syntaxes work!");
+print "Both syntaxes work!";
+print "Finished successfully!";

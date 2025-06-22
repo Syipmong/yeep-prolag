@@ -48,7 +48,88 @@ function activate(context) {
         vscode.window.showInformationMessage('Yeep REPL started! Type "help" for commands, "exit" to quit.');
     });
 
-    // Register hover provider for built-in functions
+    // Register command to debug Yeep file
+    let debugFileCommand = vscode.commands.registerCommand('yeep.debugFile', function () {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) {
+            vscode.window.showErrorMessage('No active Yeep file to debug');
+            return;
+        }
+
+        const document = editor.document;
+        if (document.languageId !== 'yeep') {
+            vscode.window.showErrorMessage('Active file is not a Yeep file');
+            return;
+        }
+
+        // Save the file first
+        document.save().then(() => {
+            const filePath = document.fileName;
+            const fileName = path.basename(filePath);
+            
+            // Start debugging session
+            vscode.debug.startDebugging(vscode.workspace.getWorkspaceFolder(vscode.Uri.file(filePath)), {
+                type: 'yeep',
+                request: 'launch',
+                name: `Debug ${fileName}`,
+                program: filePath,
+                yeepPath: 'yeep'
+            });
+        });
+    });
+
+    // Register task provider for Yeep files
+    let taskProvider = vscode.tasks.registerTaskProvider('yeep', {
+        provideTasks() {
+            const tasks = [];
+            
+            // Create a task for running the current Yeep file
+            const editor = vscode.window.activeTextEditor;
+            if (editor && editor.document.languageId === 'yeep') {
+                const filePath = editor.document.fileName;
+                const fileName = path.basename(filePath);
+                
+                const task = new vscode.Task(
+                    { type: 'yeep', file: filePath },
+                    vscode.TaskScope.Workspace,
+                    `Run ${fileName}`,
+                    'yeep',
+                    new vscode.ShellExecution('yeep', [filePath]),
+                    '$yeep'
+                );
+                
+                task.group = vscode.TaskGroup.Build;
+                task.presentationOptions = {
+                    echo: true,
+                    reveal: vscode.TaskRevealKind.Always,
+                    focus: false,
+                    panel: vscode.TaskPanelKind.Shared,
+                    showReuseMessage: true
+                };
+                
+                tasks.push(task);
+            }
+            
+            return tasks;
+        },
+        
+        resolveTask(task) {
+            if (task.definition.type === 'yeep' && task.definition.file) {
+                const filePath = task.definition.file;
+                const fileName = path.basename(filePath);
+                
+                return new vscode.Task(
+                    task.definition,
+                    vscode.TaskScope.Workspace,
+                    `Run ${fileName}`,
+                    'yeep',
+                    new vscode.ShellExecution('yeep', [filePath]),
+                    '$yeep'
+                );
+            }
+            return undefined;
+        }
+    });
     let hoverProvider = vscode.languages.registerHoverProvider('yeep', {
         provideHover(document, position, token) {
             const range = document.getWordRangeAtPosition(position);
@@ -176,11 +257,11 @@ function activate(context) {
             
             return completions;
         }
-    });
-
-    // Add to subscriptions
+    });    // Add to subscriptions
     context.subscriptions.push(runFileCommand);
     context.subscriptions.push(replCommand);
+    context.subscriptions.push(debugFileCommand);
+    context.subscriptions.push(taskProvider);
     context.subscriptions.push(hoverProvider);
     context.subscriptions.push(completionProvider);
 }

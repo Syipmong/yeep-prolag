@@ -39,7 +39,25 @@ Yeep is a modern, interpreted programming language written in C++ that combines 
 
 1. **Create a new file** with `.yeep` extension
 2. **Start coding** with full syntax highlighting and IntelliSense
-3. **Run your code** with `F5` or right-click → "Run Yeep File"
+3. **Run your code** with `F5` or click the ▶️ **Play Button** in the top-right corner
+4. **Debug your code** with `Ctrl+F5` or click the 🐛 **Debug Button**
+
+## 🐛 NEW: Debug & Run Features (v2.0.5)
+
+### Play Button Integration
+- **▶️ Run Button**: Click the play button in the editor title bar to run your Yeep file instantly
+- **🐛 Debug Button**: Click the debug button to start debugging with detailed output
+- **Quick Access**: Right-click in editor → "▶️ Run Yeep File" or "🐛 Debug Yeep File"
+
+### Keyboard Shortcuts
+- **F5**: Run current Yeep file
+- **Ctrl+F5**: Debug current Yeep file
+- **Ctrl+Shift+Y**: Start Yeep REPL
+
+### Enhanced Terminal Integration
+- Integrated terminal output with colored syntax
+- Error highlighting and stack traces
+- REPL support with interactive commands
 
 ```yeep
 // Hello World in Yeep!
