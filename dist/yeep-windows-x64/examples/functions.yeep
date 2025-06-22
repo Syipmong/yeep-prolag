@@ -1,0 +1,38 @@
+// Function examples
+
+// Simple function
+fun greet(name) {
+    print("Hello, " + name + "!");
+}
+
+greet("World");
+greet("Yeep");
+
+// Function with return value
+fun add(a, b) {
+    return a + b;
+}
+
+let result = add(5, 3);
+print("5 + 3 = " + result);
+
+// Recursive function (factorial)
+fun factorial(n) {
+    if (n <= 1) {
+        return 1;
+    } else {
+        return n * factorial(n - 1);
+    }
+}
+
+print("Factorial of 5: " + factorial(5));
+print("Factorial of 6: " + factorial(6));
+
+// Function with local variables
+fun calculate_area(radius) {
+    let pi = 3.14159;
+    let area = pi * radius * radius;
+    return area;
+}
+
+print("Area of circle with radius 3: " + calculate_area(3));

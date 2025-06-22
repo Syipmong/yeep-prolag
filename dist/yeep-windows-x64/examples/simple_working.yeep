@@ -1,0 +1,21 @@
+// Simple working example that uses only supported Yeep features
+print("Hello, World!");
+
+// Variables
+let name = "Yeep";
+let version = 1;
+print("Language: " + name);
+print("Version: " + version);
+
+// Simple arithmetic
+let x = 10;
+let y = 5;
+print("x + y = " + (x + y));
+print("x - y = " + (x - y));
+print("x * y = " + (x * y));
+print("x / y = " + (x / y));
+
+// Comparisons (without && and ||)
+print("x > y: " + (x > y));
+print("x < y: " + (x < y));
+print("x == y: " + (x == y));

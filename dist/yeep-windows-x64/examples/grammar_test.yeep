@@ -1,0 +1,249 @@
+// Grammar Test Suite for Yeep Programming Language
+// This file tests all major grammar productions
+
+// 1. VARIABLE DECLARATIONS
+print("=== Testing Variable Declarations ===");
+
+let number_var = 42;
+let float_var = 3.14159;
+let string_var = "Hello, Yeep!";
+let boolean_true = true;
+let boolean_false = false;
+
+print("Number: " + number_var);
+print("Float: " + float_var);
+print("String: " + string_var);
+print("Boolean true: " + boolean_true);
+print("Boolean false: " + boolean_false);
+
+// 2. ARITHMETIC EXPRESSIONS
+print("=== Testing Arithmetic Expressions ===");
+
+let a = 10;
+let b = 3;
+
+print("Addition: " + (a + b));
+print("Subtraction: " + (a - b));
+print("Multiplication: " + (a * b));
+print("Division: " + (a / b));
+
+// Operator precedence test
+let precedence_test = 2 + 3 * 4; // Should be 14, not 20
+print("Precedence (2 + 3 * 4): " + precedence_test);
+
+let parentheses_test = (2 + 3) * 4; // Should be 20
+print("Parentheses ((2 + 3) * 4): " + parentheses_test);
+
+// 3. COMPARISON OPERATORS
+print("=== Testing Comparison Operators ===");
+
+let x = 5;
+let y = 10;
+
+print("x == y: " + (x == y));
+print("x != y: " + (x != y));
+print("x < y: " + (x < y));
+print("x > y: " + (x > y));
+print("x <= y: " + (x <= y));
+print("x >= y: " + (x >= y));
+
+// 4. CONDITIONAL STATEMENTS
+print("=== Testing Conditional Statements ===");
+
+let score = 85;
+
+if (score >= 90) {
+    print("Grade: A");
+} else {
+    if (score >= 80) {
+        print("Grade: B");
+    } else {
+        if (score >= 70) {
+            print("Grade: C");
+        } else {
+            print("Grade: F");
+        }
+    }
+}
+
+// Nested if-else
+let weather = "sunny";
+if (weather == "sunny") {
+    print("Great day for a walk!");
+} else {
+    print("Maybe stay inside today.");
+}
+
+// 5. LOOP STATEMENTS
+print("=== Testing Loop Statements ===");
+
+// While loop
+let counter = 1;
+print("Counting from 1 to 5:");
+while (counter <= 5) {
+    print("Count: " + counter);
+    counter = counter + 1;
+}
+
+// Nested loops
+print("Multiplication table (3x3):");
+let i = 1;
+while (i <= 3) {
+    let j = 1;
+    while (j <= 3) {
+        print(i + " * " + j + " = " + (i * j));
+        j = j + 1;
+    }
+    i = i + 1;
+}
+
+// 6. FUNCTION DECLARATIONS AND CALLS
+print("=== Testing Function Declarations ===");
+
+// Simple function
+fun greet(name) {
+    print("Hello, " + name + "!");
+}
+
+greet("World");
+greet("Yeep Language");
+
+// Function with return value
+fun add(a, b) {
+    return a + b;
+}
+
+let sum = add(15, 25);
+print("15 + 25 = " + sum);
+
+// Function with multiple parameters
+fun calculate_area(length, width) {
+    return length * width;
+}
+
+let area = calculate_area(5, 3);
+print("Area of 5x3 rectangle: " + area);
+
+// Recursive function
+fun factorial(n) {
+    if (n <= 1) {
+        return 1;
+    } else {
+        return n * factorial(n - 1);
+    }
+}
+
+print("Factorial of 5: " + factorial(5));
+print("Factorial of 6: " + factorial(6));
+
+// 7. COMPLEX EXPRESSIONS
+print("=== Testing Complex Expressions ===");
+
+// Nested function calls
+fun double(x) {
+    return x * 2;
+}
+
+fun square(x) {
+    return x * x;
+}
+
+let complex_result = double(square(add(2, 3)));
+print("double(square(add(2, 3))): " + complex_result);
+
+// Mixed arithmetic and logical
+let complex_condition = (a + b) > 10 && (x * y) < 100;
+print("Complex condition: " + complex_condition);
+
+// 8. STRING OPERATIONS
+print("=== Testing String Operations ===");
+
+let first_name = "John";
+let last_name = "Doe";
+let full_name = first_name + " " + last_name;
+print("Full name: " + full_name);
+
+// String with numbers
+let age = 25;
+let message = "I am " + age + " years old";
+print(message);
+
+// 9. SCOPE TESTING
+print("=== Testing Variable Scope ===");
+
+let global_var = "Global";
+
+fun test_scope() {
+    let local_var = "Local";
+    print("Inside function - Global: " + global_var);
+    print("Inside function - Local: " + local_var);
+}
+
+test_scope();
+print("Outside function - Global: " + global_var);
+// print("Outside function - Local: " + local_var); // This should cause an error
+
+// 10. ADVANCED CONTROL FLOW
+print("=== Testing Advanced Control Flow ===");
+
+// Function returning different types based on condition
+fun get_value(type) {
+    if (type == "number") {
+        return 42;
+    } else {
+        if (type == "string") {
+            return "Hello";
+        } else {
+            return true;
+        }
+    }
+}
+
+print("Number type: " + get_value("number"));
+print("String type: " + get_value("string"));
+print("Boolean type: " + get_value("other"));
+
+// 11. ERROR CONDITIONS (COMMENTED OUT)
+print("=== Testing Error Handling ===");
+
+// These would cause errors in a real program:
+// let undefined_var = some_undefined_variable;
+// fun bad_function() { return undefined_function(); }
+// let division_by_zero = 10 / 0;
+
+print("Basic error handling: Division by zero check");
+fun safe_divide(a, b) {
+    if (b == 0) {
+        print("Error: Cannot divide by zero");
+        return 0;
+    } else {
+        return a / b;
+    }
+}
+
+print("10 / 2 = " + safe_divide(10, 2));
+print("10 / 0 = " + safe_divide(10, 0));
+
+// 12. FIBONACCI SEQUENCE (COMPREHENSIVE TEST)
+print("=== Comprehensive Test: Fibonacci Sequence ===");
+
+fun fibonacci(n) {
+    if (n <= 0) {
+        return 0;
+    } else {
+        if (n == 1) {
+            return 1;
+        } else {
+            return fibonacci(n - 1) + fibonacci(n - 2);
+        }
+    }
+}
+
+print("First 10 Fibonacci numbers:");
+let fib_counter = 0;
+while (fib_counter < 10) {
+    print("F(" + fib_counter + ") = " + fibonacci(fib_counter));
+    fib_counter = fib_counter + 1;
+}
+
+print("=== Grammar Test Suite Complete ===");

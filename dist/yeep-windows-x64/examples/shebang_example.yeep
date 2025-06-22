@@ -1,0 +1,16 @@
+#!/usr/bin/env yeep
+// Shebang example - this script can be executed directly
+// Usage: ./shebang_example.yeep (after making it executable)
+
+print("Hello from a Yeep script with shebang!");
+print("This script was executed directly.");
+
+let name = "World";
+print("Hello, World!");
+
+// Simple calculation
+let a = 10;
+let b = 20;
+let result = a + b;
+print("The sum is:");
+print(result);
