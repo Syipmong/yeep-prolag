@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # ================================================================
-# Yeep Programming Language v2.0.1 - System-Wide Installation
+# Yeep Programming Language v2.0.3 - System-Wide Installation
 # ================================================================
 
 set -e
 
 echo
 echo "╔══════════════════════════════════════════════════════════════╗"
-echo "║                🎯 Yeep Programming Language v2.0.1          ║"
+echo "║                🎯 Yeep Programming Language v2.0.3          ║"
 echo "║                                                              ║"
 echo "║                  System-Wide Installation                    ║"
 echo "╚══════════════════════════════════════════════════════════════╝"
@@ -135,7 +135,7 @@ echo
 echo "╔══════════════════════════════════════════════════════════════╗"
 echo "║                 ✅ INSTALLATION COMPLETE!                   ║"
 echo "║                                                              ║"
-echo "║  Yeep v2.0.1 has been installed successfully!               ║"
+echo "║  Yeep v2.0.3 has been installed successfully!               ║"
 echo "║                                                              ║"
 echo "║  📁 Location: $INSTALL_DIR/yeep                    ║"
 echo "║  📚 Examples: $LIB_DIR/examples/                   ║"

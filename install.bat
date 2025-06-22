@@ -2,12 +2,12 @@
 setlocal enabledelayedexpansion
 
 REM ================================================================
-REM Yeep Programming Language v2.0.2 - System-Wide Installation
+REM Yeep Programming Language v2.0.3 - System-Wide Installation
 REM ================================================================
 
 echo.
 echo ╔══════════════════════════════════════════════════════════════╗
-echo ║                🎯 Yeep Programming Language v2.0.2          ║
+echo ║                🎯 Yeep Programming Language v2.0.3          ║
 echo ║                                                              ║
 echo ║                  System-Wide Installation                    ║
 echo ╚══════════════════════════════════════════════════════════════╝
@@ -137,7 +137,7 @@ echo.
 echo ╔══════════════════════════════════════════════════════════════╗
 echo ║                 ✅ INSTALLATION COMPLETE!                   ║
 echo ║                                                              ║
-echo ║  Yeep v2.0.2 has been installed successfully!               ║
+echo ║  Yeep v2.0.3 has been installed successfully!               ║
 echo ║                                                              ║
 echo ║  📁 Location: !INSTALL_DIR!              ║
 echo ║                                                              ║
